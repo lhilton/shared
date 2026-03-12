@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRTX-547 — AC-1.8.4: LLM Provider Unavailable Banner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lumion: {
+                            dark: '#11142B',
+                            blue: '#5261CE',
+                            light: '#E8EAFF',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+        .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+        @keyframes flow-arrow {
+            0% { stroke-dashoffset: 16; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .flow-arrow { stroke-dasharray: 8 8; animation: flow-arrow 0.8s linear infinite; }
+
+        .tab-active { border-bottom: 3px solid #5261CE; color: #5261CE; font-weight: 600; }
+        .tab-inactive { border-bottom: 3px solid transparent; color: #6b7280; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .code-block {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .code-block .keyword { color: #cba6f7; }
+        .code-block .string { color: #a6e3a1; }
+        .code-block .comment { color: #6c7086; font-style: italic; }
+        .code-block .type { color: #89b4fa; }
+        .code-block .property { color: #f9e2af; }
+        .code-block .method { color: #89dceb; }
+        .code-block .variable { color: #f38ba8; }
+
+        .review-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 2px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600;
+        }
+
+        details summary { cursor: pointer; list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+        details[open] summary .chevron { transform: rotate(90deg); }
+        .chevron { transition: transform 0.2s ease; display: inline-block; }
+
+        .file-tree-line { border-left: 2px solid #e5e7eb; }
+
+        .drawer-mockup {
+            width: 360px;
+            height: 520px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Hero -->
+    <header class="bg-lumion-dark text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
+        </div>
+        <div class="max-w-6xl mx-auto px-6 py-12 relative">
+            <div class="flex items-center gap-3 mb-4 animate-in">
+                <span class="bg-lumion-blue/20 text-lumion-light px-3 py-1 rounded-full text-sm font-medium border border-lumion-blue/30">CRTX-547</span>
+                <span class="bg-amber-500/20 text-amber-300 px-3 py-1 rounded-full text-sm font-medium border border-amber-500/30">AC-1.8.4</span>
+                <span class="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-medium border border-emerald-500/30">NFR-008</span>
+            </div>
+            <h1 class="text-4xl font-extrabold mb-3 animate-in delay-1">LLM Provider Unavailable Banner</h1>
+            <p class="text-lg text-gray-300 max-w-3xl animate-in delay-2">
+                Distinguish systemic LLM provider outages from single-message failures. Show a top-of-drawer banner and disable chat input when the provider is down.
+            </p>
+            <div class="flex items-center gap-6 mt-8 animate-in delay-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></div>
+                    <span class="text-sm text-gray-400">5 rounds adversarial review</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span class="text-sm text-gray-400">3 files &middot; ~185 lines &middot; 0 new files</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    <span class="text-sm text-gray-400">8 tests</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Scoreboard -->
+    <div class="max-w-6xl mx-auto px-6 -mt-6 relative z-10">
+        <div class="grid grid-cols-4 gap-4 animate-in delay-4">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center">
+                <div class="text-3xl font-bold text-lumion-blue">46<span class="text-gray-300">/47</span></div>
+                <div class="text-sm text-gray-500 mt-1">Epic 1 AC passing</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center">
+                <div class="text-3xl font-bold text-amber-500">1</div>
+                <div class="text-sm text-gray-500 mt-1">Remaining gap</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center">
+                <div class="text-3xl font-bold text-emerald-500">0</div>
+                <div class="text-sm text-gray-500 mt-1">New files needed</div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 text-center">
+                <div class="text-3xl font-bold text-emerald-500">0</div>
+                <div class="text-sm text-gray-500 mt-1">New properties</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6 py-10">
+
+        <!-- Context Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-lumion-blue/10 flex items-center justify-center text-lumion-blue">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </span>
+                Problem
+            </h2>
+            <div class="bg-white rounded-xl border border-gray-200 p-6">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-semibold text-red-600 mb-2">Current behavior</h3>
+                        <p class="text-gray-600 mb-4">All errors render identically in the input zone with a generic message. Users cannot tell if the provider is down vs a one-off failure.</p>
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <div class="flex items-center gap-2 text-red-700 text-sm font-medium">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Could not generate a response
+                            </div>
+                            <p class="text-red-600 text-xs mt-1">Same for transient errors AND single failures</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-emerald-600 mb-2">Desired behavior</h3>
+                        <p class="text-gray-600 mb-4">When retry exhaustion indicates a systemic outage, show a distinct top-of-drawer banner and disable chat input.</p>
+                        <div class="space-y-2">
+                            <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                                <div class="flex items-center gap-2">
+                                    <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                                    <span class="text-sm font-medium text-gray-900">Mia is temporarily unavailable</span>
+                                    <button class="ml-auto bg-red-500 text-white text-xs px-3 py-1 rounded-md font-medium">Retry</button>
+                                </div>
+                                <p class="text-xs text-gray-500 ml-6 mt-0.5">We're having trouble connecting. Please try again in a moment.</p>
+                            </div>
+                            <div class="bg-gray-100 rounded-lg p-3">
+                                <div class="text-sm text-gray-400 italic">Mia is temporarily unavailable...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Insight -->
+        <section class="mb-12">
+            <div class="bg-gradient-to-r from-lumion-blue/5 to-purple-50 border border-lumion-blue/20 rounded-xl p-6">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-lumion-blue/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <svg class="w-6 h-6 text-lumion-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-lumion-dark">Key design insight</h3>
+                        <p class="text-gray-700 mt-1">If a transient error (<code class="mono text-sm bg-white/80 px-1.5 py-0.5 rounded border">ConnectionException</code>, 5xx) reaches <code class="mono text-sm bg-white/80 px-1.5 py-0.5 rounded border">handleStreamError()</code>, it has <strong>already passed through</strong> <code class="mono text-sm bg-white/80 px-1.5 py-0.5 rounded border">executeWithRetry()</code> which exhausted all 3 attempts. The exception type already encodes whether retries were exhausted &mdash; <strong>no wrapper exception needed</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Classification Flow -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-lumion-blue/10 flex items-center justify-center text-lumion-blue">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </span>
+                Error classification flow
+            </h2>
+            <div class="bg-white rounded-xl border border-gray-200 p-8">
+                <svg viewBox="0 0 900 280" class="w-full" style="max-height: 280px;">
+                    <!-- AgentOrchestrator box -->
+                    <rect x="20" y="40" width="180" height="70" rx="10" fill="#f0f0ff" stroke="#5261CE" stroke-width="2"/>
+                    <text x="110" y="68" text-anchor="middle" font-size="13" font-weight="600" fill="#11142B">AgentOrchestrator</text>
+                    <text x="110" y="88" text-anchor="middle" font-size="11" fill="#6b7280">executeWithRetry()</text>
+                    <text x="110" y="102" text-anchor="middle" font-size="10" fill="#9ca3af">3 attempts, backoff</text>
+
+                    <!-- Arrow 1 -->
+                    <line x1="200" y1="75" x2="270" y2="75" stroke="#5261CE" stroke-width="2" class="flow-arrow"/>
+                    <polygon points="270,70 280,75 270,80" fill="#5261CE"/>
+                    <text x="235" y="65" text-anchor="middle" font-size="10" fill="#6b7280">exhausted</text>
+
+                    <!-- handleStreamError box -->
+                    <rect x="280" y="40" width="200" height="70" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="380" y="68" text-anchor="middle" font-size="13" font-weight="600" fill="#11142B">handleStreamError()</text>
+                    <text x="380" y="88" text-anchor="middle" font-size="11" fill="#6b7280">classifies exception type</text>
+
+                    <!-- Decision diamond -->
+                    <polygon points="570,75 620,40 670,75 620,110" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
+                    <text x="620" y="72" text-anchor="middle" font-size="10" font-weight="600" fill="#5b21b6">isProvider</text>
+                    <text x="620" y="84" text-anchor="middle" font-size="10" font-weight="600" fill="#5b21b6">Unavailable?</text>
+
+                    <!-- Arrow to diamond -->
+                    <line x1="480" y1="75" x2="568" y2="75" stroke="#f59e0b" stroke-width="2" class="flow-arrow"/>
+                    <polygon points="568,70 578,75 568,80" fill="#f59e0b"/>
+
+                    <!-- YES path -->
+                    <line x1="620" y1="110" x2="620" y2="160" stroke="#ef4444" stroke-width="2"/>
+                    <polygon points="615,160 620,170 625,160" fill="#ef4444"/>
+                    <text x="640" y="140" font-size="11" font-weight="600" fill="#ef4444">YES</text>
+
+                    <!-- Provider unavailable box -->
+                    <rect x="530" y="172" width="180" height="80" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+                    <text x="620" y="197" text-anchor="middle" font-size="12" font-weight="600" fill="#991b1b">provider_unavailable</text>
+                    <text x="620" y="215" text-anchor="middle" font-size="10" fill="#6b7280">Top-of-drawer banner</text>
+                    <text x="620" y="230" text-anchor="middle" font-size="10" fill="#6b7280">Input disabled</text>
+                    <text x="620" y="245" text-anchor="middle" font-size="10" fill="#6b7280">Retry button only</text>
+
+                    <!-- NO path -->
+                    <line x1="670" y1="75" x2="730" y2="75" stroke="#3b82f6" stroke-width="2"/>
+                    <polygon points="730,70 740,75 730,80" fill="#3b82f6"/>
+                    <text x="700" y="65" font-size="11" font-weight="600" fill="#3b82f6">NO</text>
+
+                    <!-- Network error box -->
+                    <rect x="742" y="40" width="145" height="70" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                    <text x="815" y="65" text-anchor="middle" font-size="12" font-weight="600" fill="#1e40af">network_error</text>
+                    <text x="815" y="83" text-anchor="middle" font-size="10" fill="#6b7280">Input-zone error</text>
+                    <text x="815" y="97" text-anchor="middle" font-size="10" fill="#6b7280">Try Again + Dismiss</text>
+
+                    <!-- Exception types legend -->
+                    <rect x="20" y="160" width="260" height="100" rx="8" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+                    <text x="35" y="182" font-size="11" font-weight="600" fill="#374151">Exception types → errorType mapping</text>
+                    <circle cx="40" cy="200" r="4" fill="#ef4444"/>
+                    <text x="52" y="204" font-size="11" fill="#6b7280">ConnectionException → provider_unavailable</text>
+                    <circle cx="40" cy="220" r="4" fill="#ef4444"/>
+                    <text x="52" y="224" font-size="11" fill="#6b7280">RequestException (5xx) → provider_unavailable</text>
+                    <circle cx="40" cy="240" r="4" fill="#3b82f6"/>
+                    <text x="52" y="244" font-size="11" fill="#6b7280">RuntimeException, others → network_error</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Tabs: Implementation Steps -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-lumion-blue/10 flex items-center justify-center text-lumion-blue">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </span>
+                Implementation steps
+            </h2>
+
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <!-- Tabs -->
+                <div class="flex border-b border-gray-200 overflow-x-auto" id="step-tabs">
+                    <button onclick="showTab('php')" class="px-5 py-3 text-sm whitespace-nowrap tab-active" data-tab="php">PHP changes</button>
+                    <button onclick="showTab('blade')" class="px-5 py-3 text-sm whitespace-nowrap tab-inactive" data-tab="blade">Blade template</button>
+                    <button onclick="showTab('tests')" class="px-5 py-3 text-sm whitespace-nowrap tab-inactive" data-tab="tests">Tests</button>
+                    <button onclick="showTab('files')" class="px-5 py-3 text-sm whitespace-nowrap tab-inactive" data-tab="files">Files changed</button>
+                </div>
+
+                <!-- PHP Tab -->
+                <div class="tab-content active p-6" id="tab-php">
+                    <div class="space-y-6">
+                        <!-- Step 1 -->
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="w-7 h-7 rounded-full bg-lumion-blue text-white text-sm font-bold flex items-center justify-center">1</span>
+                                <h3 class="font-semibold">Add <code class="mono text-sm">isProviderUnavailable()</code> helper</h3>
+                                <span class="text-xs text-gray-400 mono">AssistantDrawer.php</span>
+                            </div>
+                            <div class="code-block p-4 text-sm leading-relaxed">
+<pre><span class="keyword">private function</span> <span class="method">isProviderUnavailable</span>(<span class="type">Throwable</span> <span class="variable">$error</span>): <span class="type">bool</span>
+{
+    <span class="keyword">if</span> (<span class="variable">$error</span> <span class="keyword">instanceof</span> <span class="type">ConnectionException</span>) {
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+
+    <span class="keyword">if</span> (<span class="variable">$error</span> <span class="keyword">instanceof</span> <span class="type">RequestException</span>
+        && <span class="variable">$error</span>-><span class="property">response</span> !== <span class="keyword">null</span>
+        && <span class="variable">$error</span>-><span class="property">response</span>-><span class="method">status</span>() >= <span class="string">500</span>
+    ) {
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+}</pre>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-2">Guards <code class="mono text-xs">$error->response !== null</code> to prevent TypeError when RequestException lacks a response object.</p>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="w-7 h-7 rounded-full bg-lumion-blue text-white text-sm font-bold flex items-center justify-center">2</span>
+                                <h3 class="font-semibold">Modify <code class="mono text-sm">handleStreamError()</code></h3>
+                                <span class="text-xs text-gray-400 mono">line 310</span>
+                            </div>
+                            <div class="code-block p-4 text-sm leading-relaxed">
+<pre><span class="keyword">private function</span> <span class="method">handleStreamError</span>(<span class="type">Throwable</span> <span class="variable">$error</span>): <span class="type">void</span>
+{
+    <span class="comment">// Always clean up optimistic UI</span>
+    <span class="keyword">if</span> (!<span class="method">empty</span>(<span class="variable">$this</span>-><span class="property">messages</span>) && <span class="method">end</span>(<span class="variable">$this</span>-><span class="property">messages</span>)[<span class="string">'role'</span>] === <span class="string">'ai'</span>) {
+        <span class="method">array_pop</span>(<span class="variable">$this</span>-><span class="property">messages</span>);
+    }
+    <span class="keyword">if</span> (!<span class="method">empty</span>(<span class="variable">$this</span>-><span class="property">messages</span>) && <span class="method">end</span>(<span class="variable">$this</span>-><span class="property">messages</span>)[<span class="string">'role'</span>] === <span class="string">'user'</span>) {
+        <span class="method">array_pop</span>(<span class="variable">$this</span>-><span class="property">messages</span>);
+    }
+
+    <span class="variable">$this</span>-><span class="property">isStreaming</span> = <span class="keyword">false</span>;
+    <span class="variable">$this</span>-><span class="property">activeTools</span> = [];
+    <span class="variable">$this</span>-><span class="property">followUpChips</span> = [];  <span class="comment">// ← NEW: prevents stale chips</span>
+
+    <span class="comment">// Classify error</span>
+    <span class="keyword">if</span> (<span class="variable">$this</span>-><span class="method">isProviderUnavailable</span>(<span class="variable">$error</span>)) {
+        <span class="variable">$this</span>-><span class="property">errorState</span> = <span class="variable">$this</span>-><span class="property">assistantName</span> . <span class="string">' is temporarily unavailable'</span>;
+        <span class="variable">$this</span>-><span class="property">errorType</span> = <span class="string">'provider_unavailable'</span>;
+    } <span class="keyword">else</span> {
+        <span class="variable">$this</span>-><span class="property">errorState</span> = <span class="string">'Could not generate a response'</span>;
+        <span class="variable">$this</span>-><span class="property">errorType</span> = <span class="string">'network_error'</span>;
+    }
+
+    <span class="comment">// Always report — unconditional (no blind spots)</span>
+    <span class="type">Report</span>::<span class="method">toError</span>(<span class="variable">$error</span>);
+    <span class="variable">$this</span>-><span class="property">analyticsService</span>-><span class="method">track</span>(<span class="type">AiAnalyticsEvent</span>::<span class="property">ErrorDisplayed</span>, [
+        <span class="string">'error_type'</span> => <span class="variable">$this</span>-><span class="property">errorType</span>,
+        <span class="string">'portal'</span>    => <span class="variable">$this</span>-><span class="property">tier</span>,
+    ]);
+}</pre>
+                            </div>
+                            <div class="mt-3 grid grid-cols-3 gap-3">
+                                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-xs">
+                                    <div class="font-semibold text-emerald-700 mb-1">followUpChips cleared</div>
+                                    <div class="text-emerald-600">Prevents stale chips alongside banner</div>
+                                </div>
+                                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-xs">
+                                    <div class="font-semibold text-emerald-700 mb-1">Report unconditional</div>
+                                    <div class="text-emerald-600">No Sentry blind spots for any error type</div>
+                                </div>
+                                <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-xs">
+                                    <div class="font-semibold text-emerald-700 mb-1">Analytics unconditional</div>
+                                    <div class="text-emerald-600">Both error types tracked consistently</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 6 imports -->
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="w-7 h-7 rounded-full bg-lumion-blue text-white text-sm font-bold flex items-center justify-center">3</span>
+                                <h3 class="font-semibold">Add imports</h3>
+                            </div>
+                            <div class="code-block p-4 text-sm">
+<pre><span class="keyword">use</span> <span class="type">Illuminate\Http\Client\ConnectionException</span>;
+<span class="keyword">use</span> <span class="type">Illuminate\Http\Client\RequestException</span>;</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blade Tab -->
+                <div class="tab-content p-6" id="tab-blade">
+                    <div class="space-y-8">
+                        <!-- Banner -->
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="w-7 h-7 rounded-full bg-amber-500 text-white text-sm font-bold flex items-center justify-center">A</span>
+                                <h3 class="font-semibold">Top-of-drawer banner</h3>
+                                <span class="review-badge bg-red-100 text-red-700">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
+                                    ARIA critical
+                                </span>
+                            </div>
+                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4 text-sm text-amber-800">
+                                <strong>Placement:</strong> Must be a <strong>sibling</strong> before <code class="mono text-xs">role="log"</code>, not nested inside it. Nesting <code class="mono text-xs">role="alert"</code> inside <code class="mono text-xs">role="log"</code> suppresses screen reader announcements.
+                            </div>
+                            <div class="code-block p-4 text-sm leading-relaxed">
+<pre><span class="comment">{{-- Provider unavailable banner (AC-1.8.4) --}}</span>
+@<span class="keyword">if</span> (<span class="variable">$errorType</span> === <span class="string">'provider_unavailable'</span> && !<span class="variable">$isStreaming</span>)
+    &lt;<span class="keyword">div</span> <span class="property">role</span>=<span class="string">"alert"</span>
+        <span class="property">class</span>=<span class="string">"shrink-0 border-b border-danger-200
+               bg-danger-50 px-4 py-3
+               dark:border-danger-800
+               dark:bg-danger-950/50"</span>&gt;
+        &lt;<span class="keyword">div</span> <span class="property">class</span>=<span class="string">"flex items-center gap-3"</span>&gt;
+            &lt;<span class="type">x-filament::icon</span>
+                <span class="property">icon</span>=<span class="string">"heroicon-o-exclamation-triangle"</span>
+                <span class="property">class</span>=<span class="string">"h-5 w-5 shrink-0 text-danger-500"</span> /&gt;
+            &lt;<span class="keyword">div</span> <span class="property">class</span>=<span class="string">"flex-1"</span>&gt;
+                &lt;<span class="keyword">p</span> <span class="property">class</span>=<span class="string">"text-sm font-medium ..."</span>&gt;
+                    {{ <span class="variable">$assistantName</span> }} is temporarily unavailable
+                &lt;/<span class="keyword">p</span>&gt;
+                &lt;<span class="keyword">p</span> <span class="property">class</span>=<span class="string">"mt-0.5 text-xs ..."</span>&gt;
+                    We're having trouble connecting...
+                &lt;/<span class="keyword">p</span>&gt;
+            &lt;/<span class="keyword">div</span>&gt;
+            &lt;<span class="type">x-filament::button</span>
+                <span class="property">color</span>=<span class="string">"danger"</span> <span class="property">size</span>=<span class="string">"sm"</span>
+                <span class="property">wire:click</span>=<span class="string">"retryLastMessage"</span>&gt;
+                Retry
+            &lt;/<span class="type">x-filament::button</span>&gt;
+        &lt;/<span class="keyword">div</span>&gt;
+    &lt;/<span class="keyword">div</span>&gt;
+@<span class="keyword">endif</span></pre>
+                            </div>
+                        </div>
+
+                        <!-- Input zone changes -->
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="w-7 h-7 rounded-full bg-amber-500 text-white text-sm font-bold flex items-center justify-center">B</span>
+                                <h3 class="font-semibold">Hide input-zone error when provider unavailable</h3>
+                            </div>
+                            <div class="flex items-center gap-3 bg-gray-50 rounded-lg p-4 mono text-sm">
+                                <span class="text-red-500 line-through">@if ($errorState)</span>
+                                <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                <span class="text-emerald-600">@if ($errorState && $errorType !== 'provider_unavailable')</span>
+                            </div>
+                        </div>
+
+                        <!-- Disabled bindings -->
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="w-7 h-7 rounded-full bg-amber-500 text-white text-sm font-bold flex items-center justify-center">C</span>
+                                <h3 class="font-semibold">Disable input during provider outage</h3>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="bg-gray-50 rounded-lg p-3">
+                                    <div class="text-xs font-semibold text-gray-500 mb-1">Textarea disabled</div>
+                                    <code class="mono text-sm text-gray-700">x-bind:disabled="$wire.isStreaming || $wire.errorType === 'provider_unavailable'"</code>
+                                </div>
+                                <div class="bg-gray-50 rounded-lg p-3">
+                                    <div class="text-xs font-semibold text-gray-500 mb-1">Dynamic placeholder</div>
+                                    <code class="mono text-sm text-gray-700">x-bind:placeholder="$wire.errorType === 'provider_unavailable' ? '..unavailable..' : 'Ask..'"</code>
+                                </div>
+                                <div class="bg-gray-50 rounded-lg p-3">
+                                    <div class="text-xs font-semibold text-gray-500 mb-1">Send button disabled + aria-disabled + class</div>
+                                    <code class="mono text-sm text-gray-700">|| $wire.errorType === 'provider_unavailable'</code>
+                                    <span class="text-xs text-gray-400 ml-2">appended to existing conditions</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tests Tab -->
+                <div class="tab-content p-6" id="tab-tests">
+                    <div class="mb-4 text-sm text-gray-500">8 new tests in <code class="mono text-xs">WelcomeScreenDisclaimerErrorTest.php</code></div>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                            <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                            <div>
+                                <div class="font-medium text-sm">Provider unavailable banner on ConnectionException</div>
+                                <div class="text-xs text-gray-500 mt-0.5"><code class="mono">errorType = 'provider_unavailable'</code>, banner text visible, <code class="mono">role="alert"</code></div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                            <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                            <div>
+                                <div class="font-medium text-sm">Provider unavailable banner on RequestException 5xx</div>
+                                <div class="text-xs text-gray-500 mt-0.5">Mocked <code class="mono">new RequestException(new Response(new Psr7Response(503)))</code></div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                            <div>
+                                <div class="font-medium text-sm">RequestException 4xx shows per-message error (negative test)</div>
+                                <div class="text-xs text-gray-500 mt-0.5">429 → <code class="mono">errorType = 'network_error'</code>, boundary test for classification</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                            <span class="w-6 h-6 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+                            <div>
+                                <div class="font-medium text-sm">Chat input disabled during provider unavailability</div>
+                                <div class="text-xs text-gray-500 mt-0.5">Textarea and send button disabled state assertions</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                            <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">5</span>
+                            <div>
+                                <div class="font-medium text-sm">Retry clears provider-unavailable state and resends</div>
+                                <div class="text-xs text-gray-500 mt-0.5"><code class="mono">errorType = null</code>, messages array &ge; 2 entries (proves sendMessage ran)</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                            <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">6</span>
+                            <div>
+                                <div class="font-medium text-sm">Non-transient errors show per-message error</div>
+                                <div class="text-xs text-gray-500 mt-0.5">RuntimeException → <code class="mono">errorType = 'network_error'</code></div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                            <span class="w-6 h-6 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">7</span>
+                            <div>
+                                <div class="font-medium text-sm">Per-message error hidden when provider unavailable</div>
+                                <div class="text-xs text-gray-500 mt-0.5">Input-zone banner not rendered when <code class="mono">errorType = 'provider_unavailable'</code></div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                            <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">8</span>
+                            <div>
+                                <div class="font-medium text-sm">Analytics tracks provider_unavailable error type</div>
+                                <div class="text-xs text-gray-500 mt-0.5">Verify <code class="mono">error_type => 'provider_unavailable'</code> in analytics payload</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-amber-800 text-sm mb-2">RequestException construction gotcha</h4>
+                        <p class="text-xs text-amber-700 mb-2">Non-standard constructor — takes <code class="mono">Response</code>, not a message string:</p>
+                        <div class="code-block p-3 text-xs">
+<pre><span class="variable">$error</span> = <span class="keyword">new</span> <span class="type">RequestException</span>(
+    <span class="keyword">new</span> <span class="type">Response</span>(<span class="keyword">new</span> <span class="type">Psr7Response</span>(<span class="string">503</span>))
+);</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Files Tab -->
+                <div class="tab-content p-6" id="tab-files">
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-4 rounded-lg border border-gray-200">
+                            <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-mono text-sm font-medium">app/Domains/AI/Livewire/AssistantDrawer.php</div>
+                                <div class="text-sm text-gray-500 mt-1">Add <code class="mono text-xs">isProviderUnavailable()</code>, modify <code class="mono text-xs">handleStreamError()</code>, add 2 imports</div>
+                                <span class="inline-block mt-2 text-xs font-medium bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded">~25 lines</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 rounded-lg border border-gray-200">
+                            <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6z"/></svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-mono text-sm font-medium">app/Domains/AI/resources/views/livewire/assistant-drawer.blade.php</div>
+                                <div class="text-sm text-gray-500 mt-1">Add banner, modify error condition, modify input bindings</div>
+                                <span class="inline-block mt-2 text-xs font-medium bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded">~30 lines</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 rounded-lg border border-gray-200">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-mono text-sm font-medium">app/Domains/AI/Tests/Feature/WelcomeScreenDisclaimerErrorTest.php</div>
+                                <div class="text-sm text-gray-500 mt-1">Add 8 tests covering all error classification paths</div>
+                                <span class="inline-block mt-2 text-xs font-medium bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded">~130 lines</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-center">
+                        <span class="text-emerald-700 font-semibold">Total: 3 files &middot; ~185 lines &middot; 0 new files &middot; 0 new properties &middot; 0 new public methods</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Adversarial Review Timeline -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-lumion-blue/10 flex items-center justify-center text-lumion-blue">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </span>
+                Adversarial review timeline
+            </h2>
+            <div class="bg-white rounded-xl border border-gray-200 p-6">
+                <div class="space-y-0">
+                    <!-- Round 1 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 text-sm font-bold flex items-center justify-center">1</div>
+                            <div class="w-0.5 flex-1 bg-gray-200 my-1"></div>
+                        </div>
+                        <div class="pb-6">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-semibold text-sm">Round 1</span>
+                                <span class="review-badge bg-red-100 text-red-700">BLOCKING</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Eliminated ProviderUnavailableException, new property, new method. Made Report/analytics unconditional. <span class="font-medium text-gray-700">7 files → 3 files.</span></p>
+                        </div>
+                    </div>
+                    <!-- Round 2 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 text-sm font-bold flex items-center justify-center">2</div>
+                            <div class="w-0.5 flex-1 bg-gray-200 my-1"></div>
+                        </div>
+                        <div class="pb-6">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-semibold text-sm">Round 2</span>
+                                <span class="review-badge bg-red-100 text-red-700">BLOCKING</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Proposed sendMessage() guard for race condition. Later proven dead code in Round 3.</p>
+                        </div>
+                    </div>
+                    <!-- Round 3 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 rounded-full bg-red-100 text-red-600 text-sm font-bold flex items-center justify-center">3</div>
+                            <div class="w-0.5 flex-1 bg-gray-200 my-1"></div>
+                        </div>
+                        <div class="pb-6">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-semibold text-sm">Round 3</span>
+                                <span class="review-badge bg-red-100 text-red-700">BLOCKING</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Fixed ARIA nesting (banner outside <code class="mono text-xs">role="log"</code>), added followUpChips cleanup, removed dead sendMessage() guard.</p>
+                        </div>
+                    </div>
+                    <!-- Round 4 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 text-sm font-bold flex items-center justify-center">4</div>
+                            <div class="w-0.5 flex-1 bg-gray-200 my-1"></div>
+                        </div>
+                        <div class="pb-6">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-semibold text-sm">Round 4</span>
+                                <span class="review-badge bg-emerald-100 text-emerald-700">APPROVED</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Added RequestException 5xx test, documented no-dismiss UX decision, confirmed all integration points safe.</p>
+                        </div>
+                    </div>
+                    <!-- Round 5 -->
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 text-sm font-bold flex items-center justify-center">5</div>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-semibold text-sm">Round 5</span>
+                                <span class="review-badge bg-emerald-100 text-emerald-700">APPROVED</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Added 4xx negative test, RequestException construction pattern, test import guidance. Final convergence.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRD Alignment -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-lumion-blue/10 flex items-center justify-center text-lumion-blue">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </span>
+                PRD alignment check
+            </h2>
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <!-- Explicit requirements -->
+                <div class="p-5 border-b border-gray-100">
+                    <h3 class="font-semibold text-sm text-emerald-700 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        Explicit PRD requirements — all met
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">&#10003;</span> Error banner at top of drawer</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">&#10003;</span> Indicates temporary unavailability</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">&#10003;</span> Chat input disabled</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">&#10003;</span> Visual indicator (placeholder text)</div>
+                    </div>
+                </div>
+
+                <!-- Reasonable additions -->
+                <div class="p-5 border-b border-gray-100">
+                    <h3 class="font-semibold text-sm text-blue-700 mb-3 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                        Reasonable additions (not in PRD, don't contradict it)
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-start gap-3 text-sm">
+                            <span class="review-badge bg-blue-100 text-blue-700 shrink-0 mt-0.5">added</span>
+                            <div><strong>Retry button</strong> — extends AC-1.8.3's "Try Again" pattern; natural escape hatch</div>
+                        </div>
+                        <div class="flex items-start gap-3 text-sm">
+                            <span class="review-badge bg-blue-100 text-blue-700 shrink-0 mt-0.5">added</span>
+                            <div><strong>Input-zone error suppressed</strong> — prevents confusing double error messages</div>
+                        </div>
+                        <div class="flex items-start gap-3 text-sm">
+                            <span class="review-badge bg-blue-100 text-blue-700 shrink-0 mt-0.5">added</span>
+                            <div><strong>followUpChips cleared</strong> — defensive cleanup, prevents stale UI alongside banner</div>
+                        </div>
+                        <div class="flex items-start gap-3 text-sm">
+                            <span class="review-badge bg-blue-100 text-blue-700 shrink-0 mt-0.5">added</span>
+                            <div><strong>Dynamic placeholder</strong> — better affordance for disabled state</div>
+                        </div>
+                        <div class="flex items-start gap-3 text-sm">
+                            <span class="review-badge bg-blue-100 text-blue-700 shrink-0 mt-0.5">added</span>
+                            <div><strong>Banner icon</strong> — consistent with existing error banner conventions</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ambiguity -->
+                <div class="p-5 bg-amber-50/50">
+                    <h3 class="font-semibold text-sm text-amber-700 mb-2 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Ambiguity: reactive vs proactive detection
+                    </h3>
+                    <p class="text-sm text-amber-800">AC-1.8.4 says "When the user opens the drawer" — could mean proactive health check. This plan uses <strong>reactive detection</strong> (errors surface when user sends a message). This matches AC-1.8.3's pattern and avoids adding a health-check endpoint that doesn't exist.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design Decisions -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-lumion-blue/10 flex items-center justify-center text-lumion-blue">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </span>
+                Design decisions
+            </h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <details class="bg-white rounded-xl border border-gray-200 p-5 group">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="font-semibold text-sm">Why no sendMessage() guard?</span>
+                        <span class="chevron text-gray-400">&#9654;</span>
+                    </summary>
+                    <p class="text-sm text-gray-600 mt-3"><code class="mono text-xs">retryLastMessage()</code> clears <code class="mono text-xs">errorType</code> before calling <code class="mono text-xs">sendMessage()</code>, and <code class="mono text-xs">sendMessage()</code> itself clears it at line 183-184. The guard can never fire. Alpine disabled bindings are sufficient.</p>
+                </details>
+                <details class="bg-white rounded-xl border border-gray-200 p-5">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="font-semibold text-sm">Why no Dismiss button on banner?</span>
+                        <span class="chevron text-gray-400">&#9654;</span>
+                    </summary>
+                    <p class="text-sm text-gray-600 mt-3">Provider outage is a systemic state. Dismissing the banner would leave the user with a disabled input and no visible explanation. The escape hatch is closing the drawer or retrying.</p>
+                </details>
+                <details class="bg-white rounded-xl border border-gray-200 p-5">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="font-semibold text-sm">Why not use x-common.lumion-alert?</span>
+                        <span class="chevron text-gray-400">&#9654;</span>
+                    </summary>
+                    <p class="text-sm text-gray-600 mt-3">It wraps <code class="mono text-xs">&lt;x-filament::section&gt;</code> which adds card chrome unsuited for flush drawer banners. Consistent with the existing error banner at line 431 which also doesn't use it.</p>
+                </details>
+                <details class="bg-white rounded-xl border border-gray-200 p-5">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="font-semibold text-sm">Why !$isStreaming gate on banner?</span>
+                        <span class="chevron text-gray-400">&#9654;</span>
+                    </summary>
+                    <p class="text-sm text-gray-600 mt-3">Prevents flicker during retry attempts. Banner hides while streaming, reappears if the second attempt also fails with a transient error.</p>
+                </details>
+                <details class="bg-white rounded-xl border border-gray-200 p-5">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="font-semibold text-sm">Why no new wrapper exception?</span>
+                        <span class="chevron text-gray-400">&#9654;</span>
+                    </summary>
+                    <p class="text-sm text-gray-600 mt-3">The exception type at <code class="mono text-xs">handleStreamError</code> already encodes whether retries were exhausted. <code class="mono text-xs">executeWithRetry()</code> only rethrows transient errors after all 3 attempts. No wrapper needed.</p>
+                </details>
+                <details class="bg-white rounded-xl border border-gray-200 p-5">
+                    <summary class="flex items-center justify-between cursor-pointer">
+                        <span class="font-semibold text-sm">Why clear followUpChips?</span>
+                        <span class="chevron text-gray-400">&#9654;</span>
+                    </summary>
+                    <p class="text-sm text-gray-600 mt-3">Without clearing, stale follow-up chips from a previous successful exchange could appear alongside the provider unavailable banner. Found in Round 3 adversarial review.</p>
+                </details>
+            </div>
+        </section>
+
+        <!-- Out of Scope Defects -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-gray-200 flex items-center justify-center text-gray-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                </span>
+                Out-of-scope defects found during review
+            </h2>
+            <div class="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+                <div class="p-4 flex items-start gap-3">
+                    <span class="w-6 h-6 rounded bg-gray-100 text-gray-500 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                    <div>
+                        <div class="font-medium text-sm">AgentOrchestrator::isTransientError() null-check bug</div>
+                        <div class="text-xs text-gray-500"><code class="mono">$e->response->status()</code> can TypeError if <code class="mono">$e->response</code> is null. File separate defect.</div>
+                    </div>
+                </div>
+                <div class="p-4 flex items-start gap-3">
+                    <span class="w-6 h-6 rounded bg-gray-100 text-gray-500 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                    <div>
+                        <div class="font-medium text-sm">retryLastMessage() dead pop guard</div>
+                        <div class="text-xs text-gray-500">Pops a user bubble that handleStreamError() already removed. Defensive dead code.</div>
+                    </div>
+                </div>
+                <div class="p-4 flex items-start gap-3">
+                    <span class="w-6 h-6 rounded bg-gray-100 text-gray-500 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                    <div>
+                        <div class="font-medium text-sm">PromptInjectionDetectedException misclassified as 'network_error'</div>
+                        <div class="text-xs text-gray-500">Pre-existing analytics misclassification. Could add 'content_policy' branch.</div>
+                    </div>
+                </div>
+                <div class="p-4 flex items-start gap-3">
+                    <span class="w-6 h-6 rounded bg-gray-100 text-gray-500 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+                    <div>
+                        <div class="font-medium text-sm">Story 6.3 coupling</div>
+                        <div class="text-xs text-gray-500">New-conversation must clear errorState, errorType, lastUserInput, and messages.</div>
+                    </div>
+                </div>
+                <div class="p-4 flex items-start gap-3">
+                    <span class="w-6 h-6 rounded bg-gray-100 text-gray-500 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">5</span>
+                    <div>
+                        <div class="font-medium text-sm">sessionStorage stale uuid during extended outage</div>
+                        <div class="text-xs text-gray-500">First message creates conversation but LLM fails → stale uuid in storage.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Verification -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </span>
+                Verification steps
+            </h2>
+            <div class="bg-white rounded-xl border border-gray-200 p-6">
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-6 h-6 rounded border-2 border-gray-300"></div>
+                        <code class="mono text-sm flex-1">php artisan test --parallel --filter=WelcomeScreenDisclaimerErrorTest</code>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-6 h-6 rounded border-2 border-gray-300"></div>
+                        <code class="mono text-sm flex-1">php artisan test --parallel --filter=AnalyticsInstrumentationTest</code>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-6 h-6 rounded border-2 border-gray-300"></div>
+                        <code class="mono text-sm flex-1">composer stan</code>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-6 h-6 rounded border-2 border-gray-300"></div>
+                        <code class="mono text-sm flex-1">composer pint:dirty</code>
+                    </div>
+                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-6 h-6 rounded border-2 border-gray-300 shrink-0 mt-0.5"></div>
+                        <div>
+                            <div class="mono text-sm">Browser verification</div>
+                            <ul class="text-xs text-gray-500 mt-1 space-y-0.5 list-disc list-inside">
+                                <li>Banner appears above messages (not inside message area)</li>
+                                <li>Input is disabled with changed placeholder</li>
+                                <li>Retry button recovers on success</li>
+                                <li>Follow-up chips are not visible during outage</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-lumion-dark text-gray-400 py-6">
+        <div class="max-w-6xl mx-auto px-6 flex items-center justify-between text-sm">
+            <div>CRTX-547 &middot; AC-1.8.4 &middot; Lumion AI Assistant &middot; Epic 1</div>
+            <div>Generated 2026-03-12</div>
+        </div>
+    </footer>
+
+    <script>
+        function showTab(tabId) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Deactivate all tabs
+            document.querySelectorAll('#step-tabs button').forEach(el => {
+                el.className = 'px-5 py-3 text-sm whitespace-nowrap tab-inactive';
+            });
+            // Show selected tab content
+            document.getElementById('tab-' + tabId).classList.add('active');
+            // Activate selected tab
+            document.querySelector(`[data-tab="${tabId}"]`).className = 'px-5 py-3 text-sm whitespace-nowrap tab-active';
+        }
+    </script>
+</body>
+</html>
