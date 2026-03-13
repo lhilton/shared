@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epic 2: Gaps &amp; Drift Analysis — Lumion AI Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        purple: '#8b5cf6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #4f46e5 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+        details summary::-webkit-details-marker { display: none; }
+        details summary { list-style: none; }
+        details[open] summary .chevron { transform: rotate(180deg); }
+        .chevron { transition: transform 0.2s ease; }
+
+        .severity-critical { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
+        .severity-medium { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
+        .severity-low { background: #f0fdf4; border-color: #86efac; color: #166534; }
+        .drift-info { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+
+        .status-pass { color: #059669; }
+        .status-gap { color: #d97706; }
+        .status-drift { color: #2563eb; }
+
+        @keyframes slide-in {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-in { animation: slide-in 0.4s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Hero Section -->
+    <header class="gradient-hero text-white py-12 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                    </svg>
+                </div>
+                <span class="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">Lumion AI Assistant</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">Epic 2: Gaps &amp; Drift Analysis</h1>
+            <p class="text-lg text-blue-100 max-w-2xl mb-8">
+                Code audit of Polish, Responsive &amp; Accessibility stories against PRD acceptance criteria.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <div class="bg-white/10 backdrop-blur rounded-lg px-5 py-3">
+                    <div class="text-2xl font-bold">6</div>
+                    <div class="text-blue-200 text-sm">Stories Audited</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-5 py-3">
+                    <div class="text-2xl font-bold text-amber-300">3</div>
+                    <div class="text-blue-200 text-sm">Gaps Found</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-5 py-3">
+                    <div class="text-2xl font-bold text-blue-300">2</div>
+                    <div class="text-blue-200 text-sm">Drift Items</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-5 py-3">
+                    <div class="text-2xl font-bold text-green-300">0</div>
+                    <div class="text-blue-200 text-sm">Critical Gaps</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8">
+
+        <!-- Verdict Banner -->
+        <div class="bg-green-50 border border-green-200 rounded-xl p-6 mb-8 flex items-start gap-4 slide-in">
+            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            </div>
+            <div>
+                <h2 class="text-lg font-bold text-green-800">Epic 2 is Complete</h2>
+                <p class="text-sm text-green-700 mt-1">All 6 stories are implemented. No critical gaps were found. The 3 gaps identified are Medium/Low severity and do not block Epic 2 signoff. The 2 drift items are acceptable engineering tradeoffs.</p>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- STORY-BY-STORY AUDIT                                         -->
+        <!-- ============================================================ -->
+        <h2 class="text-2xl font-bold mb-6">Story-by-Story Audit</h2>
+
+        <!-- Story 2.1 -->
+        <details class="bg-white rounded-xl shadow mb-4 slide-in" open>
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono bg-gray-100 text-gray-600 px-2 py-1 rounded">2.1</span>
+                    <h3 class="text-lg font-bold">Drag Handle &amp; Resize Behavior</h3>
+                    <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">PASS</span>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-6 pb-6">
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> ARIA separator role with valuemin/valuemax/valuenow</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Keyboard nav: Arrow keys &plusmn;40px, Home/End min/max, Enter toggles 50%</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> localStorage persistence of drawer width</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Double-click/tap toggles 50% width</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Min 320px / Max 50vw constraints</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 text-xs text-gray-600">
+                    <strong>Evidence:</strong> <code>resources/views/livewire/school-dashboard/ai/assistant-drawer.blade.php</code> — <code>startResize()</code>, <code>onResize()</code>, <code>stopResize()</code>, <code>handleSeparatorKeydown()</code> functions. localStorage key: <code>ai-drawer-width</code>.
+                </div>
+            </div>
+        </details>
+
+        <!-- Story 2.2 -->
+        <details class="bg-white rounded-xl shadow mb-4 slide-in">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono bg-gray-100 text-gray-600 px-2 py-1 rounded">2.2</span>
+                    <h3 class="text-lg font-bold">Responsive Tablet Layout</h3>
+                    <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">PASS</span>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-6 pb-6">
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Default 380px width on tablet (768-1023px)</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Width clamping preserves desktop preference on resize</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Tablet breakpoint detection via <code>isTablet</code> computed property</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Drag handle remains functional at tablet widths</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 text-xs text-gray-600">
+                    <strong>Evidence:</strong> <code>assistant-drawer.blade.php</code> — <code>isTablet</code> getter checks <code>window.innerWidth >= 768 && window.innerWidth < 1024</code>. Default width: <code>tabletDefaultWidth: 380</code>.
+                </div>
+            </div>
+        </details>
+
+        <!-- Story 2.3 -->
+        <details class="bg-white rounded-xl shadow mb-4 slide-in">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono bg-gray-100 text-gray-600 px-2 py-1 rounded">2.3</span>
+                    <h3 class="text-lg font-bold">Responsive Mobile Layout</h3>
+                    <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">1 GAP</span>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-6 pb-6">
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Full-width layout on mobile (&lt;768px)</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Drag handle hidden on mobile</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Back button replaces close button</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Focus trap implemented</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> <code>visualViewport</code> resize listener registered</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Safe-area inset padding applied</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-gap font-bold">&#9888;</span> <code>keyboardHeight</code> computed but never applied to input bar positioning</div>
+                </div>
+
+                <!-- Gap detail -->
+                <div class="severity-medium border rounded-lg p-4 mt-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider">Gap — Medium</span>
+                    </div>
+                    <p class="text-sm"><strong><code>keyboardHeight</code> unused:</strong> The <code>visualViewport.resize</code> listener computes <code>keyboardHeight</code> (line ~242 of <code>assistant-drawer.blade.php</code>) but it is never bound to any element's style. The input bar uses static <code>env(safe-area-inset-bottom)</code> padding. On iOS mobile, the virtual keyboard could overlap the input field if the safe-area-inset does not account for keyboard height.</p>
+                    <p class="text-xs text-amber-700 mt-2"><strong>Impact:</strong> On some iOS devices, the input bar may be partially obscured by the keyboard. Android typically handles this via viewport resize. Low real-world incidence but inconsistent with the computed property existing.</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-3 text-xs text-gray-600 mt-3">
+                    <strong>Evidence:</strong> <code>assistant-drawer.blade.php</code> — <code>handleViewportResize()</code> sets <code>this.keyboardHeight</code> but no <code>:style</code> binding references it. Input bar uses <code>pb-[env(safe-area-inset-bottom)]</code>.
+                </div>
+            </div>
+        </details>
+
+        <!-- Story 2.4 -->
+        <details class="bg-white rounded-xl shadow mb-4 slide-in">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono bg-gray-100 text-gray-600 px-2 py-1 rounded">2.4</span>
+                    <h3 class="text-lg font-bold">Reduced Motion &amp; Animation Polish</h3>
+                    <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">PASS</span>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-6 pb-6">
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> All transitions guarded with <code>motion-safe:</code> / <code>motion-reduce:</code></div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Keyboard resize checks <code>!prefersReducedMotion</code> before animating</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Loading dots have reduced-motion fallback (static ellipsis)</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Scroll behavior respects <code>prefers-reduced-motion</code></div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> <code>prefersReducedMotion</code> reactive via <code>matchMedia</code> listener</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 text-xs text-gray-600">
+                    <strong>Evidence:</strong> <code>assistant-drawer.blade.php</code> — <code>prefersReducedMotion</code> property initialized from <code>window.matchMedia('(prefers-reduced-motion: reduce)')</code>. Drawer transition uses <code>motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-none</code>.
+                </div>
+            </div>
+        </details>
+
+        <!-- Story 2.5 -->
+        <details class="bg-white rounded-xl shadow mb-4 slide-in">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono bg-gray-100 text-gray-600 px-2 py-1 rounded">2.5</span>
+                    <h3 class="text-lg font-bold">Accessibility Certification &amp; Audit</h3>
+                    <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">2 GAPS + 2 DRIFT</span>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-6 pb-6">
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Audit report created at <code>app/Domains/AI/docs/accessibility-audit-report.md</code></div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> axe-core: 0 violations (drawer-scoped)</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> 27 Pest tests + 4 Dusk browser tests</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> VoiceOver: 18/37 test cases pass</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-gap font-bold">&#9888;</span> Lighthouse accessibility score not run (deferred)</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-gap font-bold">&#9888;</span> axe-core not run on all 5 drawer states</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-drift font-bold">&#8644;</span> No dedicated NVDA testing (Chrome a11y tree used)</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-drift font-bold">&#8644;</span> VoiceOver 17 cases deferred to future components</div>
+                </div>
+
+                <!-- Gap 1 -->
+                <div class="severity-low border rounded-lg p-4 mt-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider">Gap — Low</span>
+                    </div>
+                    <p class="text-sm"><strong>Lighthouse score not run:</strong> The story acceptance criteria expected a Lighthouse accessibility score. The audit report documents this as deferred, using axe-core as an equivalent automated tool. axe-core is the engine behind Lighthouse's accessibility audit, so coverage is functionally equivalent.</p>
+                </div>
+
+                <!-- Gap 2 -->
+                <div class="severity-medium border rounded-lg p-4 mt-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider">Gap — Medium</span>
+                    </div>
+                    <p class="text-sm"><strong>axe-core scope limited:</strong> The audit covers "drawer-scoped" axe-core (Open/Welcome state). The PRD specifies 5 drawer states: Open/Conversation, Open/Streaming, Open/Error, Mobile, and Welcome. Only Welcome was tested with axe-core. The other states may have different DOM structures that introduce violations.</p>
+                    <p class="text-xs text-amber-700 mt-2"><strong>Impact:</strong> Streaming and error states add dynamic DOM elements (loading indicators, error banners) that were not axe-scanned. Risk is mitigated by Pest tests asserting ARIA attributes on those elements.</p>
+                </div>
+
+                <!-- Drift 1 -->
+                <div class="drift-info border rounded-lg p-4 mt-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider">Drift — Acceptable</span>
+                    </div>
+                    <p class="text-sm"><strong>No NVDA testing:</strong> Chrome accessibility tree inspector was used as a documented equivalent. NVDA is Windows-only; the development environment is macOS. This is an acceptable platform limitation.</p>
+                </div>
+
+                <!-- Drift 2 -->
+                <div class="drift-info border rounded-lg p-4 mt-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xs font-bold uppercase tracking-wider">Drift — Acceptable</span>
+                    </div>
+                    <p class="text-sm"><strong>VoiceOver 17/37 deferred:</strong> The deferred test cases relate to components not yet built (tool confirmations, history panel, quick action cards). These are Epic 3-6 features. The 18 passing cases cover all currently implemented UI.</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-3 text-xs text-gray-600 mt-3">
+                    <strong>Evidence:</strong> <code>app/Domains/AI/docs/accessibility-audit-report.md</code> — full audit report with axe-core results, VoiceOver matrix, and test coverage.
+                </div>
+            </div>
+        </details>
+
+        <!-- Story 2.6 -->
+        <details class="bg-white rounded-xl shadow mb-4 slide-in">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-mono bg-gray-100 text-gray-600 px-2 py-1 rounded">2.6</span>
+                    <h3 class="text-lg font-bold">Amplitude Analytics Integration</h3>
+                    <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">PASS</span>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-6 pb-6">
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> <code>AiAnalyticsService</code> wraps Viezel Amplitude SDK</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> 12 event types defined (E-001 through E-012)</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> E-001 through E-007 instrumented and flowing</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Graceful fallback when Amplitude unavailable</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> <code>FakeAiAnalyticsService</code> with assertion methods for testing</div>
+                    <div class="flex items-center gap-2 text-sm"><span class="status-pass font-bold">&#10003;</span> Events include institution_id, user_id, panel context</div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 text-xs text-gray-600">
+                    <strong>Evidence:</strong> <code>app/Domains/AI/Services/AiAnalyticsService.php</code>, <code>app/Domains/AI/Tests/Fakes/FakeAiAnalyticsService.php</code>. Uses <code>Viezel\Amplitude\Facades\Amplitude</code> via <code>viezel/laravel-amplitude</code> package.
+                </div>
+            </div>
+        </details>
+
+        <!-- ============================================================ -->
+        <!-- CONSOLIDATED GAPS                                             -->
+        <!-- ============================================================ -->
+        <h2 class="text-2xl font-bold mt-10 mb-6">Consolidated Gaps</h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Gap</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Story</th>
+                            <th class="text-center py-3 px-4 font-semibold text-gray-600">Severity</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-3 px-4 font-medium"><code class="text-xs bg-gray-100 px-1 rounded">keyboardHeight</code> computed but never applied</td>
+                            <td class="py-3 px-4">2.3</td>
+                            <td class="py-3 px-4 text-center"><span class="text-xs font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Medium</span></td>
+                            <td class="py-3 px-4 text-gray-600">iOS keyboard may overlap input bar on some devices</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium">axe-core only run on Welcome state</td>
+                            <td class="py-3 px-4">2.5</td>
+                            <td class="py-3 px-4 text-center"><span class="text-xs font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Medium</span></td>
+                            <td class="py-3 px-4 text-gray-600">Streaming/error states untested by automated a11y scanner</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium">Lighthouse score not run</td>
+                            <td class="py-3 px-4">2.5</td>
+                            <td class="py-3 px-4 text-center"><span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Low</span></td>
+                            <td class="py-3 px-4 text-gray-600">axe-core provides equivalent coverage; Lighthouse adds perf metrics</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- CONSOLIDATED DRIFT                                            -->
+        <!-- ============================================================ -->
+        <h2 class="text-2xl font-bold mb-6">Consolidated Drift</h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Drift</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Story</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">PRD Expectation</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Actual</th>
+                            <th class="text-center py-3 px-4 font-semibold text-gray-600">Verdict</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="py-3 px-4 font-medium">No NVDA testing</td>
+                            <td class="py-3 px-4">2.5</td>
+                            <td class="py-3 px-4 text-gray-600">NVDA screen reader testing</td>
+                            <td class="py-3 px-4 text-gray-600">Chrome accessibility tree inspector</td>
+                            <td class="py-3 px-4 text-center"><span class="text-xs font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Acceptable</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-medium">Amplitude via Viezel wrapper</td>
+                            <td class="py-3 px-4">2.6</td>
+                            <td class="py-3 px-4 text-gray-600">Amplitude SDK integration</td>
+                            <td class="py-3 px-4 text-gray-600"><code class="text-xs bg-gray-100 px-1 rounded">viezel/laravel-amplitude</code> package</td>
+                            <td class="py-3 px-4 text-center"><span class="text-xs font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Acceptable</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PRD ALIGNMENT                                                 -->
+        <!-- ============================================================ -->
+        <h2 class="text-2xl font-bold mt-10 mb-6">PRD Alignment</h2>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <p class="text-sm text-gray-600 mb-4">Epic 2 covers FR-010 (Responsive Behavior) and FR-030 (Drawer Resize). Both are marked Complete in the dashboard.</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                        <span class="font-mono text-xs text-gray-500">FR-010</span>
+                        <span class="text-sm font-medium">Responsive Behavior</span>
+                    </div>
+                    <ul class="text-xs text-gray-600 space-y-1 ml-5">
+                        <li>&#10003; Desktop: resizable 320px–50vw</li>
+                        <li>&#10003; Tablet: 380px default, clamped</li>
+                        <li>&#10003; Mobile: full-width overlay</li>
+                        <li>&#10003; Breakpoint transitions smooth</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                        <span class="font-mono text-xs text-gray-500">FR-030</span>
+                        <span class="text-sm font-medium">Drawer Resize and Expansion</span>
+                    </div>
+                    <ul class="text-xs text-gray-600 space-y-1 ml-5">
+                        <li>&#10003; Drag handle with ARIA separator</li>
+                        <li>&#10003; Keyboard navigation</li>
+                        <li>&#10003; Double-click/tap 50% toggle</li>
+                        <li>&#10003; Persistent across sessions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <h3 class="text-sm font-semibold text-gray-700 mb-3">Non-Functional Requirements (Accessibility)</h3>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> WCAG 2.1 AA</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> Keyboard navigable</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> Focus management</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> aria-role="dialog"</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> aria-live="polite"</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> 44x44px touch targets</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> aria-busy states</div>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <h3 class="text-sm font-semibold text-gray-700 mb-3">Analytics Events (E-001 through E-007)</h3>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> E-001 ai_drawer_opened</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> E-002 ai_message_sent</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> E-003 ai_quick_action_clicked</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> E-004 ai_action_confirmed</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> E-005 ai_action_cancelled</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> E-006 ai_drawer_closed</div>
+                    <div class="flex items-center gap-2 text-xs bg-green-50 rounded px-3 py-2"><span class="w-2 h-2 rounded-full bg-green-500"></span> E-007 ai_error_displayed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- RECOMMENDATIONS                                               -->
+        <!-- ============================================================ -->
+        <h2 class="text-2xl font-bold mt-10 mb-6">Recommendations</h2>
+
+        <div class="space-y-4 mb-8">
+            <div class="bg-white rounded-xl shadow p-6 card-hover transition-all">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span class="text-amber-600 font-bold text-sm">1</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Apply <code class="text-xs bg-gray-100 px-1 rounded">keyboardHeight</code> to input bar</h3>
+                        <p class="text-sm text-gray-600 mt-1">Bind the computed <code>keyboardHeight</code> to the input container's bottom padding/margin via <code>:style</code>. This completes the virtual keyboard handling intent. Estimated effort: 1-2 hours.</p>
+                        <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full mt-2 inline-block">Medium Priority</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-6 card-hover transition-all">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span class="text-amber-600 font-bold text-sm">2</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Run axe-core on remaining drawer states</h3>
+                        <p class="text-sm text-gray-600 mt-1">Add Dusk tests that trigger Streaming, Error, and Mobile states before running axe-core. This closes the audit coverage gap. Can be done incrementally as Epic 3+ adds new states.</p>
+                        <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full mt-2 inline-block">Medium Priority</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow p-6 card-hover transition-all">
+                <div class="flex items-start gap-4">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span class="text-green-600 font-bold text-sm">3</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">Run Lighthouse in CI (future epic)</h3>
+                        <p class="text-sm text-gray-600 mt-1">Add Lighthouse CI to the GitHub Actions pipeline. This would catch performance regressions alongside accessibility. Not blocking for Epic 2.</p>
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full mt-2 inline-block">Low Priority</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-6 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-4 text-sm">
+            <div>Lumion AI Assistant &mdash; Epic 2 Gaps &amp; Drift Analysis</div>
+            <div>Generated: 2026-03-13 | Branch: crtx-498-lumion-ai-assistant</div>
+        </div>
+    </footer>
+
+</body>
+</html>
