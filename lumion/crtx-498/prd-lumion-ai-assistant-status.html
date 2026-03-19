@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumion AI Assistant — PRD Status Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        purple: '#8b5cf6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(79, 70, 229, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(79, 70, 229, 0.5); }
+        }
+        .glow-pulse { animation: pulse-glow 3s ease-in-out infinite; }
+
+        @keyframes slide-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-in { animation: slide-in 0.5s ease-out forwards; }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .tab-active {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+        }
+
+        .gradient-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #4f46e5 100%);
+        }
+
+        .status-complete { background: #10b981; }
+        .status-partial { background: #f59e0b; }
+        .status-planned { background: #6b7280; }
+        .status-not-started { background: #ef4444; }
+        .status-decision { background: #a855f7; }
+
+        details summary::-webkit-details-marker { display: none; }
+        details summary { list-style: none; }
+        details[open] summary .chevron { transform: rotate(180deg); }
+        .chevron { transition: transform 0.2s ease; }
+
+        .phase-badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 600; margin-left: 8px; white-space: nowrap; }
+        .phase-2 { background: #dcfce7; color: #166534; }
+        .phase-3 { background: #e0e7ff; color: #3730a3; }
+        .phase-4 { background: #f3e8ff; color: #6b21a8; }
+
+        .tier-shared { border-left: 4px solid #10b981; }
+        .tier-school { border-left: 4px solid #3b82f6; }
+        .tier-student { border-left: 4px solid #8b5cf6; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    <!-- Hero Section -->
+    <header class="gradient-hero text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                    </svg>
+                </div>
+                <span class="text-sm font-medium bg-white/20 px-3 py-1 rounded-full">PRD-20260223-lumion-ai-assistant v1.6.1</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Lumion AI Assistant</h1>
+            <p class="text-xl text-blue-100 max-w-3xl">
+                PRD status dashboard tracking progress from planning through implementation.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+                <div class="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
+                    <div class="text-3xl font-bold">31</div>
+                    <div class="text-blue-200 text-sm">Functional Requirements</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
+                    <div class="text-3xl font-bold">18</div>
+                    <div class="text-blue-200 text-sm">User Stories</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
+                    <div class="text-3xl font-bold">58</div>
+                    <div class="text-blue-200 text-sm">Acceptance Criteria</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
+                    <div class="text-3xl font-bold">12</div>
+                    <div class="text-blue-200 text-sm">Analytics Events</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
+                    <div class="text-3xl font-bold text-indigo-300">Phase 4</div>
+                    <div class="text-blue-200 text-sm">Current BMAD Phase</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex gap-2 py-3 overflow-x-auto">
+                <button onclick="showSection('overview')" id="tab-overview" class="tab-btn tab-active px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all">
+                    Overview
+                </button>
+                <button onclick="showSection('prd-checklist')" id="tab-prd-checklist" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap bg-gray-100 hover:bg-gray-200 transition-all">
+                    PRD Checklist
+                </button>
+                <button onclick="showSection('roadmap')" id="tab-roadmap" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap bg-gray-100 hover:bg-gray-200 transition-all">
+                    Roadmap
+                </button>
+                <button onclick="showSection('requirements')" id="tab-requirements" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap bg-gray-100 hover:bg-gray-200 transition-all">
+                    Core Requirements
+                </button>
+                <button onclick="showSection('architecture')" id="tab-architecture" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap bg-gray-100 hover:bg-gray-200 transition-all">
+                    Architecture Overview
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+
+        <!-- ============================================================ -->
+        <!-- TAB 1: OVERVIEW                                              -->
+        <!-- ============================================================ -->
+        <section id="section-overview" class="section-content">
+            <!-- Executive Summary -->
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8 slide-in">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    Executive Summary
+                </h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-semibold text-lg mb-3 text-green-600">What's Done</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>PRD v1.6.1 — canonical source of truth with 31 FRs, 18 User Stories, 58 ACs, 12 Analytics Events</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>All blocking questions resolved (Q-001 through Q-010, 5 rounds)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>PRD validation re-run against v1.6.1 — all artifacts reconciled</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>Two-Domain MCP architecture defined (InstitutionMCP + StudentMCP)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>UX Design Specification complete — all 14 steps finished with party mode reviews</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>New in v1.6.1: cross-session history, SMS compliance, assistant naming, resizable drawer</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>Architecture document — 18 decisions, 4 rounds of antagonistic review, 17 corrections</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>Epics &amp; Stories — 6 epics, 41 stories, adversarially reviewed (29 corrections applied)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>Epic 1 implemented — 10 stories complete: AI domain, drawer UI, streaming, analytics, audit infrastructure</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>Browser-verified: Drawer renders at 420px, welcome screen, ARIA, disclaimer, feature-flag gating</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>Epic 2 complete — 6 stories: drag handle resize, responsive tablet/mobile, reduced motion, accessibility certification, Amplitude analytics</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>Epic 3 complete — 7 stories: CRM tools (Contact, Application, Payment, Invoice, Enrollment search), ActivitySummary, PaymentTrends, Quick Actions, Follow-Up Suggestions</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>Epic 4 complete — 5 stories: CommunicationDraft tool, ActionConfirmation state machine, SendCommunication, TCPA compliance, SMS scheduling</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <span>Epic 6 complete — 7 stories: conversation history, resume, new conversation, session timeout, scheduled commands, assistant name settings, history analytics</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-3 text-amber-600">What Remains</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/></svg>
+                                <span>Epic 5: Student AI Assistant (5 stories remaining — scaffolding complete, tools not yet implemented) and rollout</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"/></svg>
+                                <span>3 non-blocking PM questions remain (engineering defaults in use)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Categories -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow p-6 card-hover transition-all">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-semibold">PRD &amp; Planning</h3>
+                        <span class="text-sm font-bold text-green-600">95%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-500 h-2.5 rounded-full" style="width: 95%"></div></div>
+                    <p class="text-xs text-gray-500 mt-2">PRD v1.6.1 canonical, all artifacts reconciled, 3 non-blocking Qs remain</p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-6 card-hover transition-all">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-semibold">Architecture</h3>
+                        <span class="text-sm font-bold text-green-600">100%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-500 h-2.5 rounded-full" style="width: 100%"></div></div>
+                    <p class="text-xs text-gray-500 mt-2">18 decisions, 4 rounds of antagonistic review, 17 corrections applied</p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-6 card-hover transition-all">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-semibold">UX Design</h3>
+                        <span class="text-sm font-bold text-green-600">100%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-500 h-2.5 rounded-full" style="width: 100%"></div></div>
+                    <p class="text-xs text-gray-500 mt-2">All 14 steps complete. 23 components, ARIA map, analytics events, party mode reviews.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-6 card-hover transition-all">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-semibold">Epics &amp; Stories</h3>
+                        <span class="text-sm font-bold text-green-600">100%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-green-500 h-2.5 rounded-full" style="width: 100%"></div></div>
+                    <p class="text-xs text-gray-500 mt-2">6 epics, 41 stories — adversarially reviewed and validated</p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-6 card-hover transition-all">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-semibold">Implementation</h3>
+                        <span class="text-sm font-bold text-blue-600">85%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-blue-500 h-2.5 rounded-full" style="width: 85%"></div></div>
+                    <p class="text-xs text-gray-500 mt-2">Epics 1-4 &amp; 6 complete (36/41 stories) — Epic 5 in progress</p>
+                </div>
+                <div class="bg-white rounded-xl shadow p-6 card-hover transition-all">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-semibold">Rollout</h3>
+                        <span class="text-sm font-bold text-gray-400">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-gray-400 h-2.5 rounded-full" style="width: 0%"></div></div>
+                    <p class="text-xs text-gray-500 mt-2">4 phases: Dogfood → Beta → Graduated → GA</p>
+                </div>
+            </div>
+
+            <!-- Current State Info -->
+            <div class="bg-white rounded-xl shadow-lg p-8 slide-in">
+                <h2 class="text-2xl font-bold mb-6">Current State</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">Feature Flag</span>
+                            <span class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">lumion-ai-assist</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">LLM Model</span>
+                            <span class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">gpt-5-mini</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">Prompt System</span>
+                            <span class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">Cortex</span>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">School Portal</span>
+                            <span class="text-sm font-medium text-blue-600">Agentic Tier (InstitutionMCP)</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">Student Portal</span>
+                            <span class="text-sm font-medium text-purple-600">RAG Tier (StudentMCP)</span>
+                        </div>
+                        <div class="flex justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">Streaming</span>
+                            <span class="font-mono text-sm bg-green-100 text-green-800 px-2 py-1 rounded">Livewire wire:stream</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- TAB 2: PRD CHECKLIST                                         -->
+        <!-- ============================================================ -->
+        <section id="section-prd-checklist" class="section-content hidden">
+            <!-- Summary Stats -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8 flex flex-wrap gap-6 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full status-complete"></span>
+                    <span class="text-sm"><strong>75</strong> Resolved</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full status-planned"></span>
+                    <span class="text-sm"><strong>28</strong> Defined</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full status-decision"></span>
+                    <span class="text-sm"><strong>1</strong> Decision</span>
+                </div>
+                <div class="text-sm text-gray-500 ml-auto">PRD v1.6.1 (canonical) | Total trackable items: 131</div>
+            </div>
+
+            <!-- FR: Functional Requirements -->
+            <details class="bg-white rounded-xl shadow mb-4" open>
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Functional Requirements</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">31 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <!-- Shared Tier (green) -->
+                    <p class="text-xs font-semibold text-green-700 uppercase tracking-wider mt-2 mb-1">Shared (Both Tiers)</p>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-001</span> <span class="text-sm font-medium">Drawer UI Component</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-002</span> <span class="text-sm font-medium">Personalized Welcome</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-003</span> <span class="text-sm font-medium">Chat Input and Message Display</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-004</span> <span class="text-sm font-medium">Token-by-Token Streaming</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-005</span> <span class="text-sm font-medium">AI Disclaimer</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-006</span> <span class="text-sm font-medium">Session Conversation State</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-007</span> <span class="text-sm font-medium">Server-Side Conversation Persistence</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-008</span> <span class="text-sm font-medium">Feature Flag Gating</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-009</span> <span class="text-sm font-medium">Analytics Tracking</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-010</span> <span class="text-sm font-medium">Responsive Behavior</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+
+                    <!-- School Tier (blue) -->
+                    <p class="text-xs font-semibold text-blue-700 uppercase tracking-wider mt-4 mb-1">School Portal (Agentic Tier)</p>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-011</span> <span class="text-sm font-medium">Quick Action Cards</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-012</span> <span class="text-sm font-medium">Quick Action Chips</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-013</span> <span class="text-sm font-medium">CRM Data Search</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-014</span> <span class="text-sm font-medium">Activity Summarization</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-015</span> <span class="text-sm font-medium">Payment Trend Analysis</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-016</span> <span class="text-sm font-medium">Communication Drafting</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-017</span> <span class="text-sm font-medium">Action Execution with Confirmation</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-017a</span> <span class="text-sm font-medium">SMS Compliance Window Enforcement</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-018</span> <span class="text-sm font-medium">Context-Aware Follow-Up Suggestions</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-019</span> <span class="text-sm font-medium">Tool-Based Action Architecture</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+
+                    <!-- Student Tier (purple) -->
+                    <p class="text-xs font-semibold text-purple-700 uppercase tracking-wider mt-4 mb-1">Student Portal (RAG Tier)</p>
+                    <div class="tier-student bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-020</span> <span class="text-sm font-medium">Knowledge Base Search</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="tier-student bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-021</span> <span class="text-sm font-medium">Student Data Retrieval</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="tier-student bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-022</span> <span class="text-sm font-medium">School Contact Information Retrieval</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="tier-student bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-023</span> <span class="text-sm font-medium">Student Welcome Message</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="tier-student bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-024</span> <span class="text-sm font-medium">Low-Confidence Fallback</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+
+                    <!-- Conversation History (Both Tiers) -->
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mt-4 mb-1">Conversation History (Both Tiers)</p>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-025</span> <span class="text-sm font-medium">Conversation History List</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-026</span> <span class="text-sm font-medium">Resume Previous Conversation</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-027</span> <span class="text-sm font-medium">New Conversation</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-028</span> <span class="text-sm font-medium">Session Timeout and Auto-Close</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+
+                    <!-- Customization (Both Tiers) -->
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mt-4 mb-1">Customization (Both Tiers)</p>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-029</span> <span class="text-sm font-medium">Assistant Naming</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">FR-030</span> <span class="text-sm font-medium">Drawer Resize and Expansion</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                </div>
+            </details>
+
+            <!-- US: User Stories -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">User Stories</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">18 stories, ~46 ACs</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-001</span> <span class="text-sm font-medium">Open AI assistant from any page</span> <span class="text-xs text-gray-400 ml-1">(4 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-002</span> <span class="text-sm font-medium">Ask about a specific contact</span> <span class="text-xs text-gray-400 ml-1">(3 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-003</span> <span class="text-sm font-medium">Summarize today's activity</span> <span class="text-xs text-gray-400 ml-1">(3 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-004</span> <span class="text-sm font-medium">Draft a follow-up email</span> <span class="text-xs text-gray-400 ml-1">(5 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-005</span> <span class="text-sm font-medium">Ask about payment trends</span> <span class="text-xs text-gray-400 ml-1">(2 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-student bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-006</span> <span class="text-sm font-medium">Ask questions about my school</span> <span class="text-xs text-gray-400 ml-1">(3 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="tier-student bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-007</span> <span class="text-sm font-medium">Ask about payment schedule</span> <span class="text-xs text-gray-400 ml-1">(3 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="tier-student bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-008</span> <span class="text-sm font-medium">Check enrollment status</span> <span class="text-xs text-gray-400 ml-1">(2 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-009</span> <span class="text-sm font-medium">Conversation persists across drawer close/reopen</span> <span class="text-xs text-gray-400 ml-1">(3 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-010</span> <span class="text-sm font-medium">Feature flag hides assistant</span> <span class="text-xs text-gray-400 ml-1">(2 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-011</span> <span class="text-sm font-medium">Institution boundary enforcement</span> <span class="text-xs text-gray-400 ml-1">(3 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+
+                    <!-- New in v1.6.1 -->
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mt-4 mb-1">New in v1.6.1</p>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-012</span> <span class="text-sm font-medium">View previous conversations</span> <span class="text-xs text-gray-400 ml-1">(3 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-013</span> <span class="text-sm font-medium">Resume a previous conversation</span> <span class="text-xs text-gray-400 ml-1">(3 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-014</span> <span class="text-sm font-medium">Start a new conversation</span> <span class="text-xs text-gray-400 ml-1">(2 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-015</span> <span class="text-sm font-medium">Continue last conversation prompt</span> <span class="text-xs text-gray-400 ml-1">(3 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-school bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-016</span> <span class="text-sm font-medium">SMS TCPA Compliance</span> <span class="text-xs text-gray-400 ml-1">(4 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-017</span> <span class="text-sm font-medium">Customize assistant display name</span> <span class="text-xs text-gray-400 ml-1">(4 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="tier-shared bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">US-018</span> <span class="text-sm font-medium">Resize the AI assistant drawer</span> <span class="text-xs text-gray-400 ml-1">(4 ACs)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                </div>
+            </details>
+
+            <!-- NFR: Non-Functional Requirements -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Non-Functional Requirements</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">19 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mt-2 mb-1">Performance (5)</p>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Drawer opens within 300ms</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">First streaming token &lt;2s</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">CRM search results &lt;3s</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Knowledge base search &lt;2s</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">No perceptible pause &gt;500ms between tokens</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mt-4 mb-1">Reliability (3)</p>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">99.5% availability during operating hours</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Error banner when LLM unavailable</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Automatic retry with progressive delays</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mt-4 mb-1">Security (4)</p>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Multi-tenant scoping and RBAC enforcement</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">PII never logged in cleartext</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Conversation payloads encrypted at rest</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Prompt injection detection on all inputs</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mt-4 mb-1">Accessibility (7)</p>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">WCAG 2.1 AA compliance</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Keyboard navigable + screen reader support</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Focus management on drawer open/close</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm"><code class="text-xs bg-gray-200 px-1 rounded">aria-role="dialog"</code> with <code class="text-xs bg-gray-200 px-1 rounded">aria-label="Lumion AI Assistant"</code></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm"><code class="text-xs bg-gray-200 px-1 rounded">aria-live="polite"</code> region for new message announcements</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">44x44px minimum touch targets for all interactive elements</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm"><code class="text-xs bg-gray-200 px-1 rounded">aria-busy</code> and status announcements for loading/streaming states</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                </div>
+            </details>
+
+            <!-- Metrics -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Success Metrics</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">6 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">M-001</span> <span class="text-sm font-medium">Adoption Rate</span> <span class="text-xs text-gray-400 ml-1">Target: 30% within 90 days</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">M-002</span> <span class="text-sm font-medium">Query Success Rate</span> <span class="text-xs text-gray-400 ml-1">Target: &gt;85%</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">M-003</span> <span class="text-sm font-medium">Action Completion Rate</span> <span class="text-xs text-gray-400 ml-1">Target: &gt;50%</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">M-004</span> <span class="text-sm font-medium">Student Ticket Deflection</span> <span class="text-xs text-gray-400 ml-1">Target: 20-30% reduction</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">M-005</span> <span class="text-sm font-medium">Average Response Time</span> <span class="text-xs text-gray-400 ml-1">Target: &lt;2s (p95)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">M-006</span> <span class="text-sm font-medium">Session Depth</span> <span class="text-xs text-gray-400 ml-1">Target: &gt;3 messages</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                </div>
+            </details>
+
+            <!-- Risks -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Risks</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">8 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">R-001</span> <span class="text-sm font-medium">LLM Hallucination</span> <span class="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded ml-1">Med/High</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Identified</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">R-002</span> <span class="text-sm font-medium">Cost Overrun</span> <span class="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded ml-1">Med/Med</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Identified</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">R-003</span> <span class="text-sm font-medium">Data Privacy Breach</span> <span class="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded ml-1">Low/Critical</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Identified</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">R-004</span> <span class="text-sm font-medium">Unsafe Action Execution</span> <span class="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded ml-1">Low/High</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Identified</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">R-005</span> <span class="text-sm font-medium">Streaming Latency</span> <span class="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded ml-1">Med/Med</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Identified</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">R-006</span> <span class="text-sm font-medium">Multi-Tenancy Leakage</span> <span class="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded ml-1">Low/Critical</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Identified</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">R-007</span> <span class="text-sm font-medium">Prompt Injection</span> <span class="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded ml-1">Med/High</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Identified</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">R-008</span> <span class="text-sm font-medium">Low Adoption</span> <span class="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded ml-1">Med/Med</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Identified</span></div></div>
+                </div>
+            </details>
+
+            <!-- Assumptions -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Assumptions</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">5 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">A-001</span> <span class="text-sm font-medium">Cortex and ContextEngine are stable foundations</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Assumed</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">A-002</span> <span class="text-sm font-medium">OpenAI API pricing remains stable through V1</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Assumed</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">A-003</span> <span class="text-sm font-medium">Institutions have populated knowledge bases</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Assumed</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">A-004</span> <span class="text-sm font-medium">WebSocket/SSE infrastructure supports streaming</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Assumed</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">A-005</span> <span class="text-sm font-medium">Multi-institution isolation via subdomain architecture</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-decision"></span><span class="text-xs text-purple-600 font-medium">Decision</span></div></div>
+                </div>
+            </details>
+
+            <!-- Open Questions -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Open Questions</h3>
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">10/10 Resolved (3 non-blocking remain)</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-001</span> <span class="text-sm font-medium">Model Selection</span> <span class="text-xs text-gray-400 ml-1">GPT-5-mini, refinable via Cortex</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-002</span> <span class="text-sm font-medium">Conversation Length</span> <span class="text-xs text-gray-400 ml-1">60% of context window, dynamic</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-003</span> <span class="text-sm font-medium">Query Limits</span> <span class="text-xs text-gray-400 ml-1">Per-tool rate limits; daily caps deferred</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-004</span> <span class="text-sm font-medium">Multi-Institution</span> <span class="text-xs text-gray-400 ml-1">Absolute isolation via subdomain</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-005</span> <span class="text-sm font-medium">Markdown Rendering</span> <span class="text-xs text-gray-400 ml-1">Yes, existing tooling</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-006</span> <span class="text-sm font-medium">Degradation UX</span> <span class="text-xs text-gray-400 ml-1">Error banner when LLM down</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-007</span> <span class="text-sm font-medium">Audit Log</span> <span class="text-xs text-gray-400 ml-1">Not in V1 scope</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-008</span> <span class="text-sm font-medium">Fallback Strategy</span> <span class="text-xs text-gray-400 ml-1">Always fall back, never best-effort</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mt-4 mb-1">Round 5 (v1.6.1)</p>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-009</span> <span class="text-sm font-medium">Prompt Screening</span> <span class="text-xs text-gray-400 ml-1">Automated via prompt validation (engineering default)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">Q-010</span> <span class="text-sm font-medium">Conversation Timeout</span> <span class="text-xs text-gray-400 ml-1">30-min timeout, configurable at platform level (engineering default)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Resolved</span></div></div>
+                </div>
+            </details>
+
+            <!-- Analytics Events -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Analytics Events</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">12 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-001</span> <span class="text-sm font-medium">ai_drawer_opened</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-002</span> <span class="text-sm font-medium">ai_message_sent</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-003</span> <span class="text-sm font-medium">ai_quick_action_clicked</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-004</span> <span class="text-sm font-medium">ai_action_confirmed</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-005</span> <span class="text-sm font-medium">ai_action_cancelled</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-006</span> <span class="text-sm font-medium">ai_drawer_closed</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-007</span> <span class="text-sm font-medium">ai_error_displayed</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-008</span> <span class="text-sm font-medium">ai_fallback_triggered</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Defined</span></div></div>
+                    <p class="text-xs font-semibold text-gray-700 uppercase tracking-wider mt-4 mb-1">New in v1.6.1</p>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-009</span> <span class="text-sm font-medium">ai_history_opened</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-010</span> <span class="text-sm font-medium">ai_conversation_resumed</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-011</span> <span class="text-sm font-medium">ai_new_conversation_started</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-500">E-012</span> <span class="text-sm font-medium">ai_resume_prompt_clicked</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- TAB 3: ROADMAP                                               -->
+        <!-- ============================================================ -->
+        <section id="section-roadmap" class="section-content hidden">
+
+            <!-- Completed Planning Phases (collapsible, closed by default) -->
+            <details class="bg-white rounded-xl shadow mb-6">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Completed Planning Phases</h3>
+                        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">3 complete, 1 current</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between opacity-60">
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span><span class="text-sm font-medium">Phase 1: Analysis</span><span class="text-xs text-gray-500 ml-1">Skipped — product-initiated project</span></div>
+                        <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded">Skipped</span>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between border border-green-200">
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span><span class="text-sm font-medium text-green-800">Phase 2: Planning</span><span class="text-xs text-green-600 ml-1">PRD v1.6.1, 31 FRs, 5 Q&A rounds, all questions resolved</span></div>
+                        <span class="phase-badge phase-2">Complete</span>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-3 flex items-center justify-between border border-green-200">
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span><span class="text-sm font-medium text-green-800">Phase 3: Solutioning</span><span class="text-xs text-green-600 ml-1">Architecture (18 decisions), UX Design (14 steps), Epics &amp; Stories (6 epics, 41 stories)</span></div>
+                        <span class="phase-badge phase-2">Complete</span>
+                    </div>
+                    <div class="bg-indigo-50 rounded-lg p-3 flex items-center justify-between border border-indigo-200">
+                        <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500 glow-pulse"></span><span class="text-sm font-medium text-indigo-800">Phase 4: Implementation</span><span class="text-xs text-indigo-600 ml-1">Epics 1-4 &amp; 6 complete (36/41 stories) — Epic 5 in progress, 5 stories remaining</span></div>
+                        <span class="phase-badge phase-3">Current</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Implementation Roadmap -->
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold">Implementation Roadmap</h2>
+                        <p class="text-sm text-gray-500 mt-1">6 epics, 41 stories</p>
+                    </div>
+                    <div class="flex gap-4 text-xs">
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full status-planned"></span> Planned</div>
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full status-partial"></span> In Progress</div>
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full status-complete"></span> Complete</div>
+                    </div>
+                </div>
+
+                <!-- Dependency Graph -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-8">
+                    <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-4">Dependency Graph</h3>
+                    <div class="flex flex-col items-center gap-2 text-sm">
+                        <!-- Epic 1 at top -->
+                        <div class="bg-green-100 border border-green-300 rounded-lg px-4 py-2 font-semibold text-green-800 text-center">
+                            Epic 1: Foundation &amp; Chat
+                        </div>
+                        <!-- Arrows down -->
+                        <div class="flex items-start gap-8">
+                            <div class="flex flex-col items-center">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                                <div class="bg-green-200 border border-green-400 rounded-lg px-3 py-1.5 text-green-900 text-center text-xs font-bold">Epic 2: Polish ✓</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                                <div class="bg-green-100 border border-green-300 rounded-lg px-3 py-1.5 text-green-800 text-center text-xs font-bold">Epic 3: CRM &#10003;</div>
+                                <svg class="w-4 h-4 text-gray-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                                <div class="bg-green-100 border border-green-300 rounded-lg px-3 py-1.5 text-green-800 text-center text-xs font-bold">Epic 4: Comms &#10003;</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                                <div class="bg-amber-100 border border-amber-300 rounded-lg px-3 py-1.5 text-amber-800 text-center text-xs font-medium">Epic 5: Student</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                                <div class="bg-green-100 border border-green-300 rounded-lg px-3 py-1.5 text-green-800 text-center text-xs font-bold">Epic 6: History &#10003;</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2">Epic 5 also feeds into Epic 6 (student-tier history). Epic 3 gates Epic 4 (tool output contracts).</p>
+                    </div>
+                </div>
+
+                <!-- Epic 1 -->
+                <details class="tier-shared bg-gray-50 rounded-lg mb-3" id="epic-1">
+                    <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <h3 class="font-bold">Epic 1: AI Assistant Foundation &amp; Chat</h3>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">10 stories</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Complete</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-xs text-gray-500 mb-3">FRs: 001-009, 019, 029 (infra) | Critical path — unblocks all other epics</p>
+                        <div class="space-y-1.5">
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.1</span> <span class="text-sm">wire:stream Streaming Spike</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.2</span> <span class="text-sm">Feature Flag &amp; AI Domain Bootstrap</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.3</span> <span class="text-sm">Database Schema &amp; Core Models</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.4</span> <span class="text-sm">AgentOrchestrator &amp; Prism Integration</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.5</span> <span class="text-sm">PromptIdentifier &amp; System Prompts</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.6</span> <span class="text-sm">Drawer Component &amp; Render Hooks</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.7</span> <span class="text-sm">Chat Interface &amp; Streaming UI</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.8</span> <span class="text-sm">Welcome Screen, Disclaimer &amp; Error States</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.9</span> <span class="text-sm">Analytics Service &amp; Instrumentation</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">1.10</span> <span class="text-sm">ConversationContextBuilder &amp; Audit Infrastructure</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Epic 2 -->
+                <details class="tier-shared bg-gray-50 rounded-lg mb-3" id="epic-2">
+                    <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <h3 class="font-bold">Epic 2: Polish, Responsive &amp; Accessibility</h3>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">6 stories</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Complete</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-xs text-gray-500 mb-3">FRs: 010, 030 | Depends on: Epic 1</p>
+                        <div class="space-y-1.5">
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">2.1</span> <span class="text-sm">Drag Handle &amp; Resize Behavior</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">2.2</span> <span class="text-sm">Responsive Tablet Layout</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">2.3</span> <span class="text-sm">Responsive Mobile Layout</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">2.4</span> <span class="text-sm">Reduced Motion &amp; Animation Polish</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">2.5</span> <span class="text-sm">Accessibility Certification &amp; Audit</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">2.6</span> <span class="text-sm">Amplitude Analytics Integration</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Epic 3 -->
+                <details class="tier-school bg-gray-50 rounded-lg mb-3" id="epic-3">
+                    <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <h3 class="font-bold">Epic 3: School CRM Intelligence</h3>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">7 stories</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Complete</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-xs text-gray-500 mb-3">FRs: 011-015, 018 | Depends on: Epic 1</p>
+                        <div class="space-y-1.5">
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">3.1</span> <span class="text-sm">Quick Action Cards &amp; Activity Counts</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">3.2</span> <span class="text-sm">ContactSearch Tool</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">3.3</span> <span class="text-sm">ActivitySummary Tool</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">3.4</span> <span class="text-sm">PaymentTrends &amp; InvoiceSearch Tools</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">3.5</span> <span class="text-sm">EnrollmentSearch Tool</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">3.6</span> <span class="text-sm">Quick Action Chips &amp; Follow-Up Suggestions</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">3.7</span> <span class="text-sm">Tool Output Contract Gate</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Epic 4 -->
+                <details class="tier-school bg-gray-50 rounded-lg mb-3" id="epic-4">
+                    <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <h3 class="font-bold">Epic 4: Communication, Actions &amp; Compliance</h3>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">5 stories</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Complete</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-xs text-gray-500 mb-3">FRs: 016, 017, 017a | Depends on: Epic 3 (tool output contracts)</p>
+                        <div class="space-y-1.5">
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">4.1</span> <span class="text-sm">CommunicationDraft Tool</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">4.2</span> <span class="text-sm">ActionConfirmation State Machine &amp; UI</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">4.3</span> <span class="text-sm">SendCommunication Tool &amp; Email Execution</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">4.4</span> <span class="text-sm">TCPA Compliance &amp; SMS Scheduling</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">4.5</span> <span class="text-sm">Pending Action Indicator &amp; Analytics</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Epic 5 -->
+                <details class="tier-student bg-gray-50 rounded-lg mb-3" id="epic-5">
+                    <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <h3 class="font-bold">Epic 5: Student AI Assistant</h3>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">6 stories</span>
+                            <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">In Progress</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-xs text-gray-500 mb-3">FRs: 020-024 | Depends on: Epic 1 | Parallel with Epics 2, 3, 4</p>
+                        <div class="space-y-1.5">
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">5.1</span> <span class="text-sm">StudentMcp Domain &amp; AuthorizedStudentMcpTool</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">5.2</span> <span class="text-sm">Student Welcome &amp; Quick Actions</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">5.3</span> <span class="text-sm">KnowledgeSearch Tool</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">5.4</span> <span class="text-sm">EnrollmentData &amp; PaymentSchedule Tools</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">5.5</span> <span class="text-sm">CourseSchedule &amp; SchoolContact Tools</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">5.6</span> <span class="text-sm">Low-Confidence Fallback &amp; Analytics</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Epic 6 -->
+                <details class="tier-shared bg-gray-50 rounded-lg mb-3" id="epic-6">
+                    <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <h3 class="font-bold">Epic 6: Conversation History &amp; Configuration</h3>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">7 stories</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Complete</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-4 pb-4">
+                        <p class="text-xs text-gray-500 mb-3">FRs: 025-029 (settings UI) | Depends on: Epic 1, Epic 5 (student history)</p>
+                        <div class="space-y-1.5">
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">6.1</span> <span class="text-sm">Conversation History List</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">6.2</span> <span class="text-sm">Resume Previous Conversation</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">6.3</span> <span class="text-sm">New Conversation Flow</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">6.4</span> <span class="text-sm">Session Timeout &amp; Resume Prompt</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">6.5</span> <span class="text-sm">Scheduled Commands</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">6.6</span> <span class="text-sm">Assistant Name Settings UI</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                            <div class="bg-white rounded p-2.5 flex items-center justify-between"><div><span class="font-mono text-xs text-gray-400">6.7</span> <span class="text-sm">History Analytics</span></div><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Product Rollout Phases (collapsible, closed by default) -->
+            <details class="bg-white rounded-xl shadow mb-6">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Product Rollout Phases</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">4 phases</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6">
+                    <p class="text-xs text-gray-500 mb-4">From PRD Section 9.2</p>
+                    <div class="space-y-2">
+                        <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between opacity-60">
+                            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span><span class="text-sm font-medium">Internal Dogfood</span><span class="text-xs text-gray-500 ml-1">Week 1-2 — Lumion internal team, both portals</span></div>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded">Future</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between opacity-60">
+                            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span><span class="text-sm font-medium">Beta Cohort</span><span class="text-xs text-gray-500 ml-1">Week 3-6 — 5-10 partner institutions, active feedback</span></div>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded">Future</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between opacity-60">
+                            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span><span class="text-sm font-medium">Graduated Rollout</span><span class="text-xs text-gray-500 ml-1">Week 7-12 — 20-30 institutions per week, monitoring metrics</span></div>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded">Future</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between opacity-60">
+                            <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-gray-300"></span><span class="text-sm font-medium">General Availability</span><span class="text-xs text-gray-500 ml-1">All qualifying organizations</span></div>
+                            <span class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded">Future</span>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- TAB 4: CORE REQUIREMENTS                                     -->
+        <!-- ============================================================ -->
+        <section id="section-requirements" class="section-content hidden">
+            <!-- Multi-Tenancy -->
+            <details class="bg-white rounded-xl shadow mb-4" open>
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Multi-Tenancy &amp; Data Isolation</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">6 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Institution-scoped tool calls (all MCP tools)</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Qdrant collection per institution</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Conversation records scoped by institution_id</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Subdomain-based session isolation (A-005)</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">StudentMCP: <code class="text-xs bg-gray-200 px-1 rounded">where user_id = auth()->id()</code> on all tools</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Automated multi-tenancy integration tests</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                </div>
+            </details>
+
+            <!-- Security -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Security &amp; Compliance</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">9 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">RBAC gate checks on every MCP tool</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">PII excluded from tool responses (SSN, DOB)</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">ai_messages.content encrypted at rest</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">PII scrubbed from application logs</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Cortex prompt injection detection</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">System prompts never echoed to user</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">90-day conversation retention policy</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Feature flag kill switch (lumion-ai-assist)</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Bulk-disable across all organizations via admin panel for critical incidents</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                </div>
+            </details>
+
+            <!-- MCP Architecture -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">MCP Architecture</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">2 domains, 14 tools</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <!-- InstitutionMCP -->
+                        <div class="border border-blue-200 rounded-lg p-4 bg-blue-50/50">
+                            <h4 class="font-bold text-blue-800 mb-1">InstitutionMCP</h4>
+                            <p class="text-xs text-blue-600 mb-3">Sanctum auth | 3-tier RBAC | 10 tools</p>
+                            <div class="space-y-1.5">
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>SearchContacts</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>SearchApplications</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>SearchPayments</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>SearchInvoices</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>SearchEnrollments</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>SummarizeActivity</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>AnalyzePaymentTrends</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>DraftEmail</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>DraftSms</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-complete"></span>SendCommunication</div>
+                            </div>
+                        </div>
+                        <!-- StudentMCP -->
+                        <div class="border border-purple-200 rounded-lg p-4 bg-purple-50/50">
+                            <h4 class="font-bold text-purple-800 mb-1">StudentMCP</h4>
+                            <p class="text-xs text-purple-600 mb-3">Session auth | user_id scoping | 4 tools</p>
+                            <div class="space-y-1.5">
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-planned"></span>SearchInstitutionKnowledge</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-planned"></span>GetMyEnrollment</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-planned"></span>GetMyPayments</div>
+                                <div class="flex items-center gap-2 text-sm"><span class="w-2 h-2 rounded-full status-planned"></span>GetMyCourseSchedule</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Streaming & Performance -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Streaming &amp; Performance</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">7 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">SSE or WebSocket streaming delivery</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">&lt;2s to first token (p95)</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Redis cache (300s TTL) for repeated queries</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Rate limiting: 100/user/hr, 1000/institution/hr</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Dedicated "ai" Horizon queue</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">SSE connection timeout (30s idle) + reconnect</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Load test: 50 concurrent streaming sessions</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                </div>
+            </details>
+
+            <!-- Observability (PRD 11.8) -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Observability</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">4 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Cortex S3 logging of all LLM interactions (prompt, response, tokens, latency, model)</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Slack webhook alerts: error rate &gt;5%/5min, avg latency &gt;5s, rate limit breaches</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Amplitude user-facing interaction metrics (via E-001–E-012)</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Dedicated Horizon "ai" queue dashboard view (throughput, failures, wait times) <span class="text-xs text-blue-600 ml-1">(standard Horizon UI)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                </div>
+            </details>
+
+            <!-- Testing Plan (PRD 11.9) -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Testing Plan</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">6 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Unit tests: MCP tool isolation, gate enforcement, institution scoping</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Integration tests: Livewire → AiAssistantService → Cortex (mocked LLM)</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Multi-tenancy tests: two-institution cross-tenant leakage validation</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Prompt regression tests: representative query suite against prompt changes</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Load tests: 50 concurrent streaming sessions</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Accessibility audit: axe-core scan + manual VoiceOver/NVDA testing</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-planned"></span><span class="text-xs text-gray-500">Planned</span></div></div>
+                </div>
+            </details>
+
+            <!-- Background Jobs (PRD 11.4) -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">Background Jobs &amp; Queues</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">3 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm"><code class="text-xs bg-gray-200 px-1 rounded">ProcessAiMessage</code> — sync Livewire streaming <span class="text-xs text-blue-600 ml-1">(arch deviation: PRD said background job)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm"><code class="text-xs bg-gray-200 px-1 rounded">PersistAiConversation</code> — sync ConversationService <span class="text-xs text-blue-600 ml-1">(arch deviation: PRD said async job)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm"><code class="text-xs bg-gray-200 px-1 rounded">AiUsageAggregation</code> — daily scheduled command <span class="text-xs text-blue-600 ml-1">(arch deviation: command not job)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                </div>
+            </details>
+
+            <!-- API Surface (PRD 11.3) -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">API Surface (Livewire Methods)</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">4 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm"><code class="text-xs bg-gray-200 px-1 rounded">submitMessage(string $message)</code> — validates 2–1000 chars, creates record, dispatches</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm"><code class="text-xs bg-gray-200 px-1 rounded">confirmAction(string $actionId)</code> — executes confirmed action, validates ownership/expiry</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm"><code class="text-xs bg-gray-200 px-1 rounded">cancelAction(string $actionId)</code> — cancels action, logs cancellation</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Streaming endpoint: <code class="text-xs bg-gray-200 px-1 rounded">wire:stream</code> directive <span class="text-xs text-blue-600 ml-1">(arch deviation: PRD said REST SSE)</span></div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                </div>
+            </details>
+
+            <!-- UI States (PRD 7.3) -->
+            <details class="bg-white rounded-xl shadow mb-4">
+                <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-lg font-bold">UI States</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">5 items</span>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-6 pb-6 space-y-2">
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Empty state: personalized greeting, capability summary, quick action cards</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Loading state: pulsing dot indicator, send button disabled during processing</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Error state: user-friendly message + retry button, no raw error messages</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Streaming state: tokens appear incrementally with cursor/indicator</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                    <div class="bg-gray-50 rounded-lg p-3 flex items-center justify-between"><div class="text-sm">Confirmation state: bordered card with action-color accents, Confirm/Edit/Cancel</div><div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full status-complete"></span><span class="text-xs text-green-600 font-medium">Complete</span></div></div>
+                </div>
+            </details>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- TAB 5: ARCHITECTURE OVERVIEW                                 -->
+        <!-- ============================================================ -->
+        <section id="section-architecture" class="section-content hidden">
+            <!-- Architecture Approved Banner -->
+            <div class="bg-green-50 border border-green-200 rounded-xl p-6 mb-8 flex items-start gap-3">
+                <svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div>
+                    <h3 class="font-semibold text-green-800">Architecture Document Approved</h3>
+                    <p class="text-sm text-green-700 mt-1">18 architectural decisions resolved. 4 rounds of antagonistic review with 17 corrections applied. Key findings: feature flag system correction (Pennant → custom Feature model), render hook pattern fix, AgentOrchestrator uses Prism directly (not CortexService), QUEUED state for SMS cancellation.</p>
+                </div>
+            </div>
+
+            <!-- Confirmed Decisions -->
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6">Confirmed Decisions</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b-2 border-gray-200">
+                                <th class="text-left py-3 px-3 font-semibold text-gray-700">Decision</th>
+                                <th class="text-left py-3 px-3 font-semibold text-gray-700">Resolution</th>
+                                <th class="text-left py-3 px-3 font-semibold text-gray-700">Source</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr><td class="py-2.5 px-3">LLM Model</td><td class="py-2.5 px-3">GPT-5-mini, refinable via Cortex</td><td class="py-2.5 px-3 text-gray-500">Q-001</td></tr>
+                            <tr><td class="py-2.5 px-3">Context Window</td><td class="py-2.5 px-3">60% of model limit, dynamic calculation</td><td class="py-2.5 px-3 text-gray-500">Q-002</td></tr>
+                            <tr><td class="py-2.5 px-3">Rate Limiting</td><td class="py-2.5 px-3">Per-tool limits (InstitutionMCP); daily caps deferred</td><td class="py-2.5 px-3 text-gray-500">Q-003</td></tr>
+                            <tr><td class="py-2.5 px-3">Multi-Institution</td><td class="py-2.5 px-3">Absolute isolation via subdomain architecture</td><td class="py-2.5 px-3 text-gray-500">Q-004</td></tr>
+                            <tr><td class="py-2.5 px-3">Markdown</td><td class="py-2.5 px-3">Yes — league/commonmark + @tailwindcss/typography</td><td class="py-2.5 px-3 text-gray-500">Q-005</td></tr>
+                            <tr><td class="py-2.5 px-3">Degradation UX</td><td class="py-2.5 px-3">Error banner when LLM unavailable</td><td class="py-2.5 px-3 text-gray-500">Q-006</td></tr>
+                            <tr><td class="py-2.5 px-3">Audit Log</td><td class="py-2.5 px-3">Not in V1 (server-side only)</td><td class="py-2.5 px-3 text-gray-500">Q-007</td></tr>
+                            <tr><td class="py-2.5 px-3">Fallback Strategy</td><td class="py-2.5 px-3">Always fall back, never best-effort</td><td class="py-2.5 px-3 text-gray-500">Q-008</td></tr>
+                            <tr><td class="py-2.5 px-3">Tool Architecture</td><td class="py-2.5 px-3">Two-Domain MCP (InstitutionMCP + StudentMCP)</td><td class="py-2.5 px-3 text-gray-500">PRD 11.1</td></tr>
+                            <tr><td class="py-2.5 px-3">Feature Flag</td><td class="py-2.5 px-3">Custom Feature model + FeatureSlugEnum (NOT Pennant), org-level resolution</td><td class="py-2.5 px-3 text-gray-500">PRD 11.6, C-1</td></tr>
+                            <tr><td class="py-2.5 px-3">Prompt Management</td><td class="py-2.5 px-3">Cortex system, institution-overridable</td><td class="py-2.5 px-3 text-gray-500">PRD 11.5</td></tr>
+                            <tr class="bg-blue-50/50"><td class="py-2.5 px-3">Prompt Screening</td><td class="py-2.5 px-3">Automated via prompt validation pipeline (engineering default)</td><td class="py-2.5 px-3 text-gray-500">Q-009 (R5)</td></tr>
+                            <tr class="bg-blue-50/50"><td class="py-2.5 px-3">Conversation Timeout</td><td class="py-2.5 px-3">30-min timeout, configurable at platform level</td><td class="py-2.5 px-3 text-gray-500">Q-010 (R5)</td></tr>
+                            <tr class="bg-blue-50/50"><td class="py-2.5 px-3">Multi-Tenant Isolation (A-005)</td><td class="py-2.5 px-3">Upgraded from assumption to architectural guarantee</td><td class="py-2.5 px-3 text-gray-500">R5 Decision</td></tr>
+                            <tr class="bg-green-50/50"><td class="py-2.5 px-3">Streaming Transport</td><td class="py-2.5 px-3">Livewire wire:stream (Decision #18)</td><td class="py-2.5 px-3 text-gray-500">Architecture</td></tr>
+                            <tr class="bg-green-50/50"><td class="py-2.5 px-3">Agent Runtime</td><td class="py-2.5 px-3">AgentOrchestrator → Prism direct (NOT CortexService)</td><td class="py-2.5 px-3 text-gray-500">Architecture C-5</td></tr>
+                            <tr class="bg-green-50/50"><td class="py-2.5 px-3">Render Hooks</td><td class="py-2.5 px-3">BODY_END with view() returning View, per-panel Blade files</td><td class="py-2.5 px-3 text-gray-500">Architecture C-2</td></tr>
+                            <tr class="bg-green-50/50"><td class="py-2.5 px-3">Queue Strategy</td><td class="py-2.5 px-3">Separate 'ai' Horizon queue (Decision #11)</td><td class="py-2.5 px-3 text-gray-500">Architecture</td></tr>
+                            <tr class="bg-green-50/50"><td class="py-2.5 px-3">SMS Action Lifecycle</td><td class="py-2.5 px-3">QUEUED state between CONFIRMED → EXECUTED for cancellation</td><td class="py-2.5 px-3 text-gray-500">Architecture C-10</td></tr>
+                            <tr class="bg-green-50/50"><td class="py-2.5 px-3">Message Encryption</td><td class="py-2.5 px-3">EncryptableDbAttribute on content field</td><td class="py-2.5 px-3 text-gray-500">Architecture C-4</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Data Model -->
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6">Data Model Summary</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="font-bold text-gray-800 mb-2">ai_conversations</h3>
+                        <div class="text-sm text-gray-600 space-y-1 font-mono">
+                            <div>id, uuid, institution_id, user_id</div>
+                            <div>tier (school|student)</div>
+                            <div>session_id, metadata (JSON)</div>
+                            <div>created_at, updated_at</div>
+                        </div>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="font-bold text-gray-800 mb-2">ai_messages</h3>
+                        <div class="text-sm text-gray-600 space-y-1 font-mono">
+                            <div>id, uuid, conversation_id</div>
+                            <div>role (user|assistant|system|tool)</div>
+                            <div>content (encrypted), token_count</div>
+                            <div>tool_name, tool_input, tool_output</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Component Diagram -->
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-6">Component Architecture</h2>
+                <pre class="bg-gray-900 text-green-400 rounded-lg p-6 text-xs overflow-x-auto leading-relaxed"><code>┌─────────────────────────────────────────────────────────────────┐
+│                        Browser                                  │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │  AssistantDrawer (Livewire + Alpine.js + wire:stream)   │    │
+│  └─────────────────────┬───────────────────────────────────┘    │
+└────────────────────────┼────────────────────────────────────────┘
+                         │ Livewire wire:stream (callbacks)
+┌────────────────────────┼────────────────────────────────────────┐
+│                Backend (Laravel)                                │
+│  ┌─────────────────────┴───────────────────────────────────┐    │
+│  │              AgentOrchestrator                            │    │
+│  │    ┌──────────────┐  ┌──────────────┐                   │    │
+│  │    │ PromptRepo   │  │ Prism direct │                   │    │
+│  │    │ (templates)  │  │ (multi-turn) │                   │    │
+│  │    └──────────────┘  └──────────────┘                   │    │
+│  └──────┬─────────────────────┬────────────────────────────┘    │
+│         │                     │                                  │
+│  ┌──────┴──────┐    ┌────────┴────────┐                         │
+│  │Institution  │    │   StudentMCP    │                         │
+│  │    MCP      │    │  (Session Auth) │                         │
+│  │(Sanctum Auth│    │                 │                         │
+│  │ 12 tools)   │    │   5 tools       │                         │
+│  └──────┬──────┘    └────────┬────────┘                         │
+│         │                    │                                   │
+│  ┌──────┴────────────────────┴────────┐                         │
+│  │     Data Layer                     │                         │
+│  │  MySQL (ai_conversations/messages) │                         │
+│  │  Redis (cache, sessions, prompts)  │                         │
+│  │  CRM DB (contacts, payments, etc)  │                         │
+│  │  Qdrant (vector search)            │                         │
+│  └────────────────────────────────────┘                         │
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-6 px-4 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4 text-sm">
+            <div>Lumion AI Assistant &mdash; PRD Status Dashboard</div>
+            <div>PRD v1.6.1 | Last updated: 2026-03-19 (Epics 1-4 &amp; 6 complete — 36/41 stories, Epic 5 in progress | Deep audit: +16 items verified)</div>
+        </div>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('bg-gray-100', 'hover:bg-gray-200');
+            });
+            document.getElementById('tab-' + sectionId).classList.add('tab-active');
+            document.getElementById('tab-' + sectionId).classList.remove('bg-gray-100', 'hover:bg-gray-200');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
