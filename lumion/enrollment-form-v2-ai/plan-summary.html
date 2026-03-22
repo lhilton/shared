@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Form Builder Integration Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes flow { 0% { stroke-dashoffset: 24; } 100% { stroke-dashoffset: 0; } }
+        .flow-line { stroke-dasharray: 6 6; animation: flow 1s linear infinite; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-up { animation: fadeUp 0.4s ease-out forwards; }
+        .fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .step-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .step-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+        .plan-badge { transition: all 0.2s ease; }
+        .plan-badge:hover { transform: scale(1.05); }
+        details summary { cursor: pointer; list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+        details summary::before { content: '\25B6'; display: inline-block; margin-right: 8px; transition: transform 0.2s ease; font-size: 0.75em; }
+        details[open] summary::before { transform: rotate(90deg); }
+        .nav-link { transition: color 0.2s, border-color 0.2s; }
+        .nav-link:hover { color: #3b82f6; }
+        .nav-link.active { color: #2563eb; border-bottom: 2px solid #2563eb; }
+        pre { background: #1e293b; color: #e2e8f0; border-radius: 8px; padding: 16px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
+        code { font-family: 'SF Mono', 'Fira Code', monospace; }
+        .toc-link { border-left: 2px solid transparent; transition: all 0.2s; }
+        .toc-link:hover { border-left-color: #3b82f6; background: #eff6ff; }
+        .toc-link.active { border-left-color: #2563eb; background: #dbeafe; font-weight: 600; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Hero -->
+    <header class="bg-gradient-to-br from-indigo-600 via-blue-600 to-purple-700 text-white">
+        <div class="max-w-6xl mx-auto px-6 py-16">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="bg-white/20 text-sm font-semibold px-3 py-1 rounded-full">CRTX-498</span>
+                <span class="bg-white/20 text-sm px-3 py-1 rounded-full">Lumion AI Assistant</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold leading-tight">AI Form Builder<br>Integration Plan</h1>
+            <p class="text-xl text-blue-100 mt-4 max-w-2xl">Enable school administrators to create and modify enrollment forms using natural language via the AI Assistant drawer. Reduce form creation time from ~15 minutes to under 2 minutes.</p>
+            <div class="flex flex-wrap gap-4 mt-8">
+                <div class="bg-white/10 backdrop-blur rounded-lg px-4 py-3">
+                    <div class="text-sm text-blue-200">Approach</div>
+                    <div class="font-semibold">Livewire Polling</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-4 py-3">
+                    <div class="text-sm text-blue-200">Files Changed</div>
+                    <div class="font-semibold">11 files</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-4 py-3">
+                    <div class="text-sm text-blue-200">Infra Dependencies</div>
+                    <div class="font-semibold">Database only</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-4 py-3">
+                    <div class="text-sm text-blue-200">Review Rounds</div>
+                    <div class="font-semibold">2 rounds, 6 agents</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto px-6 py-12">
+
+        <!-- Plan Selection -->
+        <section id="selection" class="mb-16 fade-up">
+            <h2 class="text-2xl font-bold mb-6">Plan Selection</h2>
+            <p class="text-gray-600 mb-6">Three approaches were designed, each reviewed by antagonistic agents reading actual codebase internals (Filament Repeater source, panel providers, MCP tool patterns, model casts).</p>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Plan A -->
+                <div class="bg-white rounded-xl border-2 border-blue-500 p-6 step-card relative">
+                    <div class="absolute -top-3 left-4 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">SELECTED</div>
+                    <h3 class="text-lg font-bold mt-2">Plan A: Livewire Polling</h3>
+                    <p class="text-sm text-gray-500 mt-1">wire:poll.3s.visible</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold">+</span> Lowest complexity</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold">+</span> No infra dependencies</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold">+</span> Self-healing on every tick</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xs font-bold">~</span> ~3s detection latency</div>
+                    </div>
+                </div>
+
+                <!-- Plan B -->
+                <div class="bg-white rounded-xl border border-gray-200 p-6 step-card opacity-75">
+                    <h3 class="text-lg font-bold">Plan B: Livewire Events</h3>
+                    <p class="text-sm text-gray-500 mt-1">$this->dispatch()</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold">+</span> Instant notification</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">-</span> No fallback on miss</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">-</span> Silent failure mode</div>
+                    </div>
+                    <div class="mt-4 text-xs text-gray-400 font-medium">Backup option</div>
+                </div>
+
+                <!-- Plan C -->
+                <div class="bg-white rounded-xl border border-gray-200 p-6 step-card opacity-60">
+                    <h3 class="text-lg font-bold">Plan C: Broadcasting</h3>
+                    <p class="text-sm text-gray-500 mt-1">Reverb + Echo</p>
+                    <div class="mt-4 space-y-2">
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold">+</span> True real-time push</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">-</span> Requires Reverb running</div>
+                        <div class="flex items-center gap-2 text-sm"><span class="w-5 h-5 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xs font-bold">-</span> Over-engineered for use case</div>
+                    </div>
+                    <div class="mt-4 text-xs text-red-400 font-medium">Rejected</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Flow Diagram -->
+        <section id="flow" class="mb-16 fade-up fade-up-delay-1">
+            <h2 class="text-2xl font-bold mb-6">Data Flow</h2>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 overflow-x-auto">
+                <svg viewBox="0 0 900 320" class="w-full min-w-[700px]" style="max-height: 320px;">
+                    <!-- Boxes -->
+                    <rect x="20" y="40" width="160" height="70" rx="12" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+                    <text x="100" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="#4338ca">User types</text>
+                    <text x="100" y="88" text-anchor="middle" font-size="11" fill="#6366f1">"Add emergency contact"</text>
+
+                    <rect x="230" y="40" width="160" height="70" rx="12" fill="#faf5ff" stroke="#8b5cf6" stroke-width="2"/>
+                    <text x="310" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d28d9">AI Assistant</text>
+                    <text x="310" y="88" text-anchor="middle" font-size="11" fill="#8b5cf6">AgentOrchestrator</text>
+
+                    <rect x="440" y="40" width="160" height="70" rx="12" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+                    <text x="520" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="#a16207">MCP Tool</text>
+                    <text x="520" y="88" text-anchor="middle" font-size="11" fill="#ca8a04">FormBuilderDraftTool</text>
+
+                    <rect x="440" y="160" width="160" height="70" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+                    <text x="520" y="190" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">Database</text>
+                    <text x="520" y="208" text-anchor="middle" font-size="11" fill="#10b981">draft JSON column</text>
+
+                    <rect x="230" y="160" width="160" height="70" rx="12" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+                    <text x="310" y="185" text-anchor="middle" font-size="13" font-weight="bold" fill="#c2410c">Poll (3s)</text>
+                    <text x="310" y="203" text-anchor="middle" font-size="11" fill="#ea580c">checkForDraftUpdate()</text>
+                    <text x="310" y="218" text-anchor="middle" font-size="10" fill="#f97316">wire:poll.3s.visible</text>
+
+                    <rect x="20" y="160" width="160" height="70" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+                    <text x="100" y="185" text-anchor="middle" font-size="13" font-weight="bold" fill="#1d4ed8">Apply Banner</text>
+                    <text x="100" y="203" text-anchor="middle" font-size="11" fill="#3b82f6">"AI has changes"</text>
+                    <text x="100" y="218" text-anchor="middle" font-size="10" fill="#3b82f6">Apply | Dismiss</text>
+
+                    <rect x="20" y="265" width="160" height="45" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+                    <text x="100" y="293" text-anchor="middle" font-size="13" font-weight="bold" fill="#15803d">Page Redirect</text>
+
+                    <rect x="230" y="265" width="160" height="45" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+                    <text x="310" y="288" text-anchor="middle" font-size="12" font-weight="bold" fill="#15803d">Form fills from draft</text>
+                    <text x="310" y="302" text-anchor="middle" font-size="10" fill="#22c55e">mutateFormDataBeforeFill()</text>
+
+                    <!-- Arrows -->
+                    <line x1="180" y1="75" x2="230" y2="75" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrow-purple)" class="flow-line"/>
+                    <line x1="390" y1="75" x2="440" y2="75" stroke="#eab308" stroke-width="2" marker-end="url(#arrow-yellow)" class="flow-line"/>
+                    <line x1="520" y1="110" x2="520" y2="160" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-green)" class="flow-line"/>
+                    <line x1="440" y1="195" x2="390" y2="195" stroke="#f97316" stroke-width="2" marker-end="url(#arrow-orange)" class="flow-line"/>
+                    <line x1="230" y1="195" x2="180" y2="195" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow-blue)" class="flow-line"/>
+                    <line x1="100" y1="230" x2="100" y2="265" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green2)" class="flow-line"/>
+                    <line x1="180" y1="287" x2="230" y2="287" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow-green2)" class="flow-line"/>
+
+                    <!-- Arrow markers -->
+                    <defs>
+                        <marker id="arrow-purple" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#8b5cf6"/></marker>
+                        <marker id="arrow-yellow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#eab308"/></marker>
+                        <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#10b981"/></marker>
+                        <marker id="arrow-orange" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#f97316"/></marker>
+                        <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#3b82f6"/></marker>
+                        <marker id="arrow-green2" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#22c55e"/></marker>
+                    </defs>
+
+                    <!-- Step labels -->
+                    <text x="205" y="65" text-anchor="middle" font-size="10" fill="#9ca3af">1</text>
+                    <text x="415" y="65" text-anchor="middle" font-size="10" fill="#9ca3af">2</text>
+                    <text x="535" y="140" text-anchor="middle" font-size="10" fill="#9ca3af">3</text>
+                    <text x="415" y="188" text-anchor="middle" font-size="10" fill="#9ca3af">4</text>
+                    <text x="205" y="188" text-anchor="middle" font-size="10" fill="#9ca3af">5</text>
+                    <text x="85" y="252" text-anchor="middle" font-size="10" fill="#9ca3af">6</text>
+                    <text x="205" y="280" text-anchor="middle" font-size="10" fill="#9ca3af">7</text>
+                </svg>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-4 text-sm text-gray-500">
+                <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-indigo-500"></div> User Input</div>
+                <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-purple-500"></div> AI Processing</div>
+                <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-yellow-500"></div> MCP Tool</div>
+                <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-emerald-500"></div> Database / Page Load</div>
+                <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-orange-500"></div> Polling</div>
+                <div class="flex items-center gap-2"><div class="w-3 h-3 rounded bg-blue-500"></div> UI Notification</div>
+            </div>
+        </section>
+
+        <!-- Critical Flaw Resolution -->
+        <section id="flaw" class="mb-16 fade-up fade-up-delay-2">
+            <h2 class="text-2xl font-bold mb-6">Critical Flaw Resolution</h2>
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-6">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-red-900">Shared BLOCKING Flaw: fillForm() destroys Repeater UUIDs</h3>
+                        <p class="text-red-800 text-sm mt-1">Filament's Repeater component regenerates internal UUIDs on every <code class="bg-red-100 px-1 rounded">fill()</code> call via <code class="bg-red-100 px-1 rounded">afterStateHydrated</code>. This destroys the user's editing context (collapsed states, cursor positions, unsaved edits). All three plans hit this.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-green-900">Solution: Redirect-based Apply</h3>
+                        <p class="text-green-800 text-sm mt-1">When the user clicks "Apply Changes", redirect to the same page with <code class="bg-green-100 px-1 rounded">?apply_draft=1</code>. The page mounts fresh, <code class="bg-green-100 px-1 rounded">mutateFormDataBeforeFill()</code> reads from <code class="bg-green-100 px-1 rounded">draft</code> instead of <code class="bg-green-100 px-1 rounded">pages</code>, and all Filament lifecycle hooks run normally. No fillForm() needed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Steps -->
+        <section id="steps" class="mb-16 fade-up fade-up-delay-3">
+            <h2 class="text-2xl font-bold mb-6">Implementation Steps</h2>
+
+            <div class="space-y-4">
+                <!-- Step 1 -->
+                <details class="bg-white rounded-xl border border-gray-200 step-card" open>
+                    <summary class="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
+                        <span class="w-7 h-7 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                        Database Migration
+                        <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Create</span>
+                    </summary>
+                    <div class="px-6 pb-4 border-t border-gray-100 pt-4">
+                        <p class="text-sm text-gray-600 mb-3">Add <code>draft</code> (nullable JSON) and <code>draft_updated_at</code> (nullable timestamp) to <code>enrollment_application_forms</code>.</p>
+                        <div class="text-xs text-gray-400">database/migrations/..._add_draft_to_enrollment_application_forms.php</div>
+                    </div>
+                </details>
+
+                <!-- Step 2 -->
+                <details class="bg-white rounded-xl border border-gray-200 step-card">
+                    <summary class="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
+                        <span class="w-7 h-7 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                        Model Changes
+                        <span class="ml-auto text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span>
+                    </summary>
+                    <div class="px-6 pb-4 border-t border-gray-100 pt-4">
+                        <p class="text-sm text-gray-600 mb-2">Add <code>draft</code> and <code>draft_updated_at</code> to <code>$fillable</code> and <code>casts()</code>. Uses same <code>NullableDataCollectionCast</code> as <code>pages</code>.</p>
+                        <div class="text-xs text-gray-400">app/Models/Enrollment/EnrollmentApplicationForm.php</div>
+                    </div>
+                </details>
+
+                <!-- Step 3 -->
+                <details class="bg-white rounded-xl border border-gray-200 step-card">
+                    <summary class="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
+                        <span class="w-7 h-7 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                        MCP Tool: FormBuilderDraftTool
+                        <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Create</span>
+                    </summary>
+                    <div class="px-6 pb-4 border-t border-gray-100 pt-4">
+                        <p class="text-sm text-gray-600 mb-3">Follows <code>CommunicationDraftTool</code> pattern. Accepts <code>form_uuid</code> + <code>pages</code> array. Validates structure, enforces constraints (required well-known types, no duplicates), writes to <code>draft</code> column.</p>
+                        <div class="mt-3 space-y-1 text-sm">
+                            <div class="flex items-center gap-2"><span class="w-2 h-2 bg-red-400 rounded-full"></span> Guards: rejects Published forms</div>
+                            <div class="flex items-center gap-2"><span class="w-2 h-2 bg-amber-400 rounded-full"></span> Errors: uses <code>$this->respond()</code> (not <code>Response::error()</code>)</div>
+                            <div class="flex items-center gap-2"><span class="w-2 h-2 bg-blue-400 rounded-full"></span> Auth: <code>mutateFormDraft</code> gate + institution scoping</div>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-3">app/Domains/InstitutionMcp/MCP/Tools/Enrollment/FormBuilderDraftTool.php</div>
+                    </div>
+                </details>
+
+                <!-- Step 4 -->
+                <details class="bg-white rounded-xl border border-gray-200 step-card">
+                    <summary class="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
+                        <span class="w-7 h-7 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
+                        AI Drawer on SchoolSettings
+                        <span class="ml-auto text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span>
+                    </summary>
+                    <div class="px-6 pb-4 border-t border-gray-100 pt-4">
+                        <p class="text-sm text-gray-600 mb-2">Add <code>GLOBAL_SEARCH_BEFORE</code> and <code>BODY_END</code> render hooks to <code>SchoolSettingsPanelProvider</code>. Update the existing exclusion test in <code>AssistantDrawerTest.php</code> to a positive assertion.</p>
+                        <div class="text-xs text-gray-400">app/Providers/Filament/SchoolSettingsPanelProvider.php</div>
+                    </div>
+                </details>
+
+                <!-- Step 5 -->
+                <details class="bg-white rounded-xl border border-gray-200 step-card">
+                    <summary class="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
+                        <span class="w-7 h-7 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">5</span>
+                        Polling + Apply/Dismiss/Undo
+                        <span class="ml-auto text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span>
+                    </summary>
+                    <div class="px-6 pb-4 border-t border-gray-100 pt-4">
+                        <p class="text-sm text-gray-600 mb-3">Add <code>checkForDraftUpdate()</code>, <code>applyDraft()</code>, <code>dismissDraft()</code>, <code>undoDraft()</code> to EditApplicationForm. Polling gated by AI feature flag. Undo via session storage.</p>
+                        <div class="grid md:grid-cols-3 gap-3 mt-3">
+                            <div class="bg-blue-50 rounded-lg p-3">
+                                <div class="font-semibold text-blue-900 text-sm">Poll</div>
+                                <div class="text-xs text-blue-700 mt-1">Single-column query every 3s. Compares raw DB timestamp. Feature-flag gated.</div>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-3">
+                                <div class="font-semibold text-green-900 text-sm">Apply</div>
+                                <div class="text-xs text-green-700 mt-1">Stores pages in session for undo. Redirects with <code>?apply_draft=1</code>.</div>
+                            </div>
+                            <div class="bg-amber-50 rounded-lg p-3">
+                                <div class="font-semibold text-amber-900 text-sm">Undo</div>
+                                <div class="text-xs text-amber-700 mt-1">Session-based. Reads <code>session('form_undo_*')</code>, restores pages, redirects.</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-400 mt-3">app/Filament/.../Pages/EditApplicationForm.php</div>
+                    </div>
+                </details>
+
+                <!-- Step 6 -->
+                <details class="bg-white rounded-xl border border-gray-200 step-card">
+                    <summary class="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
+                        <span class="w-7 h-7 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">6</span>
+                        Mount-Time Detection + afterFill()
+                        <span class="ml-auto text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span>
+                    </summary>
+                    <div class="px-6 pb-4 border-t border-gray-100 pt-4">
+                        <p class="text-sm text-gray-600 mb-2"><code>mutateFormDataBeforeFill()</code> overrides <code>$data['pages']</code> with draft when <code>?apply_draft=1</code>. Draft clearing happens in <code>afterFill()</code> to keep the transformer pure. URL is stripped via redirect.</p>
+                        <div class="text-xs text-gray-400">app/Filament/.../Pages/EditApplicationForm.php</div>
+                    </div>
+                </details>
+
+                <!-- Step 7 -->
+                <details class="bg-white rounded-xl border border-gray-200 step-card">
+                    <summary class="px-6 py-4 font-semibold text-gray-900 flex items-center gap-3">
+                        <span class="w-7 h-7 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">7</span>
+                        Blade Template + Save Hook
+                        <span class="ml-auto text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span>
+                    </summary>
+                    <div class="px-6 pb-4 border-t border-gray-100 pt-4">
+                        <p class="text-sm text-gray-600 mb-2">Add <code>wire:poll.3s.visible</code> (conditionally), "Apply Changes" / "Dismiss" banner. Save hook clears draft and undo session.</p>
+                        <div class="text-xs text-gray-400">resources/views/filament/.../edit-application-form.blade.php</div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- Review-Driven Refinements -->
+        <section id="refinements" class="mb-16">
+            <h2 class="text-2xl font-bold mb-6">Review-Driven Refinements</h2>
+            <p class="text-gray-600 mb-6">Two rounds of antagonistic review by 6 specialized agents (architecture, edge-case, karpathy, antagonist x3) produced these corrections:</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-white rounded-xl border border-gray-200 p-5">
+                    <h3 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        Karpathy Simplifications
+                    </h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-start gap-2"><span class="text-green-500 mt-0.5">&#10003;</span> Dropped event dispatch enhancement (3 fewer files)</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 mt-0.5">&#10003;</span> Session-based undo (no DB column)</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 mt-0.5">&#10003;</span> Protected properties, pure transformers</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 p-5">
+                    <h3 class="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+                        Edge-Case Corrections
+                    </h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-start gap-2"><span class="text-green-500 mt-0.5">&#10003;</span> Create page scoped out (requires UUID)</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 mt-0.5">&#10003;</span> Feature flag gates polling</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 mt-0.5">&#10003;</span> Published form guard in MCP tool</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 mt-0.5">&#10003;</span> Timestamp format normalization</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 mt-0.5">&#10003;</span> Unsaved changes confirmation dialog</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 mt-0.5">&#10003;</span> Apply/Dismiss race condition handled</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Files -->
+        <section id="files" class="mb-16">
+            <h2 class="text-2xl font-bold mb-6">Files to Create/Modify</h2>
+            <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="text-left px-6 py-3 font-semibold text-gray-700">File</th>
+                            <th class="text-center px-4 py-3 font-semibold text-gray-700 w-24">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">database/migrations/..._add_draft_to_enrollment_application_forms.php</td><td class="text-center"><span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Create</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">app/Models/Enrollment/EnrollmentApplicationForm.php</td><td class="text-center"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">app/Domains/InstitutionMcp/MCP/Tools/Enrollment/FormBuilderDraftTool.php</td><td class="text-center"><span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Create</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">app/Domains/InstitutionMcp/MCP/InstitutionMcpServer.php</td><td class="text-center"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">app/Domains/InstitutionMcp/InstitutionMcpServiceProvider.php</td><td class="text-center"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">app/Domains/InstitutionMcp/Policies/InstitutionMcpPolicy.php</td><td class="text-center"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">app/Providers/Filament/SchoolSettingsPanelProvider.php</td><td class="text-center"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">app/Filament/.../Pages/EditApplicationForm.php</td><td class="text-center"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">resources/views/filament/.../edit-application-form.blade.php</td><td class="text-center"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">app/Domains/AI/Tests/Feature/AssistantDrawerTest.php</td><td class="text-center"><span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Modify</span></td></tr>
+                        <tr><td class="px-6 py-3 font-mono text-xs text-gray-600">app/Domains/InstitutionMcp/Tests/Feature/FormBuilderDraftToolTest.php</td><td class="text-center"><span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Create</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Verification -->
+        <section id="verification" class="mb-16">
+            <h2 class="text-2xl font-bold mb-6">Verification Checklist</h2>
+            <div class="bg-white rounded-xl border border-gray-200 p-6">
+                <div class="space-y-3">
+                    <label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300"> <span><strong>Migration:</strong> Run migrate, verify <code>draft</code> and <code>draft_updated_at</code> columns exist</span></label>
+                    <label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300"> <span><strong>MCP Tool:</strong> Pest test with valid/invalid pages JSON</span></label>
+                    <label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300"> <span><strong>AI Drawer:</strong> Navigate to form edit page, verify drawer appears on SchoolSettings</span></label>
+                    <label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300"> <span><strong>Polling:</strong> Set <code>draft</code> via tinker, verify banner appears within 3 seconds</span></label>
+                    <label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300"> <span><strong>Apply:</strong> Click "Apply Changes", verify page reloads with draft data</span></label>
+                    <label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300"> <span><strong>Undo:</strong> Click "Undo AI Changes", verify form reverts to pre-AI state</span></label>
+                    <label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300"> <span><strong>Save:</strong> Save form, verify draft and undo session are cleared</span></label>
+                    <label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300"> <span><strong>Dismiss:</strong> Dismiss banner, verify draft cleared from database</span></label>
+                    <label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-gray-300"> <span><strong>End-to-end:</strong> Use AI assistant to modify form, verify full flow</span></label>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8">
+        <div class="max-w-6xl mx-auto px-6 text-sm text-center">
+            <p>AI Form Builder Integration Plan &middot; CRTX-498 &middot; Lumion AI Assistant</p>
+            <p class="mt-1">2 review rounds &middot; 6 antagonistic agents &middot; 11 files &middot; 0 blocking flaws remaining</p>
+        </div>
+    </footer>
+
+</body>
+</html>
