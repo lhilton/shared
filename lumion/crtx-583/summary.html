@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant Prompt Refinement — Executive Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        spring: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        sage: {
+                            50: '#f6f7f4',
+                            100: '#e8ebe3',
+                            200: '#d4d9ca',
+                            300: '#b5bea6',
+                            400: '#95a183',
+                            500: '#778768',
+                            600: '#5e6c52',
+                            700: '#4a5541',
+                            800: '#3d4636',
+                            900: '#343b2f',
+                        },
+                        petal: {
+                            50: '#fdf4f8',
+                            100: '#fce7f1',
+                            200: '#fbcfe4',
+                            300: '#f9a8cc',
+                            400: '#f472a8',
+                            500: '#ec4899',
+                            600: '#db2777',
+                        },
+                        sky: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #166534 0%, #15803d 25%, #22c55e 60%, #86efac 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .source-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .before-after-divider {
+            position: relative;
+        }
+        .before-after-divider::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: linear-gradient(to bottom, #bbf7d0, #22c55e, #bbf7d0);
+        }
+
+        table th {
+            text-align: left;
+        }
+
+        .metric-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        @media print {
+            .hero-gradient { background: #166534 !important; -webkit-print-color-adjust: exact; }
+            body { font-size: 11pt; }
+        }
+    </style>
+</head>
+<body class="bg-sage-50 text-gray-800 antialiased">
+
+    <!-- Hero -->
+    <header class="hero-gradient text-white">
+        <div class="max-w-5xl mx-auto px-6 py-16 md:py-20">
+            <div class="fade-in" style="animation-delay: 0.1s">
+                <p class="text-spring-200 text-sm font-semibold tracking-widest uppercase mb-3">Engineering Summary &middot; March 2026</p>
+                <h1 class="text-3xl md:text-5xl font-800 leading-tight mb-4">
+                    AI Assistant<br>Prompt Refinement
+                </h1>
+                <p class="text-spring-100 text-lg md:text-xl max-w-2xl leading-relaxed">
+                    A research-backed overhaul of the Lumion AI Assistant's system prompt, grounded in production guidance from OpenAI, Anthropic, and enterprise SaaS leaders.
+                </p>
+            </div>
+            <div class="mt-8 flex flex-wrap gap-3 fade-in" style="animation-delay: 0.3s">
+                <span class="bg-white/15 backdrop-blur-sm border border-white/20 text-white px-4 py-1.5 rounded-full text-sm font-medium">Lee Hilton</span>
+                <span class="bg-white/15 backdrop-blur-sm border border-white/20 text-white px-4 py-1.5 rounded-full text-sm font-medium">Branch: lhilton/refine-ai-prompt</span>
+                <span class="bg-white/15 backdrop-blur-sm border border-white/20 text-white px-4 py-1.5 rounded-full text-sm font-medium">4 Commits</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-16">
+
+        <!-- Executive Summary -->
+        <section class="fade-in" style="animation-delay: 0.4s">
+            <div class="bg-white rounded-2xl shadow-sm border border-sage-200 p-8 md:p-10">
+                <h2 class="text-2xl font-bold text-spring-800 mb-4">Executive Summary</h2>
+                <div class="prose prose-lg text-gray-700 leading-relaxed max-w-none space-y-4">
+                    <p>
+                        The Lumion AI Assistant's school-tier system prompt has been completely rewritten from a minimal 14-line instruction set to a <strong>240+ line, research-backed prompt architecture</strong>. This work was informed by a comprehensive research document (<em>unified-guide.md</em>) that synthesizes production guidance from seven authoritative sources.
+                    </p>
+                    <p>
+                        The new prompt introduces <strong>analytical rigor</strong> (statistical trap detection, data grounding prohibitions), <strong>domain locking</strong> (CRM-only scope with warm off-topic handling), <strong>security guardrails</strong> (multi-tenant data isolation), and <strong>structured data presentation</strong> (layered insight delivery). It also upgrades the school tier from GPT-5-mini to GPT-5.2 for stronger tool-calling performance.
+                    </p>
+                    <p>
+                        Supporting infrastructure changes include an N+1 query fix in the AgentOrchestrator, unresolved placeholder detection, timezone safety, and tier-aware model routing.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Metrics -->
+        <section class="fade-in" style="animation-delay: 0.5s">
+            <h2 class="text-2xl font-bold text-spring-800 mb-6">At a Glance</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl border border-sage-200 p-6 text-center card-hover">
+                    <div class="metric-ring bg-spring-100 text-spring-700 mx-auto mb-3">14→240</div>
+                    <p class="text-sm font-semibold text-gray-600">Prompt Lines</p>
+                    <p class="text-xs text-gray-400 mt-1">17x more guidance</p>
+                </div>
+                <div class="bg-white rounded-xl border border-sage-200 p-6 text-center card-hover">
+                    <div class="metric-ring bg-sky-100 text-sky-700 mx-auto mb-3">8</div>
+                    <p class="text-sm font-semibold text-gray-600">Dynamic Variables</p>
+                    <p class="text-xs text-gray-400 mt-1">Personalized per session</p>
+                </div>
+                <div class="bg-white rounded-xl border border-sage-200 p-6 text-center card-hover">
+                    <div class="metric-ring bg-petal-100 text-petal-600 mx-auto mb-3">7</div>
+                    <p class="text-sm font-semibold text-gray-600">Research Sources</p>
+                    <p class="text-xs text-gray-400 mt-1">Industry-leading guidance</p>
+                </div>
+                <div class="bg-white rounded-xl border border-sage-200 p-6 text-center card-hover">
+                    <div class="metric-ring bg-amber-100 text-amber-700 mx-auto mb-3">5.2</div>
+                    <p class="text-sm font-semibold text-gray-600">GPT Model Upgrade</p>
+                    <p class="text-xs text-gray-400 mt-1">From GPT-5-mini</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Before / After -->
+        <section class="fade-in" style="animation-delay: 0.55s">
+            <h2 class="text-2xl font-bold text-spring-800 mb-6">What Changed</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Before -->
+                <div class="bg-white rounded-2xl border border-red-200 p-6 relative">
+                    <span class="absolute -top-3 left-4 bg-red-100 text-red-700 px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide">Before</span>
+                    <h3 class="font-semibold text-gray-800 mt-2 mb-3">14-Line Minimal Prompt</h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-400 mt-0.5">&#x2717;</span>
+                            <span>Basic identity statement only</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-400 mt-0.5">&#x2717;</span>
+                            <span>No analytical methodology</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-400 mt-0.5">&#x2717;</span>
+                            <span>No data grounding rules — could fabricate numbers</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-400 mt-0.5">&#x2717;</span>
+                            <span>No domain scope boundaries</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-400 mt-0.5">&#x2717;</span>
+                            <span>Tool list embedded in prompt text</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-400 mt-0.5">&#x2717;</span>
+                            <span>No structured response format</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-red-400 mt-0.5">&#x2717;</span>
+                            <span>GPT-5-mini for all tiers</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- After -->
+                <div class="bg-white rounded-2xl border border-spring-300 p-6 relative shadow-sm">
+                    <span class="absolute -top-3 left-4 bg-spring-100 text-spring-700 px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide">After</span>
+                    <h3 class="font-semibold text-gray-800 mt-2 mb-3">240+ Line Research-Backed Prompt</h3>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li class="flex items-start gap-2">
+                            <span class="text-spring-500 mt-0.5">&#x2713;</span>
+                            <span>Full identity, scope boundaries, and domain relevance checks</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-spring-500 mt-0.5">&#x2713;</span>
+                            <span>Senior analyst methodology with 5-point statistical trap checking</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-spring-500 mt-0.5">&#x2713;</span>
+                            <span>Strict data grounding — only cite numbers from tool results</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-spring-500 mt-0.5">&#x2713;</span>
+                            <span>IN-SCOPE / OUT-OF-SCOPE with warm off-topic handling</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-spring-500 mt-0.5">&#x2713;</span>
+                            <span>Tools delivered via API parameter, not prompt injection</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-spring-500 mt-0.5">&#x2713;</span>
+                            <span>5-layer data presentation (finding → data → interpretation → caveats → next steps)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-spring-500 mt-0.5">&#x2713;</span>
+                            <span>GPT-5.2 for school tier (2x tool-calling accuracy)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Foundation -->
+        <section class="fade-in" style="animation-delay: 0.6s">
+            <h2 class="text-2xl font-bold text-spring-800 mb-2">Research Foundation</h2>
+            <p class="text-gray-500 mb-6">All prompt decisions trace to documented guidance in <em>unified-guide.md</em>, compiled from these original sources:</p>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Source 1 -->
+                <div class="bg-white rounded-xl border border-sage-200 p-5 card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="source-tag bg-sky-100 text-sky-700">LLM Provider</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 text-sm">OpenAI GPT-4.1 &amp; GPT-5.x Prompting Guides</h3>
+                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">Canonical prompt skeleton, section ordering for cache optimization (50-90% cost reduction), three essential agentic components (+20% SWE-bench), strict structured outputs, tool calling via API parameter (+2% accuracy).</p>
+                </div>
+
+                <!-- Source 2 -->
+                <div class="bg-white rounded-xl border border-sage-200 p-5 card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="source-tag bg-sky-100 text-sky-700">LLM Provider</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Anthropic Documentation</h3>
+                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">General prompting principles, instruction clarity guidance, and best practices for tool-use patterns in production assistants.</p>
+                </div>
+
+                <!-- Source 3 -->
+                <div class="bg-white rounded-xl border border-sage-200 p-5 card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="source-tag bg-spring-100 text-spring-700">Production SaaS</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Intercom Fin</h3>
+                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">Multi-stage RAG pipeline architecture, confidence-threshold disambiguation (fallback instead of hallucinating), configurable guidance rules per conversation.</p>
+                </div>
+
+                <!-- Source 4 -->
+                <div class="bg-white rounded-xl border border-sage-200 p-5 card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="source-tag bg-spring-100 text-spring-700">Production SaaS</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Zendesk AI</h3>
+                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">Multi-agent architecture evolution (Task Identification → Conversational RAG → Procedure Compilation), model swappability as a production requirement.</p>
+                </div>
+
+                <!-- Source 5 -->
+                <div class="bg-white rounded-xl border border-sage-200 p-5 card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="source-tag bg-spring-100 text-spring-700">Production SaaS</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Salesforce Agentforce</h3>
+                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">Topic-based agent architecture, Einstein Trust Layer for PII masking, Judge &amp; Jury ensemble approach for hallucination minimization.</p>
+                </div>
+
+                <!-- Source 6 -->
+                <div class="bg-white rounded-xl border border-sage-200 p-5 card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="source-tag bg-spring-100 text-spring-700">Production SaaS</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 text-sm">ThoughtSpot Spotter &amp; Databricks Genie</h3>
+                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">Conversational BI patterns: senior analyst methodology, proactive statistical trap detection, layered data presentation structure.</p>
+                </div>
+
+                <!-- Source 7 -->
+                <div class="bg-white rounded-xl border border-sage-200 p-5 card-hover">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="source-tag bg-red-100 text-red-700">Security</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 text-sm">OWASP 2025 LLM Top 10</h3>
+                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">Prompt injection ranked #1 threat. Layered defenses: input validation, action-selector pattern, structured outputs, anti-leakage instructions backed by server-side output filtering.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research → Implementation Mapping -->
+        <section class="fade-in" style="animation-delay: 0.65s">
+            <h2 class="text-2xl font-bold text-spring-800 mb-2">How Research Maps to Implementation</h2>
+            <p class="text-gray-500 mb-6">Each prompt section traces directly to a unified-guide recommendation and its original source.</p>
+
+            <div class="bg-white rounded-2xl border border-sage-200 overflow-hidden shadow-sm">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-spring-50 border-b border-sage-200">
+                                <th class="px-5 py-3.5 font-semibold text-spring-800 w-1/4">Unified-Guide Section</th>
+                                <th class="px-5 py-3.5 font-semibold text-spring-800 w-1/4">Original Source</th>
+                                <th class="px-5 py-3.5 font-semibold text-spring-800 w-1/2">What We Shipped</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-sage-100">
+                            <tr>
+                                <td class="px-5 py-4 font-medium text-gray-800">§1 Prompt Architecture</td>
+                                <td class="px-5 py-4 text-gray-600">OpenAI GPT-4.1 Guide</td>
+                                <td class="px-5 py-4 text-gray-600">Static content first (Identity → Rules → Format), dynamic <code class="bg-sage-100 px-1.5 py-0.5 rounded text-xs">&lt;user_context&gt;</code> block last. Maximizes prompt cache hits across 260+ schools.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-5 py-4 font-medium text-gray-800">§2 Tool Calling</td>
+                                <td class="px-5 py-4 text-gray-600">OpenAI GPT-4.1 (+20% SWE-bench)</td>
+                                <td class="px-5 py-4 text-gray-600">Persistence, tool-calling mandate, planning. Read-only searches execute immediately; writes require confirmation. Full pagination without asking "want more?"</td>
+                            </tr>
+                            <tr>
+                                <td class="px-5 py-4 font-medium text-gray-800">§3 RAG Grounding</td>
+                                <td class="px-5 py-4 text-gray-600">OpenAI GPT-4.1, Microsoft Azure AI</td>
+                                <td class="px-5 py-4 text-gray-600">"You may ONLY cite numbers that appear in tool results. NEVER invent, estimate, or extrapolate." Graduated confidence responses.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-5 py-4 font-medium text-gray-800">§4 Multi-Tenant Security</td>
+                                <td class="px-5 py-4 text-gray-600">OWASP 2025, AWS Prescriptive Guidance</td>
+                                <td class="px-5 py-4 text-gray-600">"You can ONLY access data belonging to {{institution_name}}." Backend-enforced tenant isolation; prompt provides guidance on top of ORM-level scoping.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-5 py-4 font-medium text-gray-800">§5 Tone &amp; Communication</td>
+                                <td class="px-5 py-4 text-gray-600">Intercom Fin, Zendesk AI</td>
+                                <td class="px-5 py-4 text-gray-600">8th–10th grade reading level, action-oriented. NEVER claim job placement rates or salary expectations without explicit data.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-5 py-4 font-medium text-gray-800">§7 Production Leaders</td>
+                                <td class="px-5 py-4 text-gray-600">Intercom, Zendesk, Salesforce</td>
+                                <td class="px-5 py-4 text-gray-600">Architecture over prompts: retrieval + reranking + guardrails. Domain relevance check prevents over-refusal. Warm off-topic redirect pattern.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-5 py-4 font-medium text-gray-800">§13 Domain Restriction</td>
+                                <td class="px-5 py-4 text-gray-600">ThoughtSpot Spotter, Databricks Genie</td>
+                                <td class="px-5 py-4 text-gray-600">Senior data analyst methodology. Proactive trap checking: cohort age bias, survivorship bias, Simpson's paradox, seasonality, selection bias. 5-layer data presentation.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-5 py-4 font-medium text-gray-800">§8 Model Selection</td>
+                                <td class="px-5 py-4 text-gray-600">OpenAI Benchmarks (MCPMark 52.6%)</td>
+                                <td class="px-5 py-4 text-gray-600">School tier upgraded to GPT-5.2 (best tool-calling performance). Student tier stays on GPT-5-mini (94% groundedness, 7x cheaper).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Improvements -->
+        <section class="fade-in" style="animation-delay: 0.7s">
+            <h2 class="text-2xl font-bold text-spring-800 mb-6">Supporting Technical Improvements</h2>
+            <div class="grid md:grid-cols-2 gap-5">
+                <div class="bg-white rounded-xl border border-sage-200 p-6 card-hover">
+                    <div class="w-10 h-10 rounded-lg bg-sky-100 flex items-center justify-center mb-3">
+                        <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-1.5">N+1 Query Fix</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">AgentOrchestrator now uses <code class="bg-sage-100 px-1 py-0.5 rounded text-xs">loadMissing('roles')</code> to prevent redundant database queries when resolving user roles for prompt interpolation.</p>
+                </div>
+                <div class="bg-white rounded-xl border border-sage-200 p-6 card-hover">
+                    <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center mb-3">
+                        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-1.5">Placeholder Detection</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">After prompt interpolation, a regex scan detects any unresolved <code class="bg-sage-100 px-1 py-0.5 rounded text-xs">{{placeholders}}</code> and logs a warning — catching configuration mismatches before they reach users.</p>
+                </div>
+                <div class="bg-white rounded-xl border border-sage-200 p-6 card-hover">
+                    <div class="w-10 h-10 rounded-lg bg-spring-100 flex items-center justify-center mb-3">
+                        <svg class="w-5 h-5 text-spring-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-1.5">Timezone Safety</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">New <code class="bg-sage-100 px-1 py-0.5 rounded text-xs">safeTimezone()</code> helper validates IANA timezone strings before use, falling back to UTC on invalid input. Prevents exceptions from corrupted user preferences.</p>
+                </div>
+                <div class="bg-white rounded-xl border border-sage-200 p-6 card-hover">
+                    <div class="w-10 h-10 rounded-lg bg-petal-100 flex items-center justify-center mb-3">
+                        <svg class="w-5 h-5 text-petal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-1.5">Tier-Aware Model Routing</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Model selection is now tier-aware: school conversations use GPT-5.2 (strongest tool calling), student conversations use GPT-5-mini (highest groundedness, lowest cost).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Variables -->
+        <section class="fade-in" style="animation-delay: 0.75s">
+            <h2 class="text-2xl font-bold text-spring-800 mb-6">Template Variables</h2>
+            <p class="text-gray-500 mb-4">Eight dynamic variables are interpolated at runtime by AgentOrchestrator, enabling per-session personalization while keeping the static prompt prefix cacheable.</p>
+            <div class="bg-white rounded-2xl border border-sage-200 p-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-sage-50 rounded-lg px-4 py-3">
+                        <code class="text-xs font-semibold text-spring-700">{{assistant_name}}</code>
+                        <p class="text-xs text-gray-500 mt-1">Institution's AI name</p>
+                    </div>
+                    <div class="bg-sage-50 rounded-lg px-4 py-3">
+                        <code class="text-xs font-semibold text-spring-700">{{institution_name}}</code>
+                        <p class="text-xs text-gray-500 mt-1">School display name</p>
+                    </div>
+                    <div class="bg-sage-50 rounded-lg px-4 py-3">
+                        <code class="text-xs font-semibold text-spring-700">{{school_id}}</code>
+                        <p class="text-xs text-gray-500 mt-1">Institution primary key</p>
+                    </div>
+                    <div class="bg-sage-50 rounded-lg px-4 py-3">
+                        <code class="text-xs font-semibold text-spring-700">{{user_name}}</code>
+                        <p class="text-xs text-gray-500 mt-1">Authenticated user</p>
+                    </div>
+                    <div class="bg-sage-50 rounded-lg px-4 py-3">
+                        <code class="text-xs font-semibold text-spring-700">{{user_role}}</code>
+                        <p class="text-xs text-gray-500 mt-1">Primary Spatie role</p>
+                    </div>
+                    <div class="bg-sage-50 rounded-lg px-4 py-3">
+                        <code class="text-xs font-semibold text-spring-700">{{timezone}}</code>
+                        <p class="text-xs text-gray-500 mt-1">User's IANA timezone</p>
+                    </div>
+                    <div class="bg-sage-50 rounded-lg px-4 py-3">
+                        <code class="text-xs font-semibold text-spring-700">{{current_date}}</code>
+                        <p class="text-xs text-gray-500 mt-1">Date in user TZ</p>
+                    </div>
+                    <div class="bg-sage-50 rounded-lg px-4 py-3">
+                        <code class="text-xs font-semibold text-spring-700">{{tool_descriptions}}</code>
+                        <p class="text-xs text-gray-500 mt-1">Available MCP tools</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Line -->
+        <section class="fade-in" style="animation-delay: 0.8s">
+            <div class="bg-gradient-to-br from-spring-800 to-spring-600 rounded-2xl p-8 md:p-10 text-white">
+                <h2 class="text-2xl font-bold mb-4">Bottom Line</h2>
+                <p class="text-spring-100 leading-relaxed text-lg">
+                    This change transforms the AI Assistant from a generic chatbot with a brief instruction into a <strong class="text-white">disciplined, domain-locked CRM analyst</strong> that grounds every response in real data, detects statistical traps before presenting analysis, and handles off-topic requests with warmth rather than robotic refusal — all backed by the same production patterns used by Intercom, Zendesk, and Salesforce.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-sage-200 mt-12">
+        <div class="max-w-5xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+            <p>Lumion &middot; AI Assistant Engineering &middot; March 2026</p>
+            <p>Research: <em>unified-guide.md</em> &middot; Branch: lhilton/refine-ai-prompt</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
