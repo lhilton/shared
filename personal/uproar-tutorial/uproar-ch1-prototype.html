@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Godot Guide — Uproar Chapter 1 — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#fbfbfd;
+  --surface:#ffffff;
+  --ink:#1d1d1f;
+  --ink-2:#6e6e73;
+  --ink-3:#86868b;
+  --hairline:#d2d2d7;
+  --hairline-soft:#e8e8ed;
+  --accent:#0066cc;
+  --accent-fill:#0071e3;
+  --accent-hover:#0077ed;
+  --accent-soft:rgba(0,102,204,.08);
+  --godot:#478cbf;
+  --warn-bg:#fff6e9;
+  --warn-ink:#8a5200;
+  --warn-ink-strong:#7a4800;
+  --note-bg:#f2f2f5;
+  --key-bg:#eef5fd;
+  --key-ink:#0a4a86;
+  --key-ink-strong:#053b6e;
+  --code-bg:#f0f0f3;
+  --pre-bg:#f5f5f7;
+  --th-bg:#f8f8fa;
+  --nav-bg:rgba(251,251,253,.78);
+  --hover-bg:rgba(0,0,0,.05);
+  --cb-bg:#ffffff;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 6px 20px rgba(0,0,0,.07);
+  --cc0-bg:#e6f4ea;  --cc0-ink:#1a6c34;
+  --ccby-bg:#fdf0e3; --ccby-ink:#8a5200;
+  --paid-bg:#f0f0f3;
+  --radius:18px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+/* Dark palette — applied automatically by system preference, or manually
+   when the theme button sets data-theme="dark" on <html>. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#000000;
+    --surface:#1c1c1e;
+    --ink:#f5f5f7;
+    --ink-2:#a1a1a6;
+    --ink-3:#8e8e93;
+    --hairline:#3a3a3c;
+    --hairline-soft:#2c2c2e;
+    --accent:#2997ff;
+    --accent-fill:#0a84ff;
+    --accent-hover:#3ba2ff;
+    --accent-soft:rgba(41,151,255,.16);
+    --godot:#6fb3e0;
+    --warn-bg:#38290f;
+    --warn-ink:#ffb340;
+    --warn-ink-strong:#ffc871;
+    --note-bg:#2c2c2e;
+    --key-bg:#0f2a44;
+    --key-ink:#7fbcf7;
+    --key-ink-strong:#a8d3fb;
+    --code-bg:#2c2c2e;
+    --pre-bg:#131315;
+    --th-bg:#2c2c2e;
+    --nav-bg:rgba(0,0,0,.7);
+    --hover-bg:rgba(255,255,255,.09);
+    --cb-bg:#2c2c2e;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+    --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+    --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+    --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+    --paid-bg:#2c2c2e;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#000000;
+  --surface:#1c1c1e;
+  --ink:#f5f5f7;
+  --ink-2:#a1a1a6;
+  --ink-3:#8e8e93;
+  --hairline:#3a3a3c;
+  --hairline-soft:#2c2c2e;
+  --accent:#2997ff;
+  --accent-fill:#0a84ff;
+  --accent-hover:#3ba2ff;
+  --accent-soft:rgba(41,151,255,.16);
+  --godot:#6fb3e0;
+  --warn-bg:#38290f;
+  --warn-ink:#ffb340;
+  --warn-ink-strong:#ffc871;
+  --note-bg:#2c2c2e;
+  --key-bg:#0f2a44;
+  --key-ink:#7fbcf7;
+  --key-ink-strong:#a8d3fb;
+  --code-bg:#2c2c2e;
+  --pre-bg:#131315;
+  --th-bg:#2c2c2e;
+  --nav-bg:rgba(0,0,0,.7);
+  --hover-bg:rgba(255,255,255,.09);
+  --cb-bg:#2c2c2e;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+  --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+  --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+  --paid-bg:#2c2c2e;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:76px;}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+:focus-visible{outline:2px solid var(--accent-fill);outline-offset:3px;border-radius:6px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:#000;color:#f5f5f7;min-height:86vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:110px 22px 90px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(72% 52% at 50% 8%, rgba(71,140,191,.26), transparent 68%);
+}
+.hero > *{position:relative;z-index:1;}
+.eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--godot);margin:0 0 18px;
+}
+.hero h1{
+  font-size:clamp(42px,8.2vw,92px);font-weight:600;letter-spacing:-.035em;
+  line-height:1.03;margin:0 0 22px;max-width:14ch;
+}
+.hero h1 em{font-style:normal;color:#8fb9d9;}
+.hero p.lede{
+  font-size:clamp(17px,2.2vw,21px);color:#a1a1a6;max-width:46ch;margin:0 auto 40px;
+  line-height:1.45;
+}
+.hero-meta{display:flex;gap:38px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:8px;}
+.stat{min-width:96px;}
+.stat b{display:block;font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.1;}
+.stat span{display:block;font-size:12px;color:#86868b;letter-spacing:.03em;margin-top:5px;}
+.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ring{transform:rotate(-90deg);}
+.ring circle{fill:none;stroke-linecap:round;}
+.ring .track{stroke:rgba(255,255,255,.14);}
+.ring .fill{stroke:url(#grad);transition:stroke-dashoffset .7s cubic-bezier(.32,.72,0,1);}
+.ring-label{font-size:12px;color:#86868b;letter-spacing:.03em;}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:8px;margin-top:44px;background:var(--accent-fill);
+  color:#fff;padding:12px 24px;border-radius:980px;font-size:16px;font-weight:500;border:none;
+  cursor:pointer;transition:transform .2s,background .2s;font-family:inherit;
+}
+.hero-cta:hover{background:var(--accent-hover);transform:scale(1.02);text-decoration:none;}
+
+/* ---------- NAV ---------- */
+nav{
+  position:sticky;top:0;z-index:60;background:var(--nav-bg);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--hairline-soft);
+}
+.nav-in{
+  max-width:1080px;margin:0 auto;padding:0 20px;height:54px;
+  display:flex;align-items:center;gap:16px;
+}
+.nav-title{font-size:14px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;}
+.nav-links{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-links a{
+  font-size:13px;color:var(--ink-2);padding:6px 11px;border-radius:980px;white-space:nowrap;
+  transition:background .15s,color .15s;
+}
+.nav-links a:hover{background:var(--hover-bg);color:var(--ink);text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.mini-count{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.mini-ring .track{stroke:var(--hairline);}
+.mini-ring .fill{stroke:var(--accent-fill);}
+.ghost-btn{
+  font-family:inherit;font-size:13px;color:var(--accent);background:none;border:none;
+  cursor:pointer;padding:6px 8px;border-radius:8px;white-space:nowrap;
+}
+.ghost-btn:hover{background:var(--accent-soft);}
+.icon-btn{font-size:15px;line-height:1;padding:7px 9px;}
+
+/* ---------- LAYOUT ---------- */
+section{max-width:800px;margin:0 auto;padding:88px 22px 0;}
+section:last-of-type{padding-bottom:110px;}
+.phase-head{margin-bottom:26px;}
+.phase-head .eyebrow{color:var(--accent);margin-bottom:10px;}
+.phase-head h2{
+  font-size:clamp(29px,4.4vw,42px);font-weight:600;letter-spacing:-.026em;
+  margin:0 0 14px;line-height:1.1;
+}
+.phase-meta{display:flex;align-items:center;gap:12px;margin-top:16px;}
+.pbar{height:4px;background:var(--hairline-soft);border-radius:99px;flex:1;overflow:hidden;}
+.pbar i{display:block;height:100%;width:0;background:var(--accent-fill);border-radius:99px;transition:width .5s cubic-bezier(.32,.72,0,1);}
+.pcount{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.bluf{
+  font-size:19px;line-height:1.5;color:var(--ink);margin:0 0 8px;font-weight:450;
+}
+.bluf b{font-weight:600;}
+.bluf .lbl{color:var(--accent);font-weight:600;}
+
+/* ---------- STEP CARD ---------- */
+.step{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:19px 21px;margin-bottom:12px;
+  box-shadow:var(--shadow-sm);transition:opacity .3s,border-color .2s,box-shadow .2s;
+}
+.step:hover{border-color:var(--hairline);}
+.step.done{opacity:.5;}
+.cb{
+  flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:1.6px solid var(--hairline);
+  background:var(--cb-bg);cursor:pointer;margin-top:2px;padding:0;position:relative;
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.cb:hover{border-color:var(--accent-fill);}
+.cb:active{transform:scale(.9);}
+.cb::after{
+  content:"";position:absolute;left:8px;top:4px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.cb[aria-checked="true"]{background:var(--accent-fill);border-color:var(--accent-fill);}
+.cb[aria-checked="true"]::after{transform:rotate(45deg) scale(1);}
+.step-body{flex:1;min-width:0;}
+.step-title{
+  font-size:17px;font-weight:600;letter-spacing:-.012em;margin:0 0 7px;cursor:pointer;
+  line-height:1.35;
+}
+.step.done .step-title{text-decoration:line-through;text-decoration-color:var(--hairline);color:var(--ink-2);}
+.step p{margin:0 0 10px;font-size:15px;color:var(--ink-2);line-height:1.55;}
+.step p:last-child{margin-bottom:0;}
+.step p strong,.step li strong{color:var(--ink);font-weight:600;}
+.step ul,.step ol{margin:0 0 10px;padding-left:20px;font-size:15px;color:var(--ink-2);line-height:1.6;}
+.step li{margin-bottom:5px;}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:2px 6px;border-radius:5px;color:var(--ink);}
+pre{
+  background:var(--pre-bg);border:1px solid var(--hairline-soft);border-radius:12px;padding:15px 16px;
+  overflow-x:auto;margin:0 0 12px;
+}
+pre code{background:none;padding:0;font-size:13px;line-height:1.65;display:block;white-space:pre;}
+
+/* ---------- CALLOUTS ---------- */
+.call{border-radius:12px;padding:12px 15px;font-size:14.5px;line-height:1.55;margin:0 0 11px;}
+.call b{font-weight:600;}
+.call.warn{background:var(--warn-bg);color:var(--warn-ink);}
+.call.warn b{color:var(--warn-ink-strong);}
+.call.note{background:var(--note-bg);color:var(--ink-2);}
+.call.note b{color:var(--ink);}
+.call.key{background:var(--key-bg);color:var(--key-ink);}
+.call.key b{color:var(--key-ink-strong);}
+.exp{display:block;margin:0 0 11px;font-size:13.5px;color:var(--ink-3);padding-left:11px;border-left:2px solid var(--hairline-soft);line-height:1.55;}
+.exp b{color:var(--ink-2);}
+.src{font-size:12px;color:var(--ink-3);letter-spacing:.01em;}
+.src a{color:var(--ink-3);text-decoration:underline;text-decoration-color:var(--hairline);}
+
+/* ---------- TABLE ---------- */
+.tbl-wrap{overflow-x:auto;margin:0 0 12px;border:1px solid var(--hairline-soft);border-radius:12px;}
+table{border-collapse:collapse;width:100%;font-size:14px;}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--hairline-soft);}
+th{font-weight:600;color:var(--ink);background:var(--th-bg);font-size:12.5px;letter-spacing:.02em;}
+tr:last-child td{border-bottom:none;}
+td{color:var(--ink-2);}
+td:first-child{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;}
+
+/* ---------- ASSET / LINK CARDS ---------- */
+.link-card{
+  display:block;background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:15px 18px;margin-bottom:10px;transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.link-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg);border-color:var(--hairline);text-decoration:none;}
+.link-card h4{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:-.01em;}
+.link-card p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.badge{
+  display:inline-block;font-size:11px;font-weight:600;letter-spacing:.03em;padding:3px 9px;
+  border-radius:980px;margin-left:8px;vertical-align:2px;
+}
+.badge.cc0{background:var(--cc0-bg);color:var(--cc0-ink);}
+.badge.ccby{background:var(--ccby-bg);color:var(--ccby-ink);}
+.badge.paid{background:var(--paid-bg);color:var(--ink-2);}
+
+/* ---------- SCHEDULE ---------- */
+.day{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:17px 20px;margin-bottom:10px;
+  transition:opacity .3s;
+}
+.day.done{opacity:.5;}
+.day-date{
+  flex:0 0 62px;font-size:13px;font-weight:600;color:var(--accent);letter-spacing:-.01em;
+  padding-top:2px;
+}
+.day.done .day-date{color:var(--ink-3);}
+.day h4{margin:0 0 5px;font-size:15.5px;font-weight:600;letter-spacing:-.01em;}
+.day p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.day .bench{color:var(--ink-2);font-size:13.5px;margin-top:6px;}
+.day .bench b{color:var(--ink);}
+
+/* ---------- DETAILS ---------- */
+details{
+  background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:0;margin-bottom:10px;overflow:hidden;
+}
+summary{
+  cursor:pointer;padding:15px 18px;font-size:15.5px;font-weight:600;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;letter-spacing:-.01em;
+}
+summary::-webkit-details-marker{display:none;}
+summary::after{content:"+";font-weight:400;font-size:19px;color:var(--ink-3);}
+details[open] summary::after{content:"–";}
+.details-body{padding:0 18px 16px;font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+.details-body ul{padding-left:19px;margin:0;}
+.details-body li{margin-bottom:7px;word-break:break-word;}
+
+/* ---------- FOOTER ---------- */
+footer{
+  border-top:1px solid var(--hairline-soft);margin-top:70px;padding:34px 22px 60px;
+  text-align:center;font-size:12.5px;color:var(--ink-3);line-height:1.7;
+}
+.save-dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;background:#34c759;
+  margin-right:6px;vertical-align:1px;opacity:0;transition:opacity .3s;
+}
+.save-dot.on{opacity:1;}
+
+/* ---------- REVEAL ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.32,.72,0,1);}
+.rv.in{opacity:1;transform:none;}
+
+@media (max-width:640px){
+  .hero{min-height:auto;padding:80px 20px 64px;}
+  .hero-meta{gap:26px;}
+  .nav-title{display:none;}
+  section{padding-top:64px;}
+  .day{flex-wrap:wrap;}
+  .day-date{flex-basis:100%;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  html{scroll-behavior:auto;}
+  .rv{opacity:1;transform:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <svg width="0" height="0" aria-hidden="true"><defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#478cbf"/><stop offset="100%" stop-color="#5ac8fa"/>
+    </linearGradient>
+  </defs></svg>
+
+  <p class="eyebrow">Godot Guide · Uproar · Godot 4.7.1-stable</p>
+  <h1>Chapter One <em>Prototype</em></h1>
+  <p class="lede">Build a giant gorilla and a city to wreck. A step-by-step path from your first Node3D to a working prototype — third-person camera, climbing, punching, collapsing buildings. Check off each step as you go; your progress is saved.</p>
+
+  <div class="hero-meta">
+    <div class="ring-wrap">
+      <svg class="ring" width="128" height="128" viewBox="0 0 128 128" aria-hidden="true">
+        <circle class="track" cx="64" cy="64" r="54" stroke-width="9"/>
+        <circle id="heroRing" class="fill" cx="64" cy="64" r="54" stroke-width="9"
+                stroke-dasharray="339.29" stroke-dashoffset="339.29"/>
+      </svg>
+      <span class="ring-label"><b id="heroPct" style="color:#f5f5f7;font-size:14px;">0%</b> complete</span>
+    </div>
+    <div class="stat"><b id="daysLeft">—</b><span>DAYS TO JAM</span></div>
+    <div class="stat"><b id="stepsLeft">—</b><span>STEPS LEFT</span></div>
+    <div class="stat"><b>7</b><span>PHASES</span></div>
+  </div>
+
+  <button class="hero-cta" id="resumeBtn">Start where you left off &nbsp;↓</button>
+</header>
+
+<!-- ================= NAV ================= -->
+<nav>
+  <div class="nav-in">
+    <span class="nav-title">Uproar · Ch 1</span>
+    <div class="nav-links">
+      <a href="#p0">Setup</a><a href="#p1">Controller</a><a href="#p2">Buildings</a>
+      <a href="#p3">Climbing</a><a href="#p4">Punching</a><a href="#p5">Destruction</a>
+      <a href="#p6">Polish</a><a href="#assets">Assets</a><a href="#plan">Plan</a>
+    </div>
+    <div class="nav-right">
+      <svg class="ring mini-ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle class="track" cx="13" cy="13" r="10.5" stroke-width="3"/>
+        <circle id="miniRing" class="fill" cx="13" cy="13" r="10.5" stroke-width="3"
+                stroke-dasharray="65.97" stroke-dashoffset="65.97"/>
+      </svg>
+      <span class="mini-count"><span class="save-dot" id="saveDot"></span><span id="navCount">0 / 0</span></span>
+      <button class="ghost-btn icon-btn" id="themeBtn" title="Switch appearance" aria-label="Switch appearance">☾</button>
+      <button class="ghost-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= TL;DR ================= -->
+<section id="tldr" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Read this first</p>
+    <h2>The whole plan in five lines</h2>
+  </div>
+  <div class="step" style="display:block;">
+    <ul style="margin:0;padding-left:20px;">
+      <li><strong>Your version guess was right.</strong> Godot <strong>4.7.1-stable</strong> shipped 14 July 2026. Take the <strong>Standard build</strong> (GDScript), not .NET.</li>
+      <li><strong>Build in this order:</strong> controller → buildings → climbing → punching → destruction → polish. Each phase depends on the one before it.</li>
+      <li><strong>The one non-obvious trap is collision layers.</strong> Set them up properly in Phase 2 and half your later bugs never happen.</li>
+      <li><strong>Destruction is pre-fractured chunks as frozen RigidBody3D nodes.</strong> You unfreeze them on death. No runtime fracture, ever, in a jam.</li>
+      <li><strong>There is no free CC0 rigged gorilla.</strong> The best model is CC-BY, so budget one line of credits.</li>
+    </ul>
+  </div>
+  <p class="src">Version and API claims below are checked against the official Godot documentation. Third-party and unconfirmed items are labelled inline.</p>
+</section>
+
+<!-- ================= PHASE 0 ================= -->
+<section id="p0" class="rv" data-phase="0">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 0</p>
+    <h2>Setup, and a room to stand in</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Install the Standard build, create the project, then build a test level with a floor and a light. You need somewhere to stand before you build anything that stands.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="p0s1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Download Godot 4.7.1-stable, Standard build</h3>
+      <p><strong>Take the Standard build.</strong> The Standard build ships with <strong>GDScript</strong> — Godot's built-in Python-like scripting language. The <strong>.NET build</strong> adds C# support plus an external toolchain you do not want to configure this week.</p>
+      <p><strong>Why it matters:</strong> GDScript has the fastest edit-run loop and the best documentation coverage. For an 11-day jam that is the whole argument.</p>
+      <ol>
+        <li>Open the official archive page for 4.7.1-stable.</li>
+        <li>Download the file for your OS under the heading <strong>Standard</strong>, not <strong>.NET</strong>.</li>
+        <li>Unzip it. Godot is a single executable with no installer — put it wherever you keep tools.</li>
+      </ol>
+      <span class="exp"><b>Expected:</b> double-clicking the executable opens the <strong>Project Manager</strong>, a window listing your existing projects with a <strong>Create</strong> button at the top.</span>
+      <p class="src">Source: <a href="https://godotengine.org/download/archive/4.7.1-stable" target="_blank" rel="noopener">godotengine.org/download/archive/4.7.1-stable</a> · <a href="https://godotengine.org/article/maintenance-release-godot-4-7-1/" target="_blank" rel="noopener">4.7.1 release notes</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="p0s2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Read the five differences from 2D before you click anything</h3>
+      <p><strong>Five things change when you move from 2D to 3D.</strong> Everything else — the scene tree, signals, the inspector, attaching scripts — works exactly as it did on your first two projects.</p>
+      <ul>
+        <li><strong>Node2D becomes Node3D.</strong> Node3D is the base spatial node. Anything with a position in 3D space inherits from it.</li>
+        <li><strong>Y points up.</strong> In 3D, <code>+Y</code> is up, <code>+X</code> is right, and <code>-Z</code> is forward. In 2D, <code>+Y</code> pointed <em>down</em>. This will catch you at least once.</li>
+        <li><strong>1 unit = 1 metre.</strong> Physics is tuned around this. Godot's Jolt documentation states dynamic objects should be roughly 0.1 to 10 m long and static objects 0.1 to 2000 m.</li>
+        <li><strong>Transform holds a basis and an origin.</strong> The <strong>basis</strong> is rotation plus scale; the <strong>origin</strong> is position. Use the <code>position</code> and <code>rotation</code> fields in the Inspector and ignore the basis for now.</li>
+        <li><strong>Nothing renders without a camera and a light.</strong> In 2D everything was visible by default. In 3D you must add them yourself.</li>
+      </ul>
+      <div class="call key"><b>Key point — viewport navigation.</b> In the 3D viewport: <b>right-mouse-drag</b> to look around, <b>middle-mouse-drag</b> to pan, <b>scroll wheel</b> to zoom. Hold <b>right mouse</b> and use <b>W A S D</b> to fly like a first-person game. Press <b>F</b> with a node selected to focus the view on it — you will use F constantly.</div>
+      <div class="call note"><b>Note — gizmos.</b> Selecting a node shows coloured arrows: <b>red is X</b>, <b>green is Y</b>, <b>blue is Z</b>. The keys <b>Q</b> (select), <b>W</b> (move), <b>E</b> (rotate), <b>R</b> (scale) switch gizmo modes.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p0s4">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. Create the project and pick the renderer</h3>
+      <p><strong>The renderer is chosen here and is awkward to change later, so decide about web export now.</strong> This is the one irreversible-feeling decision in the whole setup.</p>
+      <ol>
+        <li>In the Project Manager, click <strong>Create</strong>.</li>
+        <li>Set <strong>Project Name</strong> to <code>GiantGorilla</code>.</li>
+        <li>Set <strong>Project Path</strong> to an <em>empty</em> folder. Godot refuses to create a project in a folder that already has files.</li>
+        <li>Choose the <strong>Renderer</strong>:
+          <ul>
+            <li><strong>Forward+</strong> — best visuals, desktop only. Pick this if you will ship a downloadable build.</li>
+            <li><strong>Compatibility</strong> — OpenGL-based, far more reliable in browsers. Pick this if the jam requires a web playable.</li>
+            <li><strong>Mobile</strong> — not relevant here.</li>
+          </ul>
+        </li>
+        <li>Leave <strong>Version Control Metadata</strong> on <code>Git</code> if you use Git, otherwise set it to <code>None</code>.</li>
+        <li>Click <strong>Create &amp; Edit</strong>.</li>
+      </ol>
+      <span class="exp"><b>Expected:</b> the editor opens on an empty scene, with the <strong>Scene</strong> dock top-left offering <em>Create Root Node: 3D Scene / 2D Scene / User Interface / Other Node</em>.</span>
+      <div class="call warn"><b>Warning:</b> if the jam rules require a browser-playable entry, choose <b>Compatibility</b> now. Switching a Forward+ project to Compatibility later means re-checking every material and light in the game.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p0s6">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">4. Create the folder structure</h3>
+      <p><strong>Make these five folders before you save a single file.</strong> Godot puts everything in the project root by default, and a flat root becomes unnavigable by about the twentieth file.</p>
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>In the <strong>FileSystem</strong> dock (bottom-left), right-click <code>res://</code>.</li>
+        <li>Choose <strong>Create New → Folder…</strong> and name it <code>scene</code>.</li>
+        <li>Repeat for <code>script</code> and <code>asset</code>.</li>
+        <li>Right-click <code>asset</code> and create three folders inside it: <code>model</code>, <code>audio</code>, <code>material</code>.</li>
+      </ol>
+
+      <p><strong>Where everything in this guide belongs:</strong></p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Folder</th><th>Holds</th><th>Files from this guide</th></tr></thead>
+        <tbody>
+          <tr><td><code>res://scene/</code></td><td>Every <code>.tscn</code> scene file</td><td><code>player.tscn</code>, <code>building.tscn</code>, <code>level.tscn</code></td></tr>
+          <tr><td><code>res://script/</code></td><td>Every <code>.gd</code> script file</td><td><code>player.gd</code>, <code>building.gd</code>, <code>hud.gd</code></td></tr>
+          <tr><td><code>res://asset/model/</code></td><td>Imported 3D models</td><td>Gorilla <code>.glb</code>, Kenney city kit, fractured building chunks</td></tr>
+          <tr><td><code>res://asset/audio/</code></td><td>Sound files</td><td>Punch impact, collapse rumble (<code>.wav</code> or <code>.ogg</code>)</td></tr>
+          <tr><td><code>res://asset/material/</code></td><td>Saved materials</td><td>Building <code>.tres</code> materials, if you reuse them</td></tr>
+          <tr><td><code>res://</code> root</td><td>Godot's own files</td><td><code>project.godot</code>, <code>icon.svg</code> — leave these alone</td></tr>
+        </tbody>
+      </table></div>
+
+      <span class="exp"><b>Expected:</b> the FileSystem dock shows <code>asset</code>, <code>scene</code> and <code>script</code> as expandable folders under <code>res://</code>.</span>
+      <div class="call warn"><b>Warning — move files inside Godot, never in your OS file manager.</b> Dragging a file between folders in the <b>FileSystem dock</b> makes Godot rewrite every reference to it. Moving the same file in Windows Explorer or Finder breaks those references silently, and scenes open with missing nodes.</div>
+      <div class="call note"><b>Note — singular folder names.</b> This guide uses <code>scene</code>, <code>script</code> and <code>asset</code> to match the <code>scene/</code> folder you already made. Plurals work equally well; what matters is that you pick one and stay with it.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p0s3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">5. Confirm the physics engine and name your collision layers</h3>
+      <p><strong>Do both of these now, in one visit to Project Settings.</strong> Naming layers early is what stops Phase 2 becoming a guessing game with 32 unlabelled checkboxes.</p>
+      <p><strong>Action — check the physics engine:</strong></p>
+      <ol>
+        <li>Open <strong>Project → Project Settings</strong>.</li>
+        <li>Tick <strong>Advanced Settings</strong> in the top-right of the dialog. Many settings are hidden until you do.</li>
+        <li>In the left tree go to <strong>Physics → 3D</strong>.</li>
+        <li>Confirm <strong>Physics Engine</strong> reads <code>DEFAULT</code> or <code>Jolt Physics</code>.</li>
+      </ol>
+      <p><strong>Action — name the layers</strong> (you will assign them in Phase 2):</p>
+      <ol>
+        <li>In the same dialog go to <strong>Layer Names → 3D Physics</strong>.</li>
+        <li>Type these names into the first five fields:</li>
+      </ol>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Field</th><th>Type this</th></tr></thead>
+        <tbody>
+          <tr><td>Layer 1</td><td><code>World</code></td></tr>
+          <tr><td>Layer 2</td><td><code>Player</code></td></tr>
+          <tr><td>Layer 3</td><td><code>Buildings</code></td></tr>
+          <tr><td>Layer 4</td><td><code>Rubble</code></td></tr>
+          <tr><td>Layer 5</td><td><code>HitDetection</code></td></tr>
+        </tbody>
+      </table></div>
+      <span class="exp"><b>Expected:</b> from now on, hovering a collision layer checkbox anywhere in the Inspector shows the name instead of a bare number.</span>
+      <p><strong>About Jolt:</strong> it became the default for new 3D projects in Godot 4.6. The release notes state the team was "confident enough to remove the experimental label and make Jolt the default physics engine for all new 3D projects." Existing projects keep whatever they were made with.</p>
+      <p class="src">Source: <a href="https://godotengine.org/releases/4.6/" target="_blank" rel="noopener">Godot 4.6 release notes</a> · <a href="https://docs.godotengine.org/en/stable/tutorials/physics/using_jolt_physics.html" target="_blank" rel="noopener">Using Jolt Physics</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="p0s5">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">6. Build a test level: floor, light, sky</h3>
+      <p><strong>Build the room before the character.</strong> Without a floor your gorilla falls forever, and without a light you cannot see whether it fell.</p>
+      <p><strong>Action — create the level scene:</strong></p>
+      <ol>
+        <li>In the <strong>Scene</strong> dock, click <strong>3D Scene</strong>. This creates a root node called <code>Node3D</code>.</li>
+        <li>Press <strong>F2</strong> and rename it to <code>Level</code>.</li>
+        <li>Press <strong>Ctrl+S</strong> (<strong>Cmd+S</strong> on Mac) and save it as <code>res://scene/level.tscn</code>.</li>
+      </ol>
+      <p><strong>Action — add the floor:</strong></p>
+      <ol>
+        <li>Select <code>Level</code>, press <strong>Ctrl+A</strong> to open <em>Create New Node</em>.</li>
+        <li>Search for <code>StaticBody3D</code>, select it, click <strong>Create</strong>. Rename it to <code>Ground</code>.</li>
+        <li>Select <code>Ground</code>, press <strong>Ctrl+A</strong>, add a <code>CollisionShape3D</code>.</li>
+        <li>With the CollisionShape3D selected, in the <strong>Inspector</strong> click the <strong>Shape</strong> dropdown and choose <strong>New BoxShape3D</strong>.</li>
+        <li>Click the BoxShape3D that now appears in the Shape field to expand it. Set <strong>Size</strong> to <code>x 200, y 1, z 200</code>.</li>
+        <li>Select <code>Ground</code> again, press <strong>Ctrl+A</strong>, add a <code>MeshInstance3D</code>.</li>
+        <li>In the Inspector, set its <strong>Mesh</strong> dropdown to <strong>New BoxMesh</strong>, then expand it and set <strong>Size</strong> to <code>x 200, y 1, z 200</code> so the visual matches the collision exactly.</li>
+      </ol>
+      <p><strong>Action — add light and sky:</strong></p>
+      <ol>
+        <li>Look at the <strong>top-right of the 3D viewport</strong> for two small icons: a sun and a sky.</li>
+        <li>Click the small arrow beside them and choose <strong>Add Sun to Scene</strong>. This adds a <code>DirectionalLight3D</code>.</li>
+        <li>Click the arrow again and choose <strong>Add Environment to Scene</strong>. This adds a <code>WorldEnvironment</code> with a procedural sky.</li>
+      </ol>
+      <span class="exp"><b>Expected:</b> a large lit grey slab under a blue sky, with visible shadows. Press <strong>F6</strong> to run just this scene — you should see the same thing, from wherever the editor camera is not (there is no game camera yet, so a blank or odd view is normal at this point).</span>
+      <div class="call warn"><b>Warning — the number one "why is my screen black".</b> It is almost always a missing light or missing WorldEnvironment, not a broken model. Check those two before you debug anything else.</div>
+      <div class="call note"><b>Note — those two buttons are previews by default.</b> The sun and sky icons in the viewport toolbar toggle an <em>editor-only</em> preview that does not exist at runtime. Using <b>Add Sun to Scene</b> and <b>Add Environment to Scene</b> creates real nodes in your scene tree, which is what you want.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHASE 1 ================= -->
+<section id="p1" class="rv" data-phase="1">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 1</p>
+    <h2>A gorilla that walks, jumps, and has a camera behind it</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Build the gorilla as its own scene, attach one script to its root node, and add all movement code to that single script. The camera is a SpringArm3D inside the same scene.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="call key" style="margin-bottom:20px;"><b>Read first — where code lives in this phase.</b> Every snippet in Phase 1 goes into <b>one file</b>: <code>player.gd</code>, attached to the <code>Player</code> node. You will add functions to it across steps 2, 4 and 6. There is no second script until Phase 4.</div>
+
+  <div class="step" data-id="p1s1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Create the Player scene and set its properties</h3>
+      <p><strong>Build the gorilla in a separate scene file, then place a copy of it in the level.</strong> A <strong>scene</strong> in Godot is a saved tree of nodes; instancing one into another is how you reuse it.</p>
+      <p><strong>Why CharacterBody3D:</strong> the class reference describes these bodies as "not affected by physics at all, but they affect other physics bodies in their path," and gives them "wall and slope detection (<code>move_and_slide</code> method)." You get sliding along walls without writing collision maths.</p>
+
+      <p><strong>Action — create the scene and root node:</strong></p>
+      <ol>
+        <li>Choose <strong>Scene → New Scene</strong> from the menu bar.</li>
+        <li>In the Scene dock click <strong>Other Node</strong>, search <code>CharacterBody3D</code>, click <strong>Create</strong>.</li>
+        <li>Press <strong>F2</strong> and rename it to <code>Player</code>.</li>
+        <li>Press <strong>Ctrl+S</strong> and save as <code>res://scene/player.tscn</code>.</li>
+      </ol>
+
+      <p><strong>Action — add the collision shape</strong> (this is the invisible body physics actually uses):</p>
+      <ol>
+        <li>Select <code>Player</code>, press <strong>Ctrl+A</strong>, add a <code>CollisionShape3D</code>.</li>
+        <li>In the Inspector set <strong>Shape</strong> to <strong>New CapsuleShape3D</strong>.</li>
+        <li>Click the capsule to expand it. Set <strong>Radius</strong> to <code>1.5</code> and <strong>Height</strong> to <code>8</code>.</li>
+        <li>Still on the CollisionShape3D, set <strong>Transform → Position</strong> to <code>x 0, y 4, z 0</code>.</li>
+      </ol>
+      <div class="call key"><b>Key point — why position Y is 4.</b> A CapsuleShape3D is centred on its own origin, so an 8 m capsule sitting at <code>y 0</code> would have half of itself below the floor. Raising it by half its height (4 m) puts the gorilla's <em>feet</em> at the node's origin. If your character sinks into the ground or hovers, this value is the cause.</div>
+
+      <p><strong>Action — add a placeholder body you can see:</strong></p>
+      <ol>
+        <li>Select <code>Player</code>, press <strong>Ctrl+A</strong>, add a <code>MeshInstance3D</code>.</li>
+        <li>Set <strong>Mesh</strong> to <strong>New CapsuleMesh</strong>, then expand it and set <strong>Radius</strong> <code>1.5</code>, <strong>Height</strong> <code>8</code> to match the collision shape.</li>
+        <li>Set the MeshInstance3D's <strong>Transform → Position</strong> to <code>x 0, y 4, z 0</code>, the same as the collision shape.</li>
+        <li>Rename it to <code>Body</code>. Later steps refer to it by that name.</li>
+      </ol>
+
+      <p><strong>Action — add the <code>Facing</code> pivot.</strong> This node carries everything that has a front: the mesh, the climb ray, and the fist.</p>
+      <ol>
+        <li>Select <code>Player</code>, press <strong>Ctrl+A</strong>, add a <code>Node3D</code>, rename it to <code>Facing</code>.</li>
+        <li>Leave its <strong>Position</strong> and <strong>Rotation</strong> at <code>0, 0, 0</code>. This is essential — see the warning below.</li>
+        <li>Drag <code>Body</code> in the Scene dock so it becomes a child of <code>Facing</code>.</li>
+      </ol>
+      <div class="call key"><b>Key point — why a pivot instead of rotating each node.</b> Rotating a node spins it around <b>its own origin</b>. The fist you add in Phase 4 sits 3 m in front of the player, so rotating the fist itself only spins the sphere on the spot; it never swings around the player. Rotating a parent that sits <b>at</b> the player's origin orbits every child around that point, which is what you actually want. One rotated pivot replaces three rotated nodes.</div>
+      <div class="call warn"><b>Warning:</b> <code>Facing</code> must stay at position <code>0, 0, 0</code>. If you offset it, every child orbits around the offset point instead of the player's centre, and the fist will swing in a circle that misses the buildings.</div>
+      <div class="call note"><b>Note — the camera is deliberately not under <code>Facing</code>.</b> <code>CameraPivot</code> stays parented to <code>Player</code>. If the camera turned with the character, mouse-look and character-turning would fight each other every frame.</div>
+
+      <p><strong>Action — check the CharacterBody3D settings.</strong> The defaults are correct for this game; open the Inspector on <code>Player</code> and confirm rather than change:</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Property</th><th>Value</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Motion Mode</td><td><code>Grounded</code></td><td>Character walks on floors. The alternative, Floating, is for top-down or space games.</td></tr>
+          <tr><td>Up Direction</td><td><code>0, 1, 0</code></td><td>Which way is up. Decides what counts as floor, wall, or ceiling.</td></tr>
+          <tr><td>Floor → Max Angle</td><td><code>45°</code></td><td>Steeper than this counts as a wall, not a floor.</td></tr>
+          <tr><td>Floor → Snap Length</td><td><code>0.1</code></td><td>Keeps the body stuck to the ground over small bumps.</td></tr>
+          <tr><td>Collision → Layer</td><td><code>1</code> for now</td><td>You will change this to <code>Player</code> in Phase 2.</td></tr>
+        </tbody>
+      </table></div>
+
+      <p><strong>Action — put the gorilla in the level:</strong></p>
+      <ol>
+        <li>Switch to <code>scene/level.tscn</code> using the scene tabs above the viewport.</li>
+        <li>Select the <code>Level</code> root node.</li>
+        <li>Click the <strong>chain-link icon</strong> in the Scene dock toolbar (<em>Instantiate Child Scene</em>, or press <strong>Ctrl+Shift+A</strong>).</li>
+        <li>Choose <code>scene/player.tscn</code>.</li>
+        <li>Set the new Player node's <strong>Position</strong> to <code>x 0, y 2, z 0</code> so it starts just above the floor.</li>
+      </ol>
+      <span class="exp"><b>Expected:</b> a tall capsule standing on the grey slab in the level viewport. It will not move yet.</span>
+      <div class="call note"><b>Note — keep the placeholder capsule until Phase 6.</b> Swapping in the real gorilla model is a 10-minute job at the end and unblocks nothing before then.</div>
+      <p class="src">Source: <a href="https://docs.godotengine.org/en/stable/classes/class_characterbody3d.html" target="_blank" rel="noopener">CharacterBody3D class reference</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="p1s2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Attach the script, then write the gravity, move, and jump loop</h3>
+      <p><strong>The script attaches to the <code>Player</code> node itself, not to any child.</strong> A script attached to a node adds behaviour to that node, and <code>extends CharacterBody3D</code> on line 1 is what tells Godot which node type it belongs to.</p>
+
+      <p><strong>Action — attach the script:</strong></p>
+      <ol>
+        <li>Open <code>scene/player.tscn</code> and select the <code>Player</code> root node.</li>
+        <li>Right-click it and choose <strong>Attach Script</strong>. (The same command is the scroll-with-a-plus icon in the Scene dock toolbar.)</li>
+        <li>In the dialog, confirm <strong>Language</strong> is <code>GDScript</code> and <strong>Inherits</strong> is <code>CharacterBody3D</code>. Both should be filled in already.</li>
+        <li>Set <strong>Template</strong>. If the dropdown offers <code>CharacterBody3D: Basic Movement</code>, choose it — Godot writes a working movement script for you. If you do not see it, choose <code>Node: Default</code>.</li>
+        <li>Leave <strong>Built-in Script</strong> unticked so the code lives in its own file.</li>
+        <li><strong>Change the Path.</strong> Godot suggests <code>res://scene/player.gd</code>, next to the scene. Overwrite it with <code>res://script/player.gd</code>, then click <strong>Create</strong>.</li>
+      </ol>
+      <div class="call warn"><b>Warning — this path defaults to the wrong folder every time.</b> The Attach Script dialog always proposes the folder the scene lives in. Correct it to <code>res://script/</code> on every script you create, or they will scatter across <code>scene/</code>.</div>
+      <span class="exp"><b>Expected:</b> the editor switches to the <strong>Script</strong> workspace and <code>player.gd</code> opens. A small script icon now appears beside <code>Player</code> in the Scene dock.</span>
+
+      <p><strong>Action — replace the file contents with this.</strong> Select everything in the editor and paste over it:</p>
+      <pre><code>extends CharacterBody3D
+
+@export var speed: float = 8.0
+@export var jump_velocity: float = 6.0
+@export var gravity: float = 20.0
+
+
+func _physics_process(delta: float) -&gt; void:
+    # 1. Fall when there is no floor underneath.
+    if not self.is_on_floor():
+        self.velocity.y -= self.gravity * delta
+
+    # 2. Jump only from the ground.
+    if Input.is_action_just_pressed("jump") and self.is_on_floor():
+        self.velocity.y = self.jump_velocity
+
+    # 3. Read the movement keys into horizontal velocity.
+    var input: Vector2 = Input.get_vector("move_left", "move_right",
+                                          "move_forward", "move_back")
+    self.velocity.x = input.x * self.speed
+    self.velocity.z = input.y * self.speed
+
+    # 4. Hand the velocity to the physics engine.
+    self.move_and_slide()</code></pre>
+
+      <p><strong>What the parts mean:</strong></p>
+      <ul>
+        <li><code>@export</code> makes a variable editable in the Inspector. Select <code>Player</code> and you will see Speed, Jump Velocity and Gravity as fields you can tune while the game is not running.</li>
+        <li><code>_physics_process(delta)</code> is a function Godot calls automatically at a fixed 60 times per second. <strong>All physics and movement code goes here</strong>, never in <code>_process</code>.</li>
+        <li><code>delta</code> is the seconds elapsed since the last physics tick. Multiplying by it keeps speed consistent regardless of frame rate.</li>
+        <li><code>velocity</code> is a built-in property of CharacterBody3D. You set it; <code>move_and_slide()</code> reads it.</li>
+      </ul>
+
+      <div class="call key"><b>Key point — explicit type hints.</b> <code>var speed: float = 8.0</code> states the type outright. The shorter <code>var speed := 8.0</code> makes Godot infer it, and both produce the same <code>float</code> — but the explicit form is checkable at a glance and survives refactoring. Every sample in this guide is fully hinted: variables get <code>: Type</code>, parameters get <code>delta: float</code>, and functions get a return type such as <code>-&gt; void</code> (meaning "returns nothing").</div>
+      <div class="call note"><b>Note — turn the checker on.</b> In <b>Project Settings → Debug → GDScript</b>, set <b>Untyped Declaration</b> and <b>Unsafe Property Access</b> to <b>Warn</b>. The editor will then flag any line where a type is unknown, which is how you catch a typo in a node name before you run the game.</div>
+      <div class="call key"><b>Key point — the <code>self.</code> prefix.</b> <code>self</code> means "this node". Writing <code>self.velocity</code> instead of <code>velocity</code> makes it visually obvious which names are <b>members of this class</b> and which are <b>local variables</b> that vanish at the end of the function. In the block above, <code>speed</code>, <code>gravity</code> and <code>velocity</code> are members and take <code>self.</code>; <code>delta</code> and <code>input</code> are local and do not. Every sample in this guide follows that convention.</div>
+      <div class="call note"><b>Note — <code>self.</code> is style, not behaviour, in Godot 4.</b> Godot 3 tutorials often claim you need <code>self.</code> to trigger a variable's setter function. That stopped being true in GDScript 2.0: setters and getters are now called consistently whether or not you prefix with <code>self.</code>. Use it because it reads clearly, not because it changes what the code does. <em>Verified against the Godot documentation's GDScript reference; the Godot 3 <code>setget</code> behaviour it replaced is described in godot-proposals issue 2979.</em></div>
+      <div class="call warn"><b>Warning — the number one copy-paste bug.</b> In Godot 4, <code>move_and_slide()</code> takes <b>no arguments</b>. Godot 3 tutorials write <code>move_and_slide(velocity)</code> and will not run. If you see an error about argument counts, this is why.</div>
+      <div class="call warn"><b>Warning — GDScript uses indentation, like Python.</b> Every line inside a function must be indented one level. Mixing tabs and spaces in the same file produces an "unindent does not match" error. The samples in this guide use <b>four spaces</b>; Godot's own default is <b>tabs</b>. Either works — pick one and keep the whole file consistent. If you paste these samples into a tab-indented file, use <b>Edit → Indentation → Convert Indent to Tabs</b> in the script editor.</div>
+      <div class="call note"><b>Note — why gravity is 20 and not 9.8.</b> Real gravity on a 10 m character looks slow and floaty, because everything falls at the same rate but takes longer to cross a larger body. Doubling it reads as weight. Tune the Inspector value until the jump feels right.</div>
+      <div class="call key"><b>Key point:</b> this will not run yet — the actions <code>jump</code>, <code>move_left</code> and so on do not exist until step 5. If you run now you get an error naming the missing action. That is expected. Do step 5 before testing.</div>
+      <p class="src">Source: <a href="https://docs.godotengine.org/en/stable/tutorials/physics/using_character_body_2d.html" target="_blank" rel="noopener">Using CharacterBody2D/3D</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="p1s3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. Build the SpringArm3D camera rig</h3>
+      <p><strong>Three nodes, nested, added inside <code>scene/player.tscn</code>.</strong> <strong>SpringArm3D</strong> is Godot's built-in fix for cameras clipping through walls: the class reference describes it as casting "a ray (or collision shape) along its z axis and moves all its direct children to the collision point, minus a margin."</p>
+      <p><strong>Why it matters:</strong> without it, the camera goes inside buildings the moment the gorilla backs into one — which, in a climbing game, is constantly.</p>
+
+      <p><strong>Action — build the chain:</strong></p>
+      <ol>
+        <li>Open <code>scene/player.tscn</code> and select the <code>Player</code> root node.</li>
+        <li>Press <strong>Ctrl+A</strong>, add a <code>Node3D</code>, rename it to <code>CameraPivot</code>.</li>
+        <li>Set <code>CameraPivot</code>'s <strong>Position</strong> to <code>x 0, y 7, z 0</code> — roughly head height on an 8 m gorilla.</li>
+        <li>Select <code>CameraPivot</code>, press <strong>Ctrl+A</strong>, add a <code>SpringArm3D</code>. Leave its position at <code>0, 0, 0</code>.</li>
+        <li>Select <code>SpringArm3D</code>, press <strong>Ctrl+A</strong>, add a <code>Camera3D</code>. Leave its position at <code>0, 0, 0</code>.</li>
+      </ol>
+      <span class="exp"><b>Expected tree:</b></span>
+      <pre><code>Player (CharacterBody3D)  ← player.gd attached here
+├── CollisionShape3D
+├── Facing (Node3D)          ← the only node that rotates
+│   ├── Body (MeshInstance3D)
+│   ├── WallRay (RayCast3D)  ← added in Phase 3
+│   └── Fist (Area3D)        ← added in Phase 4
+└── CameraPivot (Node3D)     ← never rotates with the character
+    └── SpringArm3D
+        └── Camera3D</code></pre>
+
+      <p><strong>Action — set the SpringArm3D properties in the Inspector:</strong></p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Property</th><th>Value</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Spring Length</td><td><code>14</code></td><td>Distance the camera sits behind the pivot. Scaled for an 8 m character; use 3–4 for a human-sized one.</td></tr>
+          <tr><td>Shape</td><td><em>leave empty</em></td><td>Empty means it uses the camera's own frustum. Assign a small SphereShape3D instead if the camera judders on edges.</td></tr>
+          <tr><td>Margin</td><td><code>0.5</code></td><td>Gap kept between the camera and whatever it hits.</td></tr>
+          <tr><td>Collision Mask</td><td>see Phase 2</td><td>You will untick the Player layer here so the arm ignores the gorilla itself.</td></tr>
+        </tbody>
+      </table></div>
+
+      <p><strong>Action — check the camera actually points at the gorilla:</strong></p>
+      <ol>
+        <li>Select <code>Camera3D</code>.</li>
+        <li>Click <strong>Preview</strong> in the top-left of the 3D viewport to see through it.</li>
+        <li>If you are looking at the back of the gorilla's head from a few metres up and behind, it is correct. Untick Preview when done.</li>
+      </ol>
+      <div class="call warn"><b>Warning:</b> the spring arm will currently collide with your own gorilla and slam the camera into its back. That is expected until you set the collision mask in Phase 2, step 2.</div>
+      <p class="src">Source: <a href="https://docs.godotengine.org/en/stable/tutorials/3d/spring_arm.html" target="_blank" rel="noopener">Third-person camera with spring arm</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="p1s4">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">4. Add mouse-look to the same script</h3>
+      <p><strong>Add these to <code>player.gd</code>, below the code you already wrote.</strong> Do not create a new script and do not attach anything to the camera.</p>
+      <p><strong>Action:</strong> add the exported variable at the top of the file with the others, then paste the three functions at the bottom.</p>
+      <pre><code>@export var sensitivity: float = 0.003
+
+# Typed node references, so the editor can check every property you use.
+@onready var pivot: Node3D = $CameraPivot
+@onready var arm: SpringArm3D = $CameraPivot/SpringArm3D
+@onready var facing: Node3D = $Facing          # used from step 6 onward
+
+
+func _ready() -&gt; void:
+    Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _input(event: InputEvent) -&gt; void:
+    if event is InputEventMouseMotion:
+        var motion: InputEventMouseMotion = event as InputEventMouseMotion
+        self.pivot.rotate_y(-motion.relative.x * self.sensitivity)
+        self.arm.rotate_x(-motion.relative.y * self.sensitivity)
+        self.arm.rotation.x = clampf(self.arm.rotation.x,
+                                     deg_to_rad(-60.0), deg_to_rad(60.0))
+
+
+func _unhandled_input(event: InputEvent) -&gt; void:
+    if event.is_action_pressed("ui_cancel"):
+        Input.mouse_mode = Input.MOUSE_MODE_VISIBLE</code></pre>
+
+      <p><strong>What the parts mean:</strong></p>
+      <ul>
+        <li><code>$CameraPivot</code> is shorthand for "the child node named CameraPivot". The path is <strong>case-sensitive and must match your node names exactly</strong>.</li>
+        <li><strong>The <code>: Node3D</code> part is the type hint.</strong> On its own <code>$CameraPivot</code> is only known to be a <code>Node</code>, so the editor cannot tell you whether <code>rotate_y()</code> exists on it. Declaring the type lets it check, and lets autocomplete work.</li>
+        <li><code>@onready</code> delays the lookup until the node tree is built. Without it, the reference would be <code>null</code>.</li>
+        <li><code>_ready()</code> runs once when the node enters the scene.</li>
+        <li><code>_input(event)</code> runs whenever any input arrives, including mouse movement, which <code>_physics_process</code> does not see.</li>
+        <li><code>clamp</code> stops the vertical look going past 60 degrees up or down, which would flip the camera upside-down.</li>
+      </ul>
+      <div class="call key"><b>Key point — <code>ui_cancel</code> is bound to Escape by default</b>, so the last function gives you a way to release the mouse. Without it you cannot get your cursor out of the running game, which makes testing miserable.</div>
+      <div class="call note"><b>Note:</b> if a <code>$CameraPivot</code> line errors with "Invalid access", the node name in the Scene dock does not match the string in the script. Check capitals and spelling.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p1s5">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">5. Define all seven input actions, then run it</h3>
+      <p><strong>Define all seven now so no later phase stops to add one.</strong> The <strong>InputMap</strong> maps a name you invent, like <code>punch</code>, to a physical key.</p>
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Open <strong>Project → Project Settings → Input Map</strong>.</li>
+        <li>Type <code>move_forward</code> into the <strong>Add New Action</strong> field and press <strong>Enter</strong>.</li>
+        <li>Find the new action in the list and click the <strong>+</strong> at its right.</li>
+        <li>Press the <strong>W</strong> key when prompted, then click <strong>OK</strong>.</li>
+        <li>Repeat for the remaining six actions using this table.</li>
+      </ol>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Action name</th><th>Key</th></tr></thead>
+        <tbody>
+          <tr><td><code>move_forward</code></td><td>W</td></tr>
+          <tr><td><code>move_back</code></td><td>S</td></tr>
+          <tr><td><code>move_left</code></td><td>A</td></tr>
+          <tr><td><code>move_right</code></td><td>D</td></tr>
+          <tr><td><code>jump</code></td><td>Space</td></tr>
+          <tr><td><code>punch</code></td><td>Left mouse button</td></tr>
+          <tr><td><code>climb</code></td><td>Shift</td></tr>
+        </tbody>
+      </table></div>
+
+      <p><strong>Action — run the game for the first time:</strong></p>
+      <ol>
+        <li>Press <strong>F5</strong>.</li>
+        <li>Godot asks you to pick a main scene. Choose <code>scene/level.tscn</code>.</li>
+      </ol>
+      <span class="exp"><b>Expected:</b> a third-person view behind the capsule. W A S D moves it, Space jumps, the mouse looks around, Escape frees the cursor.</span>
+      <div class="call warn"><b>Warning — movement is world-relative right now.</b> Pressing W always moves toward world <code>-Z</code>, regardless of where the camera is pointing. That is correct for this step. Step 6 makes movement follow the camera.</div>
+      <div class="call note"><b>Note:</b> use action names in code, never raw key codes. Rebinding then costs nothing — which matters when a family member finds your controls unplayable.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p1s6">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">6. Make movement follow the camera, and turn the gorilla to face it</h3>
+      <p><strong>Two changes to <code>player.gd</code>: rotate the input by the camera's heading, then rotate the mesh toward the direction of travel.</strong> This is what turns a floaty test capsule into something that feels like a character.</p>
+
+      <p><strong>Action — replace section 3 of <code>_physics_process</code></strong> (the two lines setting <code>velocity.x</code> and <code>velocity.z</code>) with this:</p>
+      <pre><code>    var input: Vector2 = Input.get_vector("move_left", "move_right",
+                                          "move_forward", "move_back")
+    # Rotate the input so "forward" means "away from the camera".
+    var dir: Vector3 = Vector3(input.x, 0.0, input.y).rotated(
+        Vector3.UP, self.pivot.rotation.y)
+    self.velocity.x = dir.x * self.speed
+    self.velocity.z = dir.z * self.speed
+
+    # Turn the Facing pivot toward the direction of travel.
+    # Mesh, ray and fist are its children, so they all turn with it.
+    if dir.length() &gt; 0.1:
+        var target: float = atan2(-dir.x, -dir.z)
+        self.facing.rotation.y = lerp_angle(self.facing.rotation.y,
+                                            target, delta * 10.0)</code></pre>
+
+      <p><strong>What the parts mean:</strong></p>
+      <ul>
+        <li><code>rotated(Vector3.UP, pivot.rotation.y)</code> spins the raw key input by however far you have swung the camera, so W always means "away from camera".</li>
+        <li><strong><code>atan2(-dir.x, -dir.z)</code> — both arguments are negated, and that matters.</strong> A Node3D's forward is <code>-Z</code>. Rotating by an angle <code>t</code> points it at <code>(-sin t, 0, -cos t)</code>, so to face <code>dir</code> you must feed in <code>-dir</code>. Drop the minus signs and everything ends up turned 180 degrees.</li>
+        <li><strong>You rotate <code>Facing</code>, never the individual nodes.</strong> The mesh, the climb ray and the fist are all its children, so one line turns all three, and the offset fist orbits the player instead of spinning on the spot.</li>
+        <li><code>lerp_angle</code> eases toward the new angle and handles the wrap from 359° to 1° correctly. Plain <code>lerp</code> makes the character spin the long way round.</li>
+        <li><code>delta * 10.0</code> is the turn speed. Raise it for snappier turning, lower it for a heavier feel.</li>
+      </ul>
+      <div class="call warn"><b>Warning — a capsule hides this bug.</b> A CapsuleMesh looks identical from every angle, so a 180-degree error is invisible until you add the climb ray in Phase 3 or the fist in Phase 4 and they point behind the gorilla. Test the sign now: walk forward and confirm the blue ray gizmo leads the character rather than trailing it.</div>
+      <div class="call note"><b>Note — why not just rotate the <code>Player</code> root?</b> It would work for the mesh, ray and fist, and the capsule collision shape would not care because it is symmetric around Y. But <code>CameraPivot</code> is also a child of the root, so the camera would swing every time the character turned and fight your mouse-look. The <code>Facing</code> pivot rotates exactly the nodes that should turn and leaves the camera alone.</div>
+      <div class="call key"><b>Checkpoint for Phase 1.</b> You can walk in the direction the camera faces, jump, orbit the camera with the mouse, and the capsule turns to face its direction of travel. Save both scenes with <b>Ctrl+S</b> before moving on.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHASE 2 ================= -->
+<section id="p2" class="rv" data-phase="2">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 2</p>
+    <h2>A city to climb, and the layers that make it work</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Make one Building scene, place several copies, then set collision layers on everything. The layer work is the highest-value 30 minutes in this whole guide.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="p2s1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Make one Building scene and place five copies</h3>
+      <p><strong>Build one building as a reusable scene, not five separate node trees.</strong> When you add health in Phase 4, editing the one scene file updates every copy in the level.</p>
+
+      <p><strong>Action — create the building:</strong></p>
+      <ol>
+        <li>Choose <strong>Scene → New Scene</strong>.</li>
+        <li>Click <strong>Other Node</strong>, add a <code>StaticBody3D</code>, rename it to <code>Building</code>.</li>
+        <li>Press <strong>Ctrl+S</strong>, save as <code>res://scene/building.tscn</code>.</li>
+        <li>Select <code>Building</code>, press <strong>Ctrl+A</strong>, add a <code>CollisionShape3D</code>.</li>
+        <li>Set its <strong>Shape</strong> to <strong>New BoxShape3D</strong>, then set <strong>Size</strong> to <code>x 12, y 40, z 12</code>.</li>
+        <li>Set the CollisionShape3D's <strong>Position</strong> to <code>x 0, y 20, z 0</code> so the building's base sits at the node origin.</li>
+        <li>Select <code>Building</code>, press <strong>Ctrl+A</strong>, add a <code>MeshInstance3D</code>, rename it to <code>Intact</code>.</li>
+        <li>Set its <strong>Mesh</strong> to <strong>New BoxMesh</strong> with <strong>Size</strong> <code>x 12, y 40, z 12</code>, and its <strong>Position</strong> to <code>x 0, y 20, z 0</code>.</li>
+      </ol>
+      <span class="exp"><b>Expected:</b> a 40 m tower — five times the gorilla's height. Rename the mesh to <code>Intact</code> now, because Phase 5 adds sibling meshes called <code>Cracked</code> and <code>Rubble</code>.</span>
+
+      <p><strong>Action — place copies in the level:</strong></p>
+      <ol>
+        <li>Open <code>scene/level.tscn</code> and select the <code>Level</code> root.</li>
+        <li>Press <strong>Ctrl+Shift+A</strong> and choose <code>scene/building.tscn</code>.</li>
+        <li>Move it away from the gorilla using the move gizmo, or type a Position such as <code>x 25, y 0, z 0</code>.</li>
+        <li>Select the placed building and press <strong>Ctrl+D</strong> to duplicate it. Repeat until you have five, spread 25–40 m apart.</li>
+      </ol>
+      <div class="call note"><b>Note — a faster blockout option.</b> <b>CSGBox3D</b> has a <b>Use Collision</b> checkbox that generates collision automatically, so one node replaces three. <b>CSG</b> means Constructive Solid Geometry — shapes combined with boolean operations.</div>
+      <div class="call warn"><b>Warning — do not ship CSG.</b> The official docs state that "CSG nodes are intended to be used for level prototyping" and that "creating CSG nodes has a significant CPU cost compared to creating a MeshInstance with a PrimitiveMesh." The StaticBody3D route above avoids the problem entirely.</div>
+      <p class="src">Source: <a href="https://docs.godotengine.org/en/stable/tutorials/3d/csg_tools.html" target="_blank" rel="noopener">Prototyping levels with CSG</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="p2s2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Assign collision layers and masks</h3>
+      <p><strong>Layer is what a thing is. Mask is what a thing looks for.</strong> The docs define <code>collision_layer</code> as the layers an object appears in, and <code>collision_mask</code> as the layers it scans. Two objects interact if either one's layer appears in the other's mask.</p>
+      <p><strong>Where to find them:</strong> select any physics node, and in the Inspector open the <strong>Collision</strong> section. You will see two grids of numbered squares labelled <strong>Layer</strong> and <strong>Mask</strong>. Hovering a square shows the name you set in Phase 0. Click a square to toggle it.</p>
+
+      <p><strong>Action — set each node exactly as follows:</strong></p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Select this node</th><th>Layer — tick</th><th>Mask — tick</th></tr></thead>
+        <tbody>
+          <tr><td><code>Player</code> root in <code>scene/player.tscn</code></td><td>2 Player</td><td>1 World, 3 Buildings, 4 Rubble</td></tr>
+          <tr><td><code>Building</code> in scene/building.tscn</td><td>3 Buildings</td><td>1 World, 2 Player</td></tr>
+          <tr><td><code>Ground</code> in scene/level.tscn</td><td>1 World</td><td>1 World</td></tr>
+          <tr><td><code>SpringArm3D</code></td><td>— none —</td><td>1 World, 3 Buildings <strong>only</strong></td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="call key"><b>Key point — the SpringArm3D row is the important one.</b> Leaving layer 2 unticked on its mask is what stops the camera colliding with your own gorilla and slamming into its back. Fix that now and the camera problem from Phase 1 disappears.</div>
+      <div class="call note"><b>Note — SpringArm3D has only a mask, no layer.</b> It detects things but is not itself detectable, so an empty layer is correct rather than a mistake.</div>
+      <span class="exp"><b>Expected after pressing F5:</b> you can walk up to a building and are blocked by it. The camera stays behind the gorilla instead of jumping to its shoulders, and pulls in smoothly when you back into a wall.</span>
+      <p class="src">Source: <a href="https://docs.godotengine.org/en/stable/tutorials/physics/physics_introduction.html" target="_blank" rel="noopener">Physics introduction — collision layers and masks</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHASE 3 ================= -->
+<section id="p3" class="rv" data-phase="3">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 3</p>
+    <h2>Climbing, without a physics rewrite</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Cast a ray forward. If it hits a building and the climb key is held, switch to a CLIMB state that skips gravity and maps input to vertical movement. That is the entire mechanic.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <details class="rv">
+    <summary>Four ways to do climbing, ranked by how likely they are to eat your week</summary>
+    <div class="details-body">
+      <ul>
+        <li><strong>1. RayCast3D plus gravity override</strong> — recommended. No plugin, about 25 lines, fully under your control.</li>
+        <li><strong>2. Area3D climb zones on buildings</strong> — also fine, but you must author a zone per building.</li>
+        <li><strong>3. ShapeCast3D</strong> — thicker detection, better on corners, slightly more setup.</li>
+        <li><strong>4. Changing <code>up_direction</code></strong> — avoid. It redefines what counts as floor and wall, and breaks your walking code.</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="step" data-id="p3s1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Add a forward-facing RayCast3D</h3>
+      <p><strong>A RayCast3D is an invisible line that reports the first thing it hits.</strong> It gives you <code>is_colliding()</code>, <code>get_collision_point()</code>, and <code>get_collision_normal()</code> — the normal is the direction the wall surface faces, which you need to lay the gorilla flat against it.</p>
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Open <code>scene/player.tscn</code> and select the <code>Facing</code> node, <strong>not</strong> the <code>Player</code> root.</li>
+        <li>Press <strong>Ctrl+A</strong>, add a <code>RayCast3D</code>, rename it to <code>WallRay</code>.</li>
+        <li>Set its <strong>Position</strong> to <code>x 0, y 5, z 0</code> — chest height on the capsule.</li>
+        <li>Set <strong>Target Position</strong> to <code>x 0, y 0, z -2.5</code>. This is a <em>local</em> offset, so it points 2.5 m forward.</li>
+        <li>Confirm <strong>Enabled</strong> is ticked.</li>
+        <li>Under <strong>Collision Mask</strong>, tick <strong>only</strong> layer 3 Buildings.</li>
+      </ol>
+      <span class="exp"><b>Expected:</b> a thin blue line drawn forward from the capsule's chest in the editor viewport. It is visible in the editor only, not at runtime.</span>
+      <div class="call note"><b>Note — why 2.5 and not 1.</b> The capsule's radius is 1.5 m, so a 1 m ray would end inside the gorilla's own body and never reach a wall. The ray must be longer than the radius.</div>
+      <p class="src">Source: <a href="https://docs.godotengine.org/en/stable/classes/class_raycast3d.html" target="_blank" rel="noopener">RayCast3D class reference</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="p3s2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Restructure player.gd into a state machine</h3>
+      <p><strong>A state machine here is one variable and one <code>match</code> block.</strong> You do not need a plugin, a node graph, or extra classes. This step reorganises the script you already have rather than adding to it.</p>
+      <p><strong>Why restructure:</strong> walking and climbing want different rules — one needs gravity, one must ignore it. Trying to express both with <code>if</code> statements inside a single movement function is where climbing implementations usually collapse.</p>
+
+      <p><strong>Action — replace the whole of <code>player.gd</code> below the <code>@export</code> lines at the top.</strong> This is the complete state machine including <code>_walk()</code>, which is your old <code>_physics_process</code> body moved into a named function:</p>
+      <pre><code>enum State { WALK, CLIMB, FALL }
+
+@export var climb_speed: float = 5.0
+
+var state: State = State.WALK
+@onready var ray: RayCast3D = $Facing/WallRay
+
+
+func _physics_process(delta: float) -&gt; void:
+    match self.state:
+        State.WALK:
+            self._walk(delta)
+            if self.ray.is_colliding() and Input.is_action_pressed("climb"):
+                self._enter_climb()
+        State.CLIMB:
+            self._climb()
+        State.FALL:
+            self._walk(delta)
+            if self.is_on_floor():
+                self.state = State.WALK
+
+
+# Everything that used to sit in _physics_process now lives here.
+# Both WALK and FALL call it, because falling is walking without a floor.
+func _walk(delta: float) -&gt; void:
+    # 1. Fall when there is no floor underneath.
+    if not self.is_on_floor():
+        self.velocity.y -= self.gravity * delta
+
+    # 2. Jump only from the ground.
+    if Input.is_action_just_pressed("jump") and self.is_on_floor():
+        self.velocity.y = self.jump_velocity
+
+    # 3. Read the movement keys, rotated to match the camera.
+    var input: Vector2 = Input.get_vector("move_left", "move_right",
+                                          "move_forward", "move_back")
+    var dir: Vector3 = Vector3(input.x, 0.0, input.y).rotated(
+        Vector3.UP, self.pivot.rotation.y)
+    self.velocity.x = dir.x * self.speed
+    self.velocity.z = dir.z * self.speed
+
+    # 4. Turn the Facing pivot toward the direction of travel.
+    if dir.length() &gt; 0.1:
+        var target: float = atan2(-dir.x, -dir.z)
+        self.facing.rotation.y = lerp_angle(self.facing.rotation.y,
+                                            target, delta * 10.0)
+
+    # 5. Hand the velocity to the physics engine.
+    self.move_and_slide()
+
+
+func _enter_climb() -&gt; void:
+    self.state = State.CLIMB
+    # Face into the wall once, on entry, so the gorilla does not jitter.
+    # The normal points out of the wall, back at you, so it needs no
+    # negation here - unlike the travel direction above.
+    var n: Vector3 = self.ray.get_collision_normal()
+    self.facing.rotation.y = atan2(n.x, n.z)
+
+
+func _climb() -&gt; void:
+    self.velocity = Vector3.ZERO      # gravity deliberately skipped
+    var v: float = Input.get_axis("move_back", "move_forward")
+    self.velocity.y = v * self.climb_speed
+    self.move_and_slide()
+
+    if not self.ray.is_colliding() or not Input.is_action_pressed("climb"):
+        self.state = State.FALL</code></pre>
+
+      <p><strong>What the parts mean:</strong></p>
+      <ul>
+        <li><code>enum State { ... }</code> creates three named constants. <code>State.WALK</code> is clearer than remembering that 0 means walking.</li>
+        <li><code>match</code> is GDScript's switch statement. Exactly one branch runs per physics tick.</li>
+        <li><code>_walk()</code> holds every line that used to be in <code>_physics_process</code>. Nothing was rewritten, only moved and given a name.</li>
+        <li><strong>FALL calls <code>_walk()</code> too.</strong> Falling is just walking with no floor under you, so it needs the same gravity and air-control code. It differs only in how it exits.</li>
+        <li>CLIMB never applies gravity, which is the entire trick. Setting <code>self.velocity = Vector3.ZERO</code> first wipes any leftover falling speed.</li>
+        <li><code>Input.get_axis</code> returns a value from -1 to 1, so W climbs up and S climbs down.</li>
+      </ul>
+
+      <div class="call warn"><b>Warning — three failure modes, all common.</b>
+      <br><b>Stuck on the wall:</b> always keep a path back to FALL when the ray stops colliding. That is the last two lines of <code>_climb</code>.
+      <br><b>Jitter:</b> align to the wall normal <b>once</b> on entry, in <code>_enter_climb</code>, never every frame.
+      <br><b>Stuck at the roofline:</b> when the ray clears the top edge the gorilla drops instead of mantling. The cheap fix is a small upward nudge on leaving CLIMB while moving up; the cheaper fix is to accept it and cut mantling.</div>
+      <span class="exp"><b>Expected:</b> <code>player.gd</code> is now roughly 70 lines: the <code>@export</code> and <code>@onready</code> lines at the top, then <code>_ready</code>, <code>_input</code>, <code>_unhandled_input</code>, <code>_physics_process</code>, <code>_walk</code>, <code>_enter_climb</code> and <code>_climb</code>. There should be no leftover movement code sitting loose in <code>_physics_process</code>.</span>
+      <span class="exp"><b>Checkpoint for Phase 3:</b> hold Shift against a building to stick to it, W and S to move up and down, release Shift to drop off. No soft-locks.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHASE 4 ================= -->
+<section id="p4" class="rv" data-phase="4">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 4</p>
+    <h2>Punching, and buildings that feel it</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Put an Area3D in front of the gorilla, switch it on for a fifth of a second when you punch, and have it call <code>take_damage()</code> on whatever building it overlaps.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="p4s1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Add the fist hitbox</h3>
+      <p><strong>An Area3D detects overlaps without blocking movement.</strong> It emits <code>body_entered</code> and <code>body_exited</code> signals when physics bodies pass through it — exactly what a hitbox needs.</p>
+      <p><strong>Why Area3D:</strong> ShapeCast3D and manual shape queries also work, but Area3D needs no per-frame code and is the hardest to get wrong under time pressure.</p>
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Open <code>scene/player.tscn</code>, select the <code>Facing</code> node, <strong>not</strong> the <code>Player</code> root.</li>
+        <li>Press <strong>Ctrl+A</strong>, add an <code>Area3D</code>, rename it to <code>Fist</code>.</li>
+        <li>Set its <strong>Position</strong> to <code>x 0, y 5, z -3</code> — in front of the chest, just past the capsule's surface.</li>
+        <li>Select <code>Fist</code>, press <strong>Ctrl+A</strong>, add a <code>CollisionShape3D</code>.</li>
+        <li>Set its <strong>Shape</strong> to <strong>New SphereShape3D</strong> with <strong>Radius</strong> <code>2</code>.</li>
+        <li>Back on <code>Fist</code>, set <strong>Collision → Layer</strong> to 5 HitDetection and <strong>Mask</strong> to 3 Buildings only.</li>
+        <li>Leave <strong>Monitoring</strong> <strong>ticked on</strong>.</li>
+      </ol>
+      <div class="call warn"><b>Warning — leave <code>Monitoring</code> ticked on.</b> An area's overlap list is only refreshed during a physics step, so an area you switch on mid-frame reports nothing. Leaving it on avoids the problem entirely, and one small sphere costs nothing.</div>
+      <div class="call key"><b>Key point — why the Fist goes under <code>Facing</code>.</b> The fist sits 3 m in front of the player, so it must <b>orbit</b> the player as the character turns, not spin on the spot. Putting it under the pivot gives you that for free. Parent it to <code>Player</code> instead and it will stay locked to world-forward no matter which way the gorilla faces; rotate the Area3D itself and you will only spin the sphere in place. Once you import a rigged model in Phase 6, re-parent the Fist to the hand bone.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p4s2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Deal damage when you punch</h3>
+      <p><strong>A punch reads whatever the fist is currently overlapping and damages it.</strong> The area tracks what is in range continuously; pressing the button is what turns that into damage.</p>
+
+      <p><strong>Action — add to <code>player.gd</code>:</strong></p>
+      <pre><code>@export var punch_damage: float = 25.0
+@export var punch_cooldown: float = 0.4
+
+@onready var fist: Area3D = $Facing/Fist
+
+var punching: bool = false
+
+
+func _try_punch() -&gt; void:
+    if self.punching:
+        return
+    self.punching = true
+
+    for body: Node3D in self.fist.get_overlapping_bodies():
+        if body.has_method("take_damage"):
+            body.call("take_damage", self.punch_damage)
+
+    await get_tree().create_timer(self.punch_cooldown).timeout
+    self.punching = false</code></pre>
+      <p><strong>Action:</strong> add one line inside <code>_physics_process</code>, before the <code>match</code> block, so punching works in every state:</p>
+      <pre><code>    if Input.is_action_just_pressed("punch"):
+        self._try_punch()</code></pre>
+
+      <p><strong>What the parts mean:</strong></p>
+      <ul>
+        <li><code>get_overlapping_bodies()</code> asks the area what is inside it right now, rather than waiting for a signal. That matters because a building the gorilla is already touching never fires <code>body_entered</code> again.</li>
+        <li><code>has_method("take_damage")</code> checks before calling, so punching the ground does not crash the game.</li>
+        <li><strong>Why <code>body.call("take_damage", ...)</code> and not <code>body.take_damage(...)</code>.</strong> <code>body</code> is typed as <code>Node3D</code>, and <code>take_damage</code> is not a method of Node3D — the editor would reject the direct call. <code>call()</code> looks the method up by name at runtime, which is what you want when the check on the line above already proved it exists.</li>
+        <li><code>await ... timeout</code> pauses this function for the cooldown without freezing anything else. <code>punching</code> stays <code>true</code> across that pause.</li>
+        <li><code>punching</code> is a <strong>cooldown</strong>. It stops the player machine-gunning punches by holding the button.</li>
+        </ul>
+      <div class="call key"><b>Key point — the better version, for later.</b> An <b>AnimationPlayer</b> can hold a <b>Call Method Track</b> that calls a function on an exact animation frame, so damage lands the moment the fist visually connects. Add that in Phase 6 once you have a punch animation. The docs recommend <code>call_deferred</code> for methods doing heavy work from an animation track.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p4s3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. Give buildings health and a damage signal</h3>
+      <p><strong>This is your second script, attached to the <code>Building</code> root node in <code>scene/building.tscn</code>.</strong> Because every building in the level is a copy of that one scene, all five get it at once.</p>
+
+      <p><strong>Action — attach the script:</strong></p>
+      <ol>
+        <li>Open <code>scene/building.tscn</code> and select the <code>Building</code> root node.</li>
+        <li>Right-click it, choose <strong>Attach Script</strong>.</li>
+        <li>Set <strong>Template</strong> to <code>Node: Default</code>, change the <strong>Path</strong> to <code>res://script/building.gd</code>, click <strong>Create</strong>.</li>
+        <li>Replace the file contents with the code below.</li>
+      </ol>
+      <pre><code>extends StaticBody3D
+
+signal damaged(current_health: float)
+signal collapsed
+
+@export var max_health: float = 100.0
+
+var health: float = 0.0
+
+
+func _ready() -&gt; void:
+    self.health = self.max_health
+
+
+func take_damage(amount: float) -&gt; void:
+    if self.health &lt;= 0.0:
+        return
+    self.health -= amount
+    self.damaged.emit(self.health)
+    print("Building hit. Health now: ", self.health)
+    if self.health &lt;= 0.0:
+        self.collapsed.emit()
+        self._collapse()
+
+
+func _collapse() -&gt; void:
+    self.queue_free()   # placeholder - replaced in Phase 5</code></pre>
+
+      <p><strong>What the parts mean:</strong></p>
+      <ul>
+        <li><code>signal</code> declares an announcement other nodes can subscribe to. The building does not need to know who is listening. Typing its parameter — <code>damaged(current_health: float)</code> — lets the editor check whoever connects to it.</li>
+        <li><strong><code>health</code> is set in <code>_ready()</code>, not on its declaration line.</strong> An <code>@export</code> value you type into the Inspector is applied <em>after</em> the variable initialisers run. Writing <code>var health: float = max_health</code> would silently capture the default 100, ignoring whatever you set per-building in the Inspector.</li>
+        <li><code>damaged.emit(health)</code> fires that announcement. Phase 5 uses it for mesh swaps and Phase 6 for dust.</li>
+        <li><code>queue_free()</code> deletes the node safely at the end of the frame. It is a stand-in until Phase 5 gives you a real collapse.</li>
+        <li>The <code>print</code> goes to the <strong>Output</strong> panel at the bottom of the editor while the game runs. Delete it once you trust the system.</li>
+      </ul>
+      <span class="exp"><b>Expected:</b> press F5, walk to a building, click four times. The Output panel prints 75, 50, 25, 0 and the building vanishes on the fourth hit.</span>
+      <div class="call key"><b>Key point:</b> emit <code>damaged</code> on <em>every</em> hit, not just the fatal one. That signal is what drives the mesh swaps in Phase 5 and the dust in Phase 6.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHASE 5 ================= -->
+<section id="p5" class="rv" data-phase="5">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 5</p>
+    <h2>Collapse</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Swap the building's mesh at damage thresholds. It is the cheapest destruction that reads clearly on screen, it costs nothing in physics, and you can finish it in about an hour.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="p5s1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Get a ruined building model</h3>
+      <p><strong>Download a wrecked skyscraper rather than modelling one.</strong> You need two extra looks for each building: damaged, and flattened.</p>
+      <a class="link-card" href="https://majadroid.itch.io/3d-apocalyptic-building-city-cc0" target="_blank" rel="noopener">
+        <h4>3D Apocalyptic Building / City — Majadroid <span class="badge cc0">CC0</span></h4>
+        <p>Seven low-poly skyscraper ruins plus billboards and wreckage. Pay-what-you-want, so you can enter zero. Attribution is not required. Download it into <code>res://asset/model/</code>.</p>
+      </a>
+      <div class="call note"><b>Note — no download needed if you are short on time.</b> Duplicating your existing box mesh and giving it a darker material works. The ruins pack simply looks far better for the same amount of code.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p5s2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Add the damaged and rubble meshes</h3>
+      <p><strong>Add two more MeshInstance3D nodes beside the one you already have, both hidden at the start.</strong> Only one of the three is ever visible.</p>
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Open <code>scene/building.tscn</code>.</li>
+        <li>Select the existing <code>Intact</code> mesh and press <strong>Ctrl+D</strong> to duplicate it. Rename the copy to <code>Cracked</code>.</li>
+        <li>Set <code>Cracked</code>'s <strong>Mesh</strong> to a ruined model from the pack, or give it a darker material: expand <strong>Mesh → Material</strong>, choose <strong>New StandardMaterial3D</strong>, and set <strong>Albedo → Color</strong> to a dark grey.</li>
+        <li>Duplicate again and rename to <code>Rubble</code>. Set its <strong>Mesh → Size</strong> to <code>x 14, y 4, z 14</code> and its <strong>Position</strong> to <code>x 0, y 2, z 0</code>, so it is a flat pile at ground level.</li>
+        <li>Select <code>Cracked</code> and <code>Rubble</code> and untick <strong>Visible</strong> in the Inspector, so only <code>Intact</code> shows at the start.</li>
+        <li>Keep the node names exactly as written. The <code>@onready</code> lines below refer to them by name.</li>
+      </ol>
+      <span class="exp"><b>Expected:</b> the building looks unchanged in the viewport, with two hidden meshes listed under it in the Scene dock.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="p5s3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. Swap the meshes as damage lands</h3>
+      <p><strong>Listen to the <code>damaged</code> signal you already emit and show whichever mesh matches the current health.</strong> Add these lines to <code>script/building.gd</code>.</p>
+      <pre><code>&#35; Typed references to the three meshes and the collision shape.
+@onready var intact: MeshInstance3D = $Intact
+@onready var cracked: MeshInstance3D = $Cracked
+@onready var rubble: MeshInstance3D = $Rubble
+@onready var shape: CollisionShape3D = $CollisionShape3D
+
+
+func _ready() -&gt; void:
+    self.health = self.max_health           &#35; keep this line from Phase 4
+    self.damaged.connect(self._on_damaged)
+
+
+func _on_damaged(current: float) -&gt; void:
+    var pct: float = current / self.max_health
+    self.intact.visible = pct &gt; 0.5
+    self.cracked.visible = pct &lt;= 0.5 and pct &gt; 0.0
+
+    &#35; Small punch of scale, so the swap reads as impact.
+    var t: Tween = create_tween()
+    t.tween_property(self, "scale", Vector3(1.05, 0.95, 1.05), 0.05)
+    t.tween_property(self, "scale", Vector3.ONE, 0.12)</code></pre>
+      <div class="call key"><b>Key point — the scale tween is what sells it.</b> Without it a mesh swap looks like a texture glitch. With a 0.05 second squash and a 0.12 second recovery, players read it as the building taking a hit.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p5s4">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">4. Replace the placeholder collapse</h3>
+      <p><strong>Swap the <code>queue_free()</code> stand-in from Phase 4 for a real collapse.</strong> The building becomes a rubble pile the gorilla can walk over.</p>
+      <pre><code>func _collapse() -&gt; void:
+    self.intact.visible = false
+    self.cracked.visible = false
+    self.rubble.visible = true
+    self.shape.set_deferred("disabled", true)</code></pre>
+      <div class="call warn"><b>Warning — use <code>set_deferred</code> on that last line.</b> Changing a collision shape in the middle of a physics step raises an error. <code>set_deferred</code> applies the change once the step finishes.</div>
+      <span class="exp"><b>Checkpoint for Phase 5:</b> punch a building four times. It darkens after two hits, flattens on the fourth, and you can then walk over where it stood.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="p5s5">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">5. Decide whether you want physics debris</h3>
+      <p><strong>Only continue to physics debris once everything above works and you are ahead of schedule.</strong> Falling chunks look better, but they are a separate half-day of work and they can cost you frame rate.</p>
+      <p>The full method — building the chunks, freezing them, releasing them on collapse, and keeping the count under control — is in the companion document. It is written to drop on top of what you just built, and it does not require Blender.</p>
+      <a class="link-card" href="uproar-ch2-bringing-down-the-house.html" target="_blank" rel="noopener">
+        <h4>Chapter 2 — Bringing Down The House →</h4>
+        <p>Pre-fractured chunks as frozen RigidBody3D nodes, generated in Godot or fractured in Blender. Ten steps, roughly half a day.</p>
+      </a>
+      <div class="call note"><b>Note:</b> if the link does not open, the file is <code>uproar-ch2-bringing-down-the-house.html</code>. Keep it in the same folder as this page.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHASE 6 ================= -->
+<section id="p6" class="rv" data-phase="6">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 6</p>
+    <h2>Juice, and getting it out the door</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Four small effects and a working export are worth more jam points than any additional mechanic. Export on day 13, not day 14.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="p6s1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Dust on every impact</h3>
+      <p><strong>Add a GPUParticles3D to <code>scene/building.tscn</code> and fire it from the <code>damaged</code> signal.</strong> A short-lived cloud of small grey quads reads unmistakably as concrete dust.</p>
+      <ol>
+        <li>Select <code>Building</code>, press <strong>Ctrl+A</strong>, add a <code>GPUParticles3D</code>, rename it to <code>Dust</code>.</li>
+        <li>Set <strong>Process Material</strong> to <strong>New ParticleProcessMaterial</strong>.</li>
+        <li>Set <strong>Draw Passes → Pass 1</strong> to <strong>New QuadMesh</strong> with <strong>Size</strong> <code>1.5, 1.5</code>.</li>
+        <li>Tick <strong>One Shot</strong>, untick <strong>Emitting</strong>, set <strong>Amount</strong> to <code>24</code> and <strong>Lifetime</strong> to <code>1.2</code>.</li>
+        <li>In the process material set <strong>Gravity</strong> to <code>0, -2, 0</code> and <strong>Initial Velocity</strong> to roughly <code>4</code>.</li>
+        <li>Add <code>@onready var dust: GPUParticles3D = $Dust</code> at the top of <code>building.gd</code>, then call <code>self.dust.restart()</code> from <code>_on_damaged</code> to fire it on each hit.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="step" data-id="p6s2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Camera shake on every punch</h3>
+      <p><strong>Add a decaying random offset to the camera's local position, in <code>player.gd</code>.</strong> Ten lines, and the highest ratio of perceived quality to effort in the whole project.</p>
+      <pre><code>@onready var cam: Camera3D = $CameraPivot/SpringArm3D/Camera3D
+
+var trauma: float = 0.0
+
+
+func _process(delta: float) -&gt; void:
+    if self.trauma &gt; 0.0:
+        self.trauma = maxf(self.trauma - delta * 2.0, 0.0)
+        var shake: float = self.trauma * self.trauma * 0.4
+        self.cam.position = Vector3(randf_range(-shake, shake),
+                                    randf_range(-shake, shake), 0.0)</code></pre>
+      <p><strong>Action:</strong> set <code>trauma = 0.5</code> inside <code>_try_punch()</code> when a building is hit, and <code>1.0</code> when one collapses.</p>
+      <div class="call note"><b>Note:</b> this one belongs in <code>_process</code>, not <code>_physics_process</code>. Visual effects should run at display frame rate; physics should not.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p6s3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. Positional sound</h3>
+      <p><strong>Use AudioStreamPlayer3D, not AudioStreamPlayer.</strong> The 3D version attenuates with distance, so a building collapsing across the map sounds far away — which sells the scale of the city for free.</p>
+      <ol>
+        <li>Add an <code>AudioStreamPlayer3D</code> to <code>scene/building.tscn</code>, named <code>Hit</code>.</li>
+        <li>Put the sound file in <code>res://asset/audio/</code>, then drag it from the FileSystem dock onto the node's <strong>Stream</strong> property.</li>
+        <li>Add <code>@onready var hit: AudioStreamPlayer3D = $Hit</code> at the top of <code>building.gd</code>, then call <code>self.hit.play()</code> from <code>_on_damaged</code>.</li>
+        <li>Before playing, set <code>self.hit.pitch_scale = randf_range(0.9, 1.1)</code> so repeated punches do not sound mechanical.</li>
+      </ol>
+      <div class="call note"><b>Note:</b> free CC0 sound effects are on <a href="https://kenney.nl/assets/tag:audio" target="_blank" rel="noopener">kenney.nl</a> — the Impact Sounds pack covers punches and debris.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p6s4">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">4. A score counter</h3>
+      <p><strong>One CanvasLayer with one Label, added to <code>scene/level.tscn</code>.</strong> A <strong>CanvasLayer</strong> draws on top of the 3D scene and ignores the camera, which is what makes it usable as a HUD.</p>
+      <ol>
+        <li>Select <code>Level</code>, press <strong>Ctrl+A</strong>, add a <code>CanvasLayer</code> named <code>HUD</code>.</li>
+        <li>Add a <code>Label</code> under it. Set its text to <code>Destroyed: 0</code>.</li>
+        <li>Attach a script to <code>HUD</code> with a <code>score</code> variable and an <code>add_point()</code> function.</li>
+        <li>In <code>building.gd</code>'s <code>_ready()</code>, connect <code>collapsed</code> to that function via <code>get_tree()</code> or a group.</li>
+      </ol>
+      <div class="call key"><b>Key point:</b> buildings destroyed is the whole score. Anything more elaborate is scope you do not have.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p6s5">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">5. Export — and always ship a downloadable build</h3>
+      <p><strong>Export on day 13 so day 14 is only for fixes.</strong> Export templates are a separate download and the first export always surprises someone.</p>
+      <ol>
+        <li>Open <strong>Editor → Manage Export Templates</strong> and click <strong>Download and Install</strong>. This is roughly 1 GB.</li>
+        <li>Open <strong>Project → Export</strong>, click <strong>Add…</strong>, choose <strong>Windows Desktop</strong>.</li>
+        <li>Click <strong>Export Project</strong>, pick an empty folder, and untick <strong>Export With Debug</strong>.</li>
+        <li>Add a <strong>Web</strong> preset only if you chose the Compatibility renderer in Phase 0.</li>
+        <li>For itch.io, zip the exported files with the HTML named <code>index.html</code> at the top level of the zip.</li>
+      </ol>
+      <div class="call warn"><b>Warning — web export on itch.io.</b> Godot 4 web builds need <b>SharedArrayBuffer</b> and cross-origin isolation. itch.io exposes this as a <b>"SharedArrayBuffer support"</b> checkbox under Embed Options → Frame Options on the project edit page, and serves the game with <code>Cross-Origin-Opener-Policy: same-origin</code> and <code>Cross-Origin-Embedder-Policy: require-corp</code>. It runs reliably only in Chromium-based browsers — Firefox and Safari are inconsistent.</div>
+      <div class="call key"><b>Key point:</b> upload a Windows build regardless. If a judge's browser refuses the web version, the downloadable build is the difference between being played and being skipped.</div>
+      <p class="src">Source: <a href="https://itch.io/t/2025776/experimental-sharedarraybuffer-support" target="_blank" rel="noopener">itch.io — SharedArrayBuffer support</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ASSETS ================= -->
+<section id="assets" class="rv" data-phase="assets">
+  <div class="phase-head">
+    <p class="eyebrow">Assets</p>
+    <h2>Download these, build nothing</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Take the CC-BY gorilla from Sketchfab and Kenney's CC0 city kits. There is no free CC0 rigged gorilla anywhere, so budget one line of attribution in your credits.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="a1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Get the gorilla</h3>
+      <p><strong>The best free option is rigged, animated, and CC-BY.</strong> Attribution is required, which costs you one line in the credits screen.</p>
+      <a class="link-card" href="https://sketchfab.com/3d-models/gorilla-6c1513599d2345d19b11fa1da18bf4c3" target="_blank" rel="noopener">
+        <h4>Gorilla — luccacatalan, Sketchfab <span class="badge ccby">CC-BY</span></h4>
+        <p>Rigged with Idle, Attack, and Death animations. Roughly 3.8k triangles. Downloads as GLB/glTF. The strongest King Kong stand-in available free.</p>
+      </a>
+      <a class="link-card" href="https://sketchfab.com/3d-models/low-poly-rigged-gorilla-b251ae4d231a42d18a03c46492aa5145" target="_blank" rel="noopener">
+        <h4>Low Poly Rigged Gorilla — madaton, Sketchfab <span class="badge ccby">CC-BY</span></h4>
+        <p>Fallback. Rig present, animations not listed — you would supply your own.</p>
+      </a>
+      <div class="call warn"><b>Warning — Mixamo cannot help here.</b> Adobe's official FAQ states that "the auto-rigger and animation libraries are for bipedal humanoids only." A knuckle-walking gorilla is out of scope, and Mixamo has no ape character.</div>
+      <div class="call note"><b>Note — no CC0 ape exists in the usual packs.</b> Quaternius's Ultimate Animated Animal Pack (CC0) contains cow, donkey, deer, alpaca, bull, fox, shiba inu, stag, husky, wolf and two horses — no primate. Kenney has only a 2D sprite gorilla. Poly Pizza's gorillas appear to be static props, unconfirmed as animated.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="a2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Get the city</h3>
+      <p><strong>Kenney's City Kit is the right blockout choice and is fully CC0.</strong> Modular, low-poly, and free of any attribution requirement.</p>
+      <a class="link-card" href="https://kenney.nl/assets/tag:city" target="_blank" rel="noopener">
+        <h4>Kenney City Kit <span class="badge cc0">CC0</span></h4>
+        <p>Commercial (31+ models), Roads (65+), Suburban (35+) and Industrial (25+) sets. Also see Kenney's Building Kit (80+) and Modular Buildings (90+).</p>
+      </a>
+      <a class="link-card" href="https://quaternius.com/" target="_blank" rel="noopener">
+        <h4>Quaternius <span class="badge cc0">CC0</span></h4>
+        <p>Additional CC0 low-poly building and prop packs. Style-compatible with Kenney.</p>
+      </a>
+      <div class="call note"><b>Note:</b> none of these kits ship pre-fractured or destructible variants, so plan to fracture buildings yourself using the Blender route in Phase 5.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="a3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. Swap the placeholder capsule for the real model</h3>
+      <p><strong>Use glTF (.glb).</strong> The official documentation lists it as "glTF 2.0 (recommended)". FBX also works — the built-in <strong>ufbx</strong> importer became the default for new .fbx files in Godot 4.3. OBJ is static meshes only.</p>
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Drag the <code>.glb</code> into <code>res://asset/model/</code> in the FileSystem dock. Godot imports it automatically and writes a matching <code>.import</code> file beside it.</li>
+        <li>Open <code>scene/player.tscn</code> and drag the imported file from the FileSystem dock onto the <code>Player</code> node.</li>
+        <li>Delete the placeholder <code>Body</code> MeshInstance3D and rename the imported node to <code>Body</code>, so your existing script paths still resolve.</li>
+        <li>Set the model's <strong>Scale</strong> until it matches the 8 m capsule. Compare against the CollisionShape3D, which stays as it is.</li>
+        <li>If the model faces the wrong way, rotate it <code>180°</code> on Y. Godot's forward is <code>-Z</code>; many models are authored facing <code>+Z</code>.</li>
+      </ol>
+      <div class="call key"><b>Key point — do not delete the CollisionShape3D.</b> The imported model is visual only. Physics still uses the capsule, which is both correct and much faster than colliding against a detailed mesh.</div>
+      <p><strong>If your model lacks the animations you need,</strong> Godot 4 has a documented retargeting system: import the model <strong>As Scene</strong> with a <strong>BoneMap</strong> and <strong>SkeletonProfileHumanoid</strong>, then import the animation source <strong>As AnimationLibrary</strong> with the same bone map.</p>
+      <div class="call warn"><b>Warning:</b> matching bone names is not enough — Godot needs matching <b>Bone Rests</b>, which is what the BoneMap step supplies. The built-in profile is humanoid, so a gorilla's proportions may need a custom SkeletonProfile. <b>For an 11-day jam, prefer a model that already ships with the animations over retargeting.</b></div>
+      <p class="src">Source: <a href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/retargeting_3d_skeletons.html" target="_blank" rel="noopener">Retargeting 3D skeletons</a> · <a href="https://godotengine.org/article/introducing-the-improved-ufbx-importer-in-godot-4-3/" target="_blank" rel="noopener">ufbx importer</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PLAN ================= -->
+<section id="plan" class="rv" data-phase="plan">
+  <div class="phase-head">
+    <p class="eyebrow">3–14 August</p>
+    <h2>Eleven days, two hours a day</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Each block ends at a benchmark you can demonstrate. If a block runs over, cut from the list at the bottom rather than borrowing from tomorrow.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="day" data-id="d1"><div class="day-date">Aug 3–4</div>
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
+    <div class="step-body"><h4 class="step-title">Setup and first movement</h4>
+    <p>Phase 0 in full, then Phase 1 steps 1 and 2.</p>
+    <p class="bench"><b>Benchmark:</b> a capsule standing on a lit floor, with a script attached.</p></div></div>
+
+  <div class="day" data-id="d2"><div class="day-date">Aug 5–6</div>
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
+    <div class="step-body"><h4 class="step-title">Camera, controls, and the city</h4>
+    <p>Finish Phase 1, then all of Phase 2.</p>
+    <p class="bench"><b>Benchmark:</b> camera-relative walking and jumping, five buildings that block you, camera that never clips the player.</p></div></div>
+
+  <div class="day" data-id="d3"><div class="day-date">Aug 7–8</div>
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
+    <div class="step-body"><h4 class="step-title">Climbing</h4>
+    <p>Phase 3. Budget the full two days — this is the fiddliest mechanic in the game.</p>
+    <p class="bench"><b>Benchmark:</b> climb one building, reach the roof, get down again, no soft-locks.</p></div></div>
+
+  <div class="day" data-id="d4"><div class="day-date">Aug 9–10</div>
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
+    <div class="step-body"><h4 class="step-title">Punching and damage</h4>
+    <p>Phase 4 in full.</p>
+    <p class="bench"><b>Benchmark:</b> four punches print 75, 50, 25, 0 in the Output panel and the building disappears.</p></div></div>
+
+  <div class="day" data-id="d5"><div class="day-date">Aug 11</div>
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
+    <div class="step-body"><h4 class="step-title">Destruction</h4>
+    <p>Phase 5 in full: the mesh-swap collapse. Only open Chapter 2 if this finishes early.</p>
+    <p class="bench"><b>Benchmark:</b> at least one building visibly collapses at zero health.</p></div></div>
+
+  <div class="day" data-id="d6"><div class="day-date">Aug 12</div>
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
+    <div class="step-body"><h4 class="step-title">Juice and real assets</h4>
+    <p>Phase 6 effects, plus swapping the placeholder capsule for the real gorilla model.</p>
+    <p class="bench"><b>Benchmark:</b> the game looks like a game, not a physics test.</p></div></div>
+
+  <div class="day" data-id="d7"><div class="day-date">Aug 13</div>
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
+    <div class="step-body"><h4 class="step-title">Export and bug fixing</h4>
+    <p>Export, test the build, fix whatever breaks.</p>
+    <p class="bench"><b>Benchmark:</b> a playable exported build exists on disk.</p></div></div>
+
+  <div class="day" data-id="d8"><div class="day-date">Aug 14</div>
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
+    <div class="step-body"><h4 class="step-title">Buffer and submit</h4>
+    <p>Credits screen (remember the CC-BY attribution), screenshots, submission page.</p>
+    <p class="bench"><b>Benchmark:</b> submitted, with time to spare.</p></div></div>
+
+  <details style="margin-top:26px;">
+    <summary>If you fall behind, cut in this order</summary>
+    <div class="details-body">
+      <ul>
+        <li><strong>1. Runtime fracture.</strong> Never attempt it in a jam regardless.</li>
+        <li><strong>2. Retargeted custom animations.</strong> Use whatever the model ships with.</li>
+        <li><strong>3. Physics debris.</strong> Skip Chapter 2 entirely; the mesh-swap collapse in Phase 5 is enough.</li>
+        <li><strong>4. Climbing polish.</strong> Drop the mantle-onto-roof transition; let the gorilla climb the face only.</li>
+      </ul>
+      <p style="margin-top:14px;"><strong>Never cut:</strong> working movement, correct collision layers, one working destruction method, and a working export.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ================= SOURCES ================= -->
+<section id="sources" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Verification</p>
+    <h2>Where every claim came from</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> API and version claims are checked against official Godot documentation. Items marked third-party or unconfirmed in the text are not.</p>
+  </div>
+  <details>
+    <summary>Official Godot sources</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://godotengine.org/article/maintenance-release-godot-4-7-1/" target="_blank" rel="noopener">Maintenance release: Godot 4.7.1</a></li>
+      <li><a href="https://godotengine.org/releases/4.7/" target="_blank" rel="noopener">Godot 4.7 release notes</a></li>
+      <li><a href="https://godotengine.org/releases/4.6/" target="_blank" rel="noopener">Godot 4.6 release notes — Jolt becomes default</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/classes/class_characterbody3d.html" target="_blank" rel="noopener">CharacterBody3D class reference</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/physics/using_character_body_2d.html" target="_blank" rel="noopener">Using CharacterBody2D/3D</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/3d/spring_arm.html" target="_blank" rel="noopener">Third-person camera with spring arm</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/physics/physics_introduction.html" target="_blank" rel="noopener">Physics introduction — layers and masks</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/physics/using_jolt_physics.html" target="_blank" rel="noopener">Using Jolt Physics</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html" target="_blank" rel="noopener">RigidBody3D class reference</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/classes/class_raycast3d.html" target="_blank" rel="noopener">RayCast3D class reference</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/3d/csg_tools.html" target="_blank" rel="noopener">Prototyping levels with CSG</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/retargeting_3d_skeletons.html" target="_blank" rel="noopener">Retargeting 3D skeletons</a></li>
+      <li><a href="https://godotengine.org/article/introducing-the-improved-ufbx-importer-in-godot-4-3/" target="_blank" rel="noopener">The ufbx importer in Godot 4.3</a></li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Assets, platforms, and third-party tools</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://kenney.nl/assets/tag:city" target="_blank" rel="noopener">Kenney city kits (CC0)</a></li>
+      <li><a href="https://quaternius.com/" target="_blank" rel="noopener">Quaternius (CC0)</a></li>
+      <li><a href="https://sketchfab.com/3d-models/gorilla-6c1513599d2345d19b11fa1da18bf4c3" target="_blank" rel="noopener">Gorilla by luccacatalan (CC-BY)</a></li>
+      <li><a href="https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html" target="_blank" rel="noopener">Mixamo FAQ — humanoid rigs only</a></li>
+      <li><a href="https://itch.io/t/2025776/experimental-sharedarraybuffer-support" target="_blank" rel="noopener">itch.io — SharedArrayBuffer support</a></li>
+      <li><a href="https://github.com/robertvaradan/voronoishatter" target="_blank" rel="noopener">VoronoiShatter (third-party, experimental)</a></li>
+      <li><a href="https://github.com/the-dunk/Godot-Destruction" target="_blank" rel="noopener">Godot-Destruction (third-party)</a></li>
+    </ul></div>
+  </details>
+</section>
+
+<footer>
+  Godot Guide — Uproar, Chapter 1: Prototype · Godot 4.7.1-stable · Progress is saved automatically.<br>
+  Remember to credit <strong>luccacatalan</strong> for the gorilla model if you ship it.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "godot-kong-progress-v1";
+  var checked = {};
+  var theme = "auto";              // "auto" | "light" | "dark"
+  var saveTimer = null;
+  var loaded = false;
+
+  var items = Array.prototype.slice.call(document.querySelectorAll("[data-id]"));
+  var total = items.length;
+
+  /* ---------- storage adapter ----------
+     Tries three backends in order, so progress persists whether this page is
+     rendered inside Claude or opened as a downloaded file in a browser.
+       1. window.storage  - available when rendered as an artifact
+       2. localStorage    - available when opened as a local/hosted file
+       3. memory          - last resort; survives navigation but not a reload
+  */
+  var store = (function(){
+    if (window.storage && typeof window.storage.get === "function") {
+      return {
+        kind: "synced",
+        get: function(k){
+          return window.storage.get(k).then(function(r){
+            return (r && typeof r.value === "string") ? r.value : null;
+          });
+        },
+        set: function(k, v){ return window.storage.set(k, v); }
+      };
+    }
+    try {
+      var probe = "__probe__";
+      window.localStorage.setItem(probe, "1");
+      window.localStorage.removeItem(probe);
+      return {
+        kind: "local",
+        get: function(k){ return Promise.resolve(window.localStorage.getItem(k)); },
+        set: function(k, v){ window.localStorage.setItem(k, v); return Promise.resolve(true); }
+      };
+    } catch (e) { /* storage blocked or unavailable */ }
+    var mem = {};
+    return {
+      kind: "memory",
+      get: function(k){ return Promise.resolve(Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null); },
+      set: function(k, v){ mem[k] = v; return Promise.resolve(true); }
+    };
+  })();
+
+  /* ---------- appearance ---------- */
+  var themeBtn = document.getElementById("themeBtn");
+  var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function resolvedTheme(){
+    return theme === "auto" ? (darkQuery.matches ? "dark" : "light") : theme;
+  }
+
+  function applyTheme(){
+    var root = document.documentElement;
+    if (theme === "auto") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", theme);
+    var isDark = resolvedTheme() === "dark";
+    themeBtn.textContent = isDark ? "☀" : "☾";
+    var label = isDark ? "Switch to light appearance" : "Switch to dark appearance";
+    themeBtn.setAttribute("aria-label", label);
+    themeBtn.setAttribute("title", label);
+  }
+
+  themeBtn.addEventListener("click", function(){
+    theme = resolvedTheme() === "dark" ? "light" : "dark";
+    applyTheme();
+    save();
+  });
+
+  if (darkQuery.addEventListener) {
+    darkQuery.addEventListener("change", function(){ if (theme === "auto") applyTheme(); });
+  } else if (darkQuery.addListener) {
+    darkQuery.addListener(function(){ if (theme === "auto") applyTheme(); });
+  }
+
+  applyTheme();
+
+  /* ---------- load / save ---------- */
+  function payload(){
+    return JSON.stringify({ checked: checked, theme: theme });
+  }
+
+  function load(){
+    return store.get(KEY)
+      .then(function(raw){
+        if (!raw) return;
+        var data;
+        try { data = JSON.parse(raw); } catch (e) { return; }
+        if (!data || typeof data !== "object") return;
+        if (data.checked) {              // current format
+          checked = data.checked;
+          if (data.theme) theme = data.theme;
+        } else {                         // earlier format: a flat map of ids
+          checked = data;
+        }
+      })
+      .catch(function(){ /* nothing saved yet - expected on first run */ })
+      .then(function(){
+        loaded = true;
+        applyTheme();
+        render();
+        if (store.kind === "memory") {
+          var c = document.getElementById("navCount");
+          if (c) c.title = "Storage is unavailable in this browser, so progress will reset on reload.";
+        }
+      });
+  }
+
+  function save(){
+    if (!loaded) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      store.set(KEY, payload())
+        .then(function(){ flashSaved(); })
+        .catch(function(err){ console.error("Could not save progress:", err); });
+    }, 350);
+  }
+
+  var dot = document.getElementById("saveDot");
+  var dotTimer = null;
+  function flashSaved(){
+    if (!dot) return;
+    dot.classList.add("on");
+    clearTimeout(dotTimer);
+    dotTimer = setTimeout(function(){ dot.classList.remove("on"); }, 1400);
+  }
+
+  /* ---------- rendering ---------- */
+  function render(){
+    var done = 0;
+    items.forEach(function(el){
+      var id = el.getAttribute("data-id");
+      var on = !!checked[id];
+      if (on) done++;
+      el.classList.toggle("done", on);
+      var btn = el.querySelector(".cb");
+      if (btn) btn.setAttribute("aria-checked", on ? "true" : "false");
+    });
+
+    var pct = total ? done / total : 0;
+
+    var hero = document.getElementById("heroRing");
+    if (hero) {
+      var hc = 2 * Math.PI * 54;
+      hero.setAttribute("stroke-dashoffset", hc - hc * pct);
+    }
+    var heroPct = document.getElementById("heroPct");
+    if (heroPct) heroPct.textContent = Math.round(pct * 100) + "%";
+
+    var mini = document.getElementById("miniRing");
+    if (mini) {
+      var mc = 2 * Math.PI * 10.5;
+      mini.setAttribute("stroke-dashoffset", mc - mc * pct);
+    }
+    var navCount = document.getElementById("navCount");
+    if (navCount) navCount.textContent = done + " / " + total;
+
+    var left = document.getElementById("stepsLeft");
+    if (left) left.textContent = total - done;
+
+    document.querySelectorAll("section[data-phase]").forEach(function(sec){
+      var kids = sec.querySelectorAll("[data-id]");
+      if (!kids.length) return;
+      var d = 0;
+      kids.forEach(function(k){ if (checked[k.getAttribute("data-id")]) d++; });
+      var bar = sec.querySelector(".pbar i");
+      var cnt = sec.querySelector(".pcount");
+      if (bar) bar.style.width = (d / kids.length * 100) + "%";
+      if (cnt) cnt.textContent = d + " of " + kids.length + " done";
+    });
+  }
+
+  function toggle(el){
+    var id = el.getAttribute("data-id");
+    if (checked[id]) { delete checked[id]; } else { checked[id] = 1; }
+    render();
+    save();
+  }
+
+  items.forEach(function(el){
+    var btn = el.querySelector(".cb");
+    if (btn) btn.addEventListener("click", function(){ toggle(el); });
+    var title = el.querySelector(".step-title");
+    if (title) title.addEventListener("click", function(){ toggle(el); });
+  });
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById("resetBtn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function(){
+      if (!confirm("Clear all " + total + " checkmarks on this page? This cannot be undone.")) return;
+      checked = {};
+      render();
+      store.set(KEY, payload())
+        .then(flashSaved)
+        .catch(function(err){ console.error("Could not clear progress:", err); });
+    });
+  }
+
+  /* ---------- resume ---------- */
+  var resumeBtn = document.getElementById("resumeBtn");
+  if (resumeBtn) {
+    resumeBtn.addEventListener("click", function(){
+      var next = null;
+      for (var i = 0; i < items.length; i++) {
+        if (!checked[items[i].getAttribute("data-id")]) { next = items[i]; break; }
+      }
+      var target = next || items[0];
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      var btn = target.querySelector(".cb");
+      if (btn) setTimeout(function(){ btn.focus(); }, 600);
+    });
+  }
+
+  /* ---------- countdown ---------- */
+  var daysEl = document.getElementById("daysLeft");
+  if (daysEl) {
+    var jam = new Date(2026, 7, 14);
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    var days = Math.round((jam - now) / 86400000);
+    daysEl.textContent = days > 0 ? days : (days === 0 ? "Today" : "—");
+    if (days === 0) daysEl.style.fontSize = "26px";
+  }
+
+  /* ---------- scroll reveal ---------- */
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -60px 0px" });
+    document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".rv").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
