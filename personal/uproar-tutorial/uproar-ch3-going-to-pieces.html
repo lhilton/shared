@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Godot Guide — Uproar Chapter 3 — Going To Pieces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#fbfbfd;
+  --surface:#ffffff;
+  --ink:#1d1d1f;
+  --ink-2:#6e6e73;
+  --ink-3:#86868b;
+  --hairline:#d2d2d7;
+  --hairline-soft:#e8e8ed;
+  --accent:#0066cc;
+  --accent-fill:#0071e3;
+  --accent-hover:#0077ed;
+  --accent-soft:rgba(0,102,204,.08);
+  --godot:#478cbf;
+  --warn-bg:#fff6e9;
+  --warn-ink:#8a5200;
+  --warn-ink-strong:#7a4800;
+  --note-bg:#f2f2f5;
+  --key-bg:#eef5fd;
+  --key-ink:#0a4a86;
+  --key-ink-strong:#053b6e;
+  --code-bg:#f0f0f3;
+  --pre-bg:#f5f5f7;
+  --th-bg:#f8f8fa;
+  --nav-bg:rgba(251,251,253,.78);
+  --hover-bg:rgba(0,0,0,.05);
+  --cb-bg:#ffffff;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 6px 20px rgba(0,0,0,.07);
+  --cc0-bg:#e6f4ea;  --cc0-ink:#1a6c34;
+  --ccby-bg:#fdf0e3; --ccby-ink:#8a5200;
+  --paid-bg:#f0f0f3;
+  --radius:18px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+/* Dark palette — applied automatically by system preference, or manually
+   when the theme button sets data-theme="dark" on <html>. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#000000;
+    --surface:#1c1c1e;
+    --ink:#f5f5f7;
+    --ink-2:#a1a1a6;
+    --ink-3:#8e8e93;
+    --hairline:#3a3a3c;
+    --hairline-soft:#2c2c2e;
+    --accent:#2997ff;
+    --accent-fill:#0a84ff;
+    --accent-hover:#3ba2ff;
+    --accent-soft:rgba(41,151,255,.16);
+    --godot:#6fb3e0;
+    --warn-bg:#38290f;
+    --warn-ink:#ffb340;
+    --warn-ink-strong:#ffc871;
+    --note-bg:#2c2c2e;
+    --key-bg:#0f2a44;
+    --key-ink:#7fbcf7;
+    --key-ink-strong:#a8d3fb;
+    --code-bg:#2c2c2e;
+    --pre-bg:#131315;
+    --th-bg:#2c2c2e;
+    --nav-bg:rgba(0,0,0,.7);
+    --hover-bg:rgba(255,255,255,.09);
+    --cb-bg:#2c2c2e;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+    --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+    --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+    --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+    --paid-bg:#2c2c2e;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#000000;
+  --surface:#1c1c1e;
+  --ink:#f5f5f7;
+  --ink-2:#a1a1a6;
+  --ink-3:#8e8e93;
+  --hairline:#3a3a3c;
+  --hairline-soft:#2c2c2e;
+  --accent:#2997ff;
+  --accent-fill:#0a84ff;
+  --accent-hover:#3ba2ff;
+  --accent-soft:rgba(41,151,255,.16);
+  --godot:#6fb3e0;
+  --warn-bg:#38290f;
+  --warn-ink:#ffb340;
+  --warn-ink-strong:#ffc871;
+  --note-bg:#2c2c2e;
+  --key-bg:#0f2a44;
+  --key-ink:#7fbcf7;
+  --key-ink-strong:#a8d3fb;
+  --code-bg:#2c2c2e;
+  --pre-bg:#131315;
+  --th-bg:#2c2c2e;
+  --nav-bg:rgba(0,0,0,.7);
+  --hover-bg:rgba(255,255,255,.09);
+  --cb-bg:#2c2c2e;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+  --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+  --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+  --paid-bg:#2c2c2e;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:76px;}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+:focus-visible{outline:2px solid var(--accent-fill);outline-offset:3px;border-radius:6px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:#000;color:#f5f5f7;min-height:86vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:110px 22px 90px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(72% 52% at 50% 8%, rgba(71,140,191,.26), transparent 68%);
+}
+.hero > *{position:relative;z-index:1;}
+.eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--godot);margin:0 0 18px;
+}
+.hero h1{
+  font-size:clamp(42px,8.2vw,92px);font-weight:600;letter-spacing:-.035em;
+  line-height:1.03;margin:0 0 22px;max-width:14ch;
+}
+.hero h1 em{font-style:normal;color:#8fb9d9;}
+.hero p.lede{
+  font-size:clamp(17px,2.2vw,21px);color:#a1a1a6;max-width:46ch;margin:0 auto 40px;
+  line-height:1.45;
+}
+.hero-meta{display:flex;gap:38px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:8px;}
+.stat{min-width:96px;}
+.stat b{display:block;font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.1;}
+.stat span{display:block;font-size:12px;color:#86868b;letter-spacing:.03em;margin-top:5px;}
+.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ring{transform:rotate(-90deg);}
+.ring circle{fill:none;stroke-linecap:round;}
+.ring .track{stroke:rgba(255,255,255,.14);}
+.ring .fill{stroke:url(#grad);transition:stroke-dashoffset .7s cubic-bezier(.32,.72,0,1);}
+.ring-label{font-size:12px;color:#86868b;letter-spacing:.03em;}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:8px;margin-top:44px;background:var(--accent-fill);
+  color:#fff;padding:12px 24px;border-radius:980px;font-size:16px;font-weight:500;border:none;
+  cursor:pointer;transition:transform .2s,background .2s;font-family:inherit;
+}
+.hero-cta:hover{background:var(--accent-hover);transform:scale(1.02);text-decoration:none;}
+
+/* ---------- NAV ---------- */
+nav{
+  position:sticky;top:0;z-index:60;background:var(--nav-bg);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--hairline-soft);
+}
+.nav-in{
+  max-width:1080px;margin:0 auto;padding:0 20px;height:54px;
+  display:flex;align-items:center;gap:16px;
+}
+.nav-title{font-size:14px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;}
+.nav-links{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-links a{
+  font-size:13px;color:var(--ink-2);padding:6px 11px;border-radius:980px;white-space:nowrap;
+  transition:background .15s,color .15s;
+}
+.nav-links a:hover{background:var(--hover-bg);color:var(--ink);text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.mini-count{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.mini-ring .track{stroke:var(--hairline);}
+.mini-ring .fill{stroke:var(--accent-fill);}
+.ghost-btn{
+  font-family:inherit;font-size:13px;color:var(--accent);background:none;border:none;
+  cursor:pointer;padding:6px 8px;border-radius:8px;white-space:nowrap;
+}
+.ghost-btn:hover{background:var(--accent-soft);}
+.icon-btn{font-size:15px;line-height:1;padding:7px 9px;}
+
+/* ---------- LAYOUT ---------- */
+section{max-width:800px;margin:0 auto;padding:88px 22px 0;}
+section:last-of-type{padding-bottom:110px;}
+.phase-head{margin-bottom:26px;}
+.phase-head .eyebrow{color:var(--accent);margin-bottom:10px;}
+.phase-head h2{
+  font-size:clamp(29px,4.4vw,42px);font-weight:600;letter-spacing:-.026em;
+  margin:0 0 14px;line-height:1.1;
+}
+.phase-meta{display:flex;align-items:center;gap:12px;margin-top:16px;}
+.pbar{height:4px;background:var(--hairline-soft);border-radius:99px;flex:1;overflow:hidden;}
+.pbar i{display:block;height:100%;width:0;background:var(--accent-fill);border-radius:99px;transition:width .5s cubic-bezier(.32,.72,0,1);}
+.pcount{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.bluf{
+  font-size:19px;line-height:1.5;color:var(--ink);margin:0 0 8px;font-weight:450;
+}
+.bluf b{font-weight:600;}
+.bluf .lbl{color:var(--accent);font-weight:600;}
+
+/* ---------- STEP CARD ---------- */
+.step{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:19px 21px;margin-bottom:12px;
+  box-shadow:var(--shadow-sm);transition:opacity .3s,border-color .2s,box-shadow .2s;
+}
+.step:hover{border-color:var(--hairline);}
+.step.done{opacity:.5;}
+.cb{
+  flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:1.6px solid var(--hairline);
+  background:var(--cb-bg);cursor:pointer;margin-top:2px;padding:0;position:relative;
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.cb:hover{border-color:var(--accent-fill);}
+.cb:active{transform:scale(.9);}
+.cb::after{
+  content:"";position:absolute;left:8px;top:4px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.cb[aria-checked="true"]{background:var(--accent-fill);border-color:var(--accent-fill);}
+.cb[aria-checked="true"]::after{transform:rotate(45deg) scale(1);}
+.step-body{flex:1;min-width:0;}
+.step-title{
+  font-size:17px;font-weight:600;letter-spacing:-.012em;margin:0 0 7px;cursor:pointer;
+  line-height:1.35;
+}
+.step.done .step-title{text-decoration:line-through;text-decoration-color:var(--hairline);color:var(--ink-2);}
+.step p{margin:0 0 10px;font-size:15px;color:var(--ink-2);line-height:1.55;}
+.step p:last-child{margin-bottom:0;}
+.step p strong,.step li strong{color:var(--ink);font-weight:600;}
+.step ul,.step ol{margin:0 0 10px;padding-left:20px;font-size:15px;color:var(--ink-2);line-height:1.6;}
+.step li{margin-bottom:5px;}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:2px 6px;border-radius:5px;color:var(--ink);}
+pre{
+  background:var(--pre-bg);border:1px solid var(--hairline-soft);border-radius:12px;padding:15px 16px;
+  overflow-x:auto;margin:0 0 12px;
+}
+pre code{background:none;padding:0;font-size:13px;line-height:1.65;display:block;white-space:pre;}
+
+/* ---------- CALLOUTS ---------- */
+.call{border-radius:12px;padding:12px 15px;font-size:14.5px;line-height:1.55;margin:0 0 11px;}
+.call b{font-weight:600;}
+.call.warn{background:var(--warn-bg);color:var(--warn-ink);}
+.call.warn b{color:var(--warn-ink-strong);}
+.call.note{background:var(--note-bg);color:var(--ink-2);}
+.call.note b{color:var(--ink);}
+.call.key{background:var(--key-bg);color:var(--key-ink);}
+.call.key b{color:var(--key-ink-strong);}
+.exp{display:block;margin:0 0 11px;font-size:13.5px;color:var(--ink-3);padding-left:11px;border-left:2px solid var(--hairline-soft);line-height:1.55;}
+.exp b{color:var(--ink-2);}
+.src{font-size:12px;color:var(--ink-3);letter-spacing:.01em;}
+.src a{color:var(--ink-3);text-decoration:underline;text-decoration-color:var(--hairline);}
+
+/* ---------- TABLE ---------- */
+.tbl-wrap{overflow-x:auto;margin:0 0 12px;border:1px solid var(--hairline-soft);border-radius:12px;}
+table{border-collapse:collapse;width:100%;font-size:14px;}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--hairline-soft);}
+th{font-weight:600;color:var(--ink);background:var(--th-bg);font-size:12.5px;letter-spacing:.02em;}
+tr:last-child td{border-bottom:none;}
+td{color:var(--ink-2);}
+td:first-child{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;}
+
+/* ---------- ASSET / LINK CARDS ---------- */
+.link-card{
+  display:block;background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:15px 18px;margin-bottom:10px;transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.link-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg);border-color:var(--hairline);text-decoration:none;}
+.link-card h4{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:-.01em;}
+.link-card p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.badge{
+  display:inline-block;font-size:11px;font-weight:600;letter-spacing:.03em;padding:3px 9px;
+  border-radius:980px;margin-left:8px;vertical-align:2px;
+}
+.badge.cc0{background:var(--cc0-bg);color:var(--cc0-ink);}
+.badge.ccby{background:var(--ccby-bg);color:var(--ccby-ink);}
+.badge.paid{background:var(--paid-bg);color:var(--ink-2);}
+
+/* ---------- SCHEDULE ---------- */
+.day{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:17px 20px;margin-bottom:10px;
+  transition:opacity .3s;
+}
+.day.done{opacity:.5;}
+.day-date{
+  flex:0 0 62px;font-size:13px;font-weight:600;color:var(--accent);letter-spacing:-.01em;
+  padding-top:2px;
+}
+.day.done .day-date{color:var(--ink-3);}
+.day h4{margin:0 0 5px;font-size:15.5px;font-weight:600;letter-spacing:-.01em;}
+.day p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.day .bench{color:var(--ink-2);font-size:13.5px;margin-top:6px;}
+.day .bench b{color:var(--ink);}
+
+/* ---------- DETAILS ---------- */
+details{
+  background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:0;margin-bottom:10px;overflow:hidden;
+}
+summary{
+  cursor:pointer;padding:15px 18px;font-size:15.5px;font-weight:600;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;letter-spacing:-.01em;
+}
+summary::-webkit-details-marker{display:none;}
+summary::after{content:"+";font-weight:400;font-size:19px;color:var(--ink-3);}
+details[open] summary::after{content:"–";}
+.details-body{padding:0 18px 16px;font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+.details-body ul{padding-left:19px;margin:0;}
+.details-body li{margin-bottom:7px;word-break:break-word;}
+
+/* ---------- FOOTER ---------- */
+footer{
+  border-top:1px solid var(--hairline-soft);margin-top:70px;padding:34px 22px 60px;
+  text-align:center;font-size:12.5px;color:var(--ink-3);line-height:1.7;
+}
+.save-dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;background:#34c759;
+  margin-right:6px;vertical-align:1px;opacity:0;transition:opacity .3s;
+}
+.save-dot.on{opacity:1;}
+
+/* ---------- REVEAL ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.32,.72,0,1);}
+.rv.in{opacity:1;transform:none;}
+
+@media (max-width:640px){
+  .hero{min-height:auto;padding:80px 20px 64px;}
+  .hero-meta{gap:26px;}
+  .nav-title{display:none;}
+  section{padding-top:64px;}
+  .day{flex-wrap:wrap;}
+  .day-date{flex-basis:100%;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  html{scroll-behavior:auto;}
+  .rv{opacity:1;transform:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <svg width="0" height="0" aria-hidden="true"><defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#478cbf"/><stop offset="100%" stop-color="#5ac8fa"/>
+    </linearGradient>
+  </defs></svg>
+
+  <p class="eyebrow">Godot Guide · Uproar · Godot 4.7.1-stable</p>
+  <h1>Chapter Three <em>Going To Pieces</em></h1>
+  <p class="lede">Real fractured shards instead of generated boxes. This upgrades the chunk system from Chapter 2 rather than replacing it, so both versions stay in the project and you can switch between them with one Inspector field.</p>
+
+  <div class="hero-meta">
+    <div class="ring-wrap">
+      <svg class="ring" width="128" height="128" viewBox="0 0 128 128" aria-hidden="true">
+        <circle class="track" cx="64" cy="64" r="54" stroke-width="9"/>
+        <circle id="heroRing" class="fill" cx="64" cy="64" r="54" stroke-width="9"
+                stroke-dasharray="339.29" stroke-dashoffset="339.29"/>
+      </svg>
+      <span class="ring-label"><b id="heroPct" style="color:#f5f5f7;font-size:14px;">0%</b> complete</span>
+    </div>
+    <div class="stat"><b id="daysLeft">—</b><span>DAYS TO JAM</span></div>
+    <div class="stat"><b id="stepsLeft">—</b><span>STEPS LEFT</span></div>
+    <div class="stat"><b>1</b><span>EVENING OF WORK</span></div>
+  </div>
+
+  <button class="hero-cta" id="resumeBtn">Start where you left off &nbsp;↓</button>
+</header>
+
+<!-- ================= NAV ================= -->
+<nav>
+  <div class="nav-in">
+    <span class="nav-title">Uproar · Ch 3</span>
+    <div class="nav-links">
+      <a href="#before">Before you start</a><a href="#blender">Fracture</a>
+      <a href="#import">Import</a><a href="#feel">Feel</a><a href="#fix">When it breaks</a>
+      <a href="uproar-ch2-bringing-down-the-house.html">← Chapter 2</a>
+    </div>
+    <div class="nav-right">
+      <svg class="ring mini-ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle class="track" cx="13" cy="13" r="10.5" stroke-width="3"/>
+        <circle id="miniRing" class="fill" cx="13" cy="13" r="10.5" stroke-width="3"
+                stroke-dasharray="65.97" stroke-dashoffset="65.97"/>
+      </svg>
+      <span class="mini-count"><span class="save-dot" id="saveDot"></span><span id="navCount">0 / 0</span></span>
+      <button class="ghost-btn icon-btn" id="themeBtn" title="Switch appearance" aria-label="Switch appearance">☾</button>
+      <button class="ghost-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= BEFORE YOU START ================= -->
+<section id="before" class="rv" data-phase="before">
+  <div class="phase-head">
+    <p class="eyebrow">Before you start</p>
+    <h2>This chapter edits Chapter 2's code, it does not replace it</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Chapter 2 built debris from generated boxes. This chapter feeds real fractured shards into the same <code>Chunks</code> node and the same <code>_collapse()</code> function. Every box-grid line you already wrote stays in the file as a fallback.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="g0">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">Confirm the box-chunk collapse works</h3>
+      <p><strong>Check all four in the running game before continuing.</strong> This chapter changes only where the chunks come from, so anything broken now stays broken.</p>
+      <ol>
+        <li>Punching a building to zero health makes it burst into boxes that fall.</li>
+        <li>The boxes stop moving, disappear after <code>debris_lifetime</code> seconds, and leave the rubble mesh.</li>
+        <li><code>script/building.gd</code> contains <code>_build_chunks()</code>, <code>_collapse()</code>, and the <code>@onready var chunks: Node3D</code> reference.</li>
+        <li><code>chunk_cols</code>, <code>chunk_rows</code>, <code>blast_force</code> and <code>debris_lifetime</code> all appear in the Inspector.</li>
+      </ol>
+      <div class="call key"><b>Key point — what actually improves here.</b> Boxes read as "the building broke". Shards read as "the building broke <i>apart</i>", because the pieces have different sizes, different weights, and edges that interlock as they land. The physics code is identical; only the shapes and masses change.</div>
+      <div class="call note"><b>Note — you need Blender.</b> This chapter uses Blender to cut the fracture pattern before the game runs. Blender is free at <code>blender.org</code>. Budget one evening if you have never opened it.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="g1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">Understand the plan before you open Blender</h3>
+      <p><strong>You will fracture a building-shaped mesh once, export the pieces, and let a script turn them into physics bodies at load time.</strong> Read this list first so the individual steps make sense.</p>
+      <ol>
+        <li><strong>Blender</strong> cuts one mesh into roughly 20 loose fragments.</li>
+        <li>You export those fragments as a single <code>.glb</code> file.</li>
+        <li><strong>Godot</strong> imports it as a scene containing 20 <code>MeshInstance3D</code> nodes and nothing else.</li>
+        <li>A new function in <code>building.gd</code> walks those nodes and wraps each one in a frozen <code>RigidBody3D</code> with its own collision shape.</li>
+        <li><code>_collapse()</code> is untouched. It unfreezes whatever is under <code>Chunks</code>, exactly as before.</li>
+      </ol>
+      <div class="call key"><b>Key point — why a script and not manual editor work.</b> Wrapping 20 fragments by hand takes 20 repetitions of a five-click operation, and you repeat all of it every time you re-fracture. The script does it in one pass, works for any fragment count, and means the only manual asset step is the export.</div>
+      <span class="exp"><b>Expected:</b> you can state, without looking, which piece of software does the fracturing and which does the physics-body creation.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BLENDER ================= -->
+<section id="blender" class="rv" data-phase="blender">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 1 · Blender</p>
+    <h2>Cut the fracture pattern</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Cell Fracture splits one mesh into many irregular closed pieces. It is an optional add-on, not a built-in tool, so the first job is installing it.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="b1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Install the Cell Fracture extension</h3>
+      <p><strong>Cell Fracture is no longer bundled with Blender.</strong> It shipped inside Blender up to version 4.1. From Blender 4.2 onward it lives on the Blender Extensions site and you install it yourself, once.</p>
+      <ol>
+        <li>Open Blender and choose <strong>Edit → Preferences</strong>.</li>
+        <li>Select the <strong>Get Extensions</strong> tab.</li>
+        <li>Type <code>cell fracture</code> into the search field.</li>
+        <li>Click <strong>Install</strong> on the <strong>Cell Fracture</strong> result.</li>
+        <li>Switch to the <strong>Add-ons</strong> tab and confirm the checkbox next to <strong>Cell Fracture</strong> is ticked.</li>
+      </ol>
+      <div class="call warn"><b>Warning — do not follow older tutorials on this point.</b> Guides written before Blender 4.2 tell you to enable Cell Fracture in <strong>Preferences → Add-ons</strong> with no installation step. On current Blender the add-on is simply absent until you install it, and the checkbox those guides describe does not exist yet.</div>
+      <span class="exp"><b>Expected:</b> the viewport menu <strong>Object → Quick Effects</strong> now lists <strong>Cell Fracture</strong>.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="b2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Prepare the mesh you are going to break</h3>
+      <p><strong>Cell Fracture needs one closed mesh with clean transforms.</strong> "Closed" means the surface has no holes: a solid cube is closed, a cube with a missing face is not.</p>
+      <ol>
+        <li>Delete the default cube's light and camera, keeping only the cube.</li>
+        <li>Press <strong>N</strong> to open the sidebar and set the cube's <strong>Dimensions</strong> to <code>12 m</code>, <code>12 m</code>, <code>40 m</code>. Blender's up axis is Z, so height goes in the third field.</li>
+        <li>Press <strong>Ctrl+A</strong> and choose <strong>All Transforms</strong>. This bakes the scaling into the mesh data.</li>
+        <li>Move the cube so its base sits on the world origin, then press <strong>Ctrl+A → All Transforms</strong> again.</li>
+      </ol>
+      <div class="call key"><b>Key point — why "Apply All Transforms" matters twice.</b> Blender stores scale and position as instructions layered on top of the mesh, not as changes to the mesh itself. Cell Fracture reads the raw mesh, so unapplied scale produces fragments at the wrong size. Applying transforms rewrites the vertices so what you see is what the add-on gets.</div>
+      <div class="call note"><b>Note — using the real building instead.</b> Majadroid's apocalyptic building pack from Chapter 1 ships its source <code>.blend</code> file. Open it and fracture the skyscraper mesh instead of a cube. Everything below is identical.</div>
+      <span class="exp"><b>Expected:</b> the sidebar shows <strong>Scale</strong> <code>1, 1, 1</code> and <strong>Location</strong> <code>0, 0, 0</code>, with dimensions still 12 by 12 by 40.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="b3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. Run Cell Fracture</h3>
+      <p><strong>Twenty fragments is the target.</strong> Fewer looks blocky; many more costs frame rate for detail nobody sees during a two-second collapse.</p>
+      <ol>
+        <li>Select the cube by left-clicking it.</li>
+        <li>Choose <strong>Object → Quick Effects → Cell Fracture</strong>.</li>
+        <li>Set <strong>Source Limit</strong> to <code>20</code>.</li>
+        <li>Set <strong>Noise</strong> to <code>0.00</code> for straight-edged concrete-style breaks. Values near <code>0.50</code> give ragged organic edges.</li>
+        <li>Leave every other field at its default and click <strong>OK</strong>.</li>
+      </ol>
+      <div class="call note"><b>Note — the operator panel is collapsed at first.</b> After clicking <strong>Cell Fracture</strong> a small panel appears in the bottom-left of the viewport. Click it to expand it, then adjust the values. Changing a value re-runs the fracture immediately, so you can experiment.</div>
+      <div class="call warn"><b>Warning — the split is not always complete.</b> Cell Fracture sometimes leaves a gap where a fragment should be, or produces a piece offset from the source. If the result looks wrong, change <strong>Source Limit</strong> by one and let it re-run, which reshuffles the pattern.</div>
+      <span class="exp"><b>Expected:</b> the Outliner lists roughly 20 new objects whose names end in <code>_cell</code>, sitting inside the original cube's volume.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="b4">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">4. Clean up the result</h3>
+      <p><strong>Delete the original and confirm the fragment count before exporting.</strong> The original mesh still exists, hidden inside the fragments, and exporting it would put a solid building inside your debris.</p>
+      <ol>
+        <li>In the <strong>Outliner</strong>, click the original cube (the one <i>without</i> a <code>_cell</code> suffix).</li>
+        <li>Press <strong>X</strong> and confirm <strong>Delete</strong>.</li>
+        <li>Press <strong>A</strong> in the viewport to select all remaining fragments.</li>
+        <li>Press <strong>Ctrl+A</strong> and choose <strong>All Transforms</strong> once more.</li>
+        <li>Count the objects in the Outliner and write the number down. You will check it again in Godot.</li>
+      </ol>
+      <div class="call key"><b>Key point — apply transforms on the fragments too.</b> Cell Fracture gives each fragment its own origin point offset from the world centre. Applying transforms bakes those offsets into the vertex positions, so each fragment carries its own location inside its mesh data. That is what lets the Godot script place bodies correctly without any extra maths.</div>
+      <span class="exp"><b>Expected:</b> roughly 20 objects in the Outliner, no original cube, and the sidebar showing <strong>Location</strong> <code>0, 0, 0</code> for whichever fragment you click.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="b5">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">5. Export as glTF</h3>
+      <p><strong>glTF, file extension <code>.glb</code>, is the format Godot's documentation recommends for 3D models.</strong> A single <code>.glb</code> holds all 20 fragments.</p>
+      <ol>
+        <li>Press <strong>A</strong> to select all fragments.</li>
+        <li>Choose <strong>File → Export → glTF 2.0 (.glb/.gltf)</strong>.</li>
+        <li>In the export sidebar, set <strong>Format</strong> to <strong>glTF Binary (.glb)</strong>.</li>
+        <li>Open the <strong>Include</strong> section and tick <strong>Limit to → Selected Objects</strong>.</li>
+        <li>Name the file <code>building_fragments.glb</code> and save it into your Godot project at <code>res://asset/model/</code>.</li>
+      </ol>
+      <div class="call note"><b>Note — the axis conversion is already correct.</b> Blender treats Z as up and Godot treats Y as up. The glTF exporter's default <strong>+Y Up</strong> setting converts this for you. Do not change it.</div>
+      <span class="exp"><b>Checkpoint:</b> <code>building_fragments.glb</code> exists in <code>asset/model/</code> and Godot's <strong>FileSystem</strong> dock shows it after the editor regains focus.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= IMPORT ================= -->
+<section id="import" class="rv" data-phase="import">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 2 · Godot</p>
+    <h2>Turn the fragments into physics bodies</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> One new exported property and one new function. When the property is empty you get Chapter 2's boxes; when it points at the fragment scene you get shards.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="i1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">6. Inspect what Godot imported</h3>
+      <p><strong>Check the fragment count matches Blender before writing any code.</strong> A mismatch here means the export was wrong, and every later step would fail confusingly.</p>
+      <ol>
+        <li>In the <strong>FileSystem</strong> dock, double-click <code>building_fragments.glb</code>.</li>
+        <li>The <strong>Advanced Import Settings</strong> dialog opens with a preview and a node tree on the left.</li>
+        <li>Count the <code>MeshInstance3D</code> entries in that tree.</li>
+        <li>Click <strong>Reimport</strong> to close the dialog without changing anything.</li>
+      </ol>
+      <div class="call key"><b>Key point — no collision shapes are imported, and that is correct.</b> Godot can generate collision at import time using name suffixes such as <code>-col</code> or <code>-rigid</code> on the Blender objects. This chapter does not use them, because the script builds shapes that you control directly: convex, on the right collision layer, frozen until the building dies.</div>
+      <span class="exp"><b>Expected:</b> the same number of <code>MeshInstance3D</code> nodes as objects you counted in Blender's Outliner.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="i2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">7. Add the fragment-source property</h3>
+      <p><strong>Add this near the other exported values at the top of <code>script/building.gd</code>.</strong> A <code>PackedScene</code> is a scene file stored as a value, so this property lets you point at the imported <code>.glb</code> from the Inspector.</p>
+      <pre><code>&#35; Leave empty to use the generated box grid from Chapter 2.
+&#35; Assign building_fragments.glb to use real fractured shards.
+@export var fragment_scene: PackedScene = null</code></pre>
+      <p><strong>Action:</strong> assign it in the editor.</p>
+      <ol>
+        <li>Open <code>scene/building.tscn</code> and select the <code>Building</code> root node.</li>
+        <li>Find <strong>Fragment Scene</strong> in the Inspector.</li>
+        <li>Drag <code>building_fragments.glb</code> from the FileSystem dock onto that field.</li>
+      </ol>
+      <div class="call note"><b>Note — this is the switch between chapters.</b> Clearing this field returns you to the box grid with no code changes. Keep it in mind while tuning performance later: it is the fastest way to test whether shards are what is costing you frame rate.</div>
+      <span class="exp"><b>Expected:</b> the Inspector shows <strong>Fragment Scene</strong> holding <code>building_fragments.glb</code> rather than <code>&lt;empty&gt;</code>.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="i3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">8. Write the fragment builder</h3>
+      <p><strong>Add this new function to <code>script/building.gd</code>, below <code>_build_chunks()</code>.</strong> It instantiates the imported scene, then converts every mesh it finds into a frozen physics body.</p>
+      <pre><code>func _build_fragment_chunks() -&gt; void:
+    var source: Node3D = self.fragment_scene.instantiate() as Node3D
+
+    for child in source.get_children():
+        var mesh_node: MeshInstance3D = child as MeshInstance3D
+        if mesh_node == null:
+            continue
+
+        var body: RigidBody3D = RigidBody3D.new()
+        body.freeze = true
+        body.freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+        body.collision_layer = 8      &#35; layer 4, Rubble
+        body.collision_mask = 1       &#35; collide with World only
+        body.transform = mesh_node.transform
+
+        var col: CollisionShape3D = CollisionShape3D.new()
+        col.shape = mesh_node.mesh.create_convex_shape()
+        body.add_child(col)
+
+        var visual: MeshInstance3D = MeshInstance3D.new()
+        visual.mesh = mesh_node.mesh
+        body.add_child(visual)
+
+        self.chunks.add_child(body)
+
+    source.queue_free()</code></pre>
+      <div class="call key"><b>Key point — why convex and never concave.</b> <code>create_convex_shape()</code> returns a <code>ConvexPolygonShape3D</code>, a solid hull with no dents. Godot's documentation is explicit that concave shapes are for static level geometry, not for moving bodies. A concave shape on a falling shard behaves unpredictably and costs far more to simulate.</div>
+      <div class="call note"><b>Note — the fragments are convex already.</b> Cell Fracture produces convex cells by construction, so the hull matches the visible shape almost exactly. This is the reason a fractured mesh is a better fit for physics than an arbitrary model.</div>
+      <span class="exp"><b>Expected:</b> the script saves with no errors. Nothing changes in the game yet, because nothing calls this function.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="i4">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">9. Choose between boxes and shards at load</h3>
+      <p><strong>Replace the <code>self._build_chunks()</code> line in <code>_ready()</code> with this branch.</strong> It picks the fragment builder when a scene is assigned and falls back to the box grid when it is not.</p>
+      <pre><code>    if self.fragment_scene != null:
+        self._build_fragment_chunks()
+    else:
+        self._build_chunks()
+
+    self.chunks.visible = false     &#35; hidden until the building dies</code></pre>
+      <div class="call key"><b>Key point — keep <code>_build_chunks()</code> in the file.</b> Deleting it would save nothing and cost you the fallback. If Blender misbehaves an hour before a deadline, clearing one Inspector field gets you back to working destruction.</div>
+      <div class="call warn"><b>Warning — do not also delete the <code>Chunks</code> node.</b> Both builders add their output to it, and <code>_collapse()</code> reads it. It stays exactly where Chapter 2 put it, at position <code>0, 0, 0</code> under <code>Building</code>.</div>
+      <span class="exp"><b>Checkpoint:</b> punch a building to zero health and it bursts into irregular shards instead of boxes, using the <code>_collapse()</code> code you have not touched.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEEL ================= -->
+<section id="feel" class="rv" data-phase="feel">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 3 · Feel</p>
+    <h2>Make the debris carry weight</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Equal-mass shards drift like polystyrene. Two small changes make big pieces land heavily and small pieces skitter.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="f1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">10. Give each shard a mass from its size</h3>
+      <p><strong>Add these three lines inside the loop in <code>_build_fragment_chunks()</code>, just after <code>body.transform</code> is set.</strong> An <code>AABB</code> is the axis-aligned bounding box: the smallest upright box containing the mesh.</p>
+      <pre><code>@export var chunk_density: float = 0.6
+
+
+&#35; ... inside the loop, after body.transform = mesh_node.transform
+        var extents: Vector3 = mesh_node.mesh.get_aabb().size
+        var volume: float = extents.x * extents.y * extents.z
+        body.mass = maxf(volume * self.chunk_density, 0.5)</code></pre>
+      <div class="call key"><b>Key point — why the bounding box and not the true volume.</b> Measuring a mesh's real volume is slow and fiddly. The bounding box overestimates slightly for every shard, which means the <i>relative</i> weights stay right even though the absolute numbers are not. Relative weight is the only part the eye can see.</div>
+      <div class="call note"><b>Note — the <code>maxf</code> floor prevents a specific bug.</b> A very thin sliver has almost zero bounding-box volume, so its mass would round to near zero and the blast impulse would fling it across the map. Clamping to <code>0.5</code> keeps slivers on stage.</div>
+      <span class="exp"><b>Expected:</b> large shards fall fast and settle immediately; small shards bounce once or twice before stopping.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="f2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">11. Scale the blast by mass, not against it</h3>
+      <p><strong>Change one line in <code>_collapse()</code> so heavy pieces are not thrown as far as light ones.</strong> <code>apply_impulse()</code> applies a fixed push, and a fixed push moves a light body much further than a heavy one, which is correct physics but reads as weak.</p>
+      <p><strong>Action:</strong> find this line in <code>_collapse()</code>:</p>
+      <pre><code>        chunk.apply_impulse(dir * self.blast_force)</code></pre>
+      <p><strong>Replace it with:</strong></p>
+      <pre><code>        chunk.apply_impulse(dir * self.blast_force * sqrt(chunk.mass))</code></pre>
+      <div class="call key"><b>Key point — why the square root.</b> Multiplying by mass exactly would give every shard the same launch speed, which looks artificial and uniform. The square root sits between the two extremes: heavy pieces still move less than light ones, but not so much less that they appear glued in place.</div>
+      <div class="call note"><b>Note — this line does nothing without step 10.</b> Boxes from Chapter 2 all share the default mass of <code>1.0</code>, and the square root of one is one. The change is harmless in box mode and only takes effect for shards.</div>
+      <span class="exp"><b>Expected:</b> the collapse reads as a building coming apart under its own weight rather than an explosion.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="f3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">12. Re-measure the cost</h3>
+      <p><strong>Convex shards cost more than boxes, so check the numbers before you decide the chapter is finished.</strong> Chapter 2's box grid is 12 bodies with 6-face shapes. Twenty shards with 10-to-20-face hulls is more work per contact.</p>
+      <ol>
+        <li>Run the game with <strong>F5</strong>.</li>
+        <li>Open the <strong>Debugger</strong> panel and select the <strong>Monitors</strong> tab.</li>
+        <li>Destroy three buildings in quick succession.</li>
+        <li>Read <strong>Physics Process</strong> at the peak.</li>
+      </ol>
+      <div class="call key"><b>Key point — the budget is unchanged from Chapter 2.</b> At 60 frames per second you have 16.6 milliseconds per frame in total. If physics alone passes 8 milliseconds, act on it before adding anything else to the game.</div>
+      <div class="call note"><b>Note — cut in this order.</b> First drop <code>debris_lifetime</code> to <code>2.0</code>. Then re-fracture in Blender with <strong>Source Limit</strong> at <code>12</code>. Only then consider clearing <strong>Fragment Scene</strong> to fall back to boxes.</div>
+      <span class="exp"><b>Expected:</b> a peak <strong>Physics Process</strong> figure you have written down, so a later chapter can be compared against it.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TROUBLESHOOTING ================= -->
+<section id="fix" class="rv" data-phase="fix">
+  <div class="phase-head">
+    <p class="eyebrow">Phase 4 · Troubleshooting</p>
+    <h2>When it breaks</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Four failures account for nearly everything that goes wrong here. Each has a distinctive symptom, so identify the symptom first rather than changing values at random.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="t1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">13. Match the symptom to the cause</h3>
+      <p><strong>Find your symptom in the left column.</strong> Work through the table top to bottom, because the earlier faults also produce the later symptoms.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Nothing appears on collapse</td><td><strong>Fragment Scene</strong> is empty, or the <code>.glb</code> holds groups rather than meshes</td><td>Re-check step 7, then re-export from Blender with only fragments selected</td></tr>
+          <tr><td>All shards sit stacked at one point</td><td>Transforms were not applied to the fragments in Blender</td><td>Redo step 4, item 4</td></tr>
+          <tr><td>Shards jitter violently on spawn</td><td>Convex hulls overlap because the fracture left no gap</td><td>Re-run Cell Fracture with <strong>Margin</strong> slightly above zero</td></tr>
+          <tr><td>Shards fall through the ground</td><td><code>collision_mask</code> is wrong, so they ignore the World layer</td><td>Confirm <code>body.collision_mask = 1</code> in step 8</td></tr>
+        </tbody>
+      </table></div>
+      <div class="call warn"><b>Warning — do not fracture at runtime.</b> Computing a fracture pattern while the game runs is CPU-heavy and unpredictable. Everything in this chapter happens before the player presses play, which is why it is affordable.</div>
+      <div class="call note"><b>Note — third-party alternatives, not officially documented.</b> <b>VoronoiShatter</b> (MIT, on the Godot Asset Library) fractures meshes inside the Godot editor and would remove the Blender step entirely. Its author labels it "highly experimental" and lists support for Godot 4.2 to 4.6, so 4.7.1 compatibility is <b>[Unverified]</b>. Nothing in this chapter needs it.</div>
+      <span class="exp"><b>Checkpoint for Chapter 3:</b> buildings collapse into weighted irregular shards, the shards clear themselves after <code>debris_lifetime</code>, and clearing one Inspector field still returns you to Chapter 2's boxes.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOURCES ================= -->
+<section id="sources" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Verification</p>
+    <h2>Sources</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Engine behaviour here is checked against the official Godot documentation, and the Blender add-on status against blender.org. Third-party tools are labelled as such in the text.</p>
+  </div>
+  <details>
+    <summary>Official Godot documentation</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/physics/collision_shapes_3d.html" target="_blank" rel="noopener">Collision shapes (3D) — convex versus concave for moving bodies</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/classes/class_convexpolygonshape3d.html" target="_blank" rel="noopener">ConvexPolygonShape3D class reference</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html" target="_blank" rel="noopener">RigidBody3D class reference — freeze, freeze_mode, mass, apply_impulse</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/importing_3d_scenes/node_type_customization.html" target="_blank" rel="noopener">Node type customization using name suffixes — the -col and -rigid hints</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/importing_3d_scenes/import_configuration.html" target="_blank" rel="noopener">Import configuration — the Advanced Import Settings dialog</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/physics/using_jolt_physics.html" target="_blank" rel="noopener">Using Jolt Physics</a></li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Blender and assets</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://extensions.blender.org/add-ons/cell-fracture/" target="_blank" rel="noopener">Cell Fracture on Blender Extensions — bundled up to 4.1, install-it-yourself from 4.2</a></li>
+      <li><a href="https://projects.blender.org/extensions/object_fracture_cell" target="_blank" rel="noopener">Cell Fracture source repository</a></li>
+      <li><a href="https://majadroid.itch.io/3d-apocalyptic-building-city-cc0" target="_blank" rel="noopener">3D Apocalyptic Building / City by Majadroid (CC0)</a></li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Third-party tools, unverified for 4.7.1</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://github.com/robertvaradan/voronoishatter" target="_blank" rel="noopener">VoronoiShatter (third-party, author-labelled experimental)</a></li>
+      <li><a href="https://github.com/the-dunk/Godot-Destruction" target="_blank" rel="noopener">Godot-Destruction (third-party, runtime approach)</a></li>
+    </ul></div>
+  </details>
+</section>
+
+<footer>
+  Godot Guide — Uproar, Chapter 3: Going To Pieces · Godot 4.7.1-stable · Progress on this page is saved separately.<br>
+  <a href="uproar-ch2-bringing-down-the-house.html">← Back to Chapter 2</a> &nbsp;·&nbsp; <a href="uproar-ch1-prototype.html">Chapter 1</a>
+</footer>
+
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "godot-uproar-ch3-fracture-v1";
+  var checked = {};
+  var theme = "auto";              // "auto" | "light" | "dark"
+  var saveTimer = null;
+  var loaded = false;
+
+  var items = Array.prototype.slice.call(document.querySelectorAll("[data-id]"));
+  var total = items.length;
+
+  /* ---------- storage adapter ----------
+     Tries three backends in order, so progress persists whether this page is
+     rendered inside Claude or opened as a downloaded file in a browser.
+       1. window.storage  - available when rendered as an artifact
+       2. localStorage    - available when opened as a local/hosted file
+       3. memory          - last resort; survives navigation but not a reload
+  */
+  var store = (function(){
+    if (window.storage && typeof window.storage.get === "function") {
+      return {
+        kind: "synced",
+        get: function(k){
+          return window.storage.get(k).then(function(r){
+            return (r && typeof r.value === "string") ? r.value : null;
+          });
+        },
+        set: function(k, v){ return window.storage.set(k, v); }
+      };
+    }
+    try {
+      var probe = "__probe__";
+      window.localStorage.setItem(probe, "1");
+      window.localStorage.removeItem(probe);
+      return {
+        kind: "local",
+        get: function(k){ return Promise.resolve(window.localStorage.getItem(k)); },
+        set: function(k, v){ window.localStorage.setItem(k, v); return Promise.resolve(true); }
+      };
+    } catch (e) { /* storage blocked or unavailable */ }
+    var mem = {};
+    return {
+      kind: "memory",
+      get: function(k){ return Promise.resolve(Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null); },
+      set: function(k, v){ mem[k] = v; return Promise.resolve(true); }
+    };
+  })();
+
+  /* ---------- appearance ---------- */
+  var themeBtn = document.getElementById("themeBtn");
+  var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function resolvedTheme(){
+    return theme === "auto" ? (darkQuery.matches ? "dark" : "light") : theme;
+  }
+
+  function applyTheme(){
+    var root = document.documentElement;
+    if (theme === "auto") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", theme);
+    var isDark = resolvedTheme() === "dark";
+    themeBtn.textContent = isDark ? "☀" : "☾";
+    var label = isDark ? "Switch to light appearance" : "Switch to dark appearance";
+    themeBtn.setAttribute("aria-label", label);
+    themeBtn.setAttribute("title", label);
+  }
+
+  themeBtn.addEventListener("click", function(){
+    theme = resolvedTheme() === "dark" ? "light" : "dark";
+    applyTheme();
+    save();
+  });
+
+  if (darkQuery.addEventListener) {
+    darkQuery.addEventListener("change", function(){ if (theme === "auto") applyTheme(); });
+  } else if (darkQuery.addListener) {
+    darkQuery.addListener(function(){ if (theme === "auto") applyTheme(); });
+  }
+
+  applyTheme();
+
+  /* ---------- load / save ---------- */
+  function payload(){
+    return JSON.stringify({ checked: checked, theme: theme });
+  }
+
+  function load(){
+    return store.get(KEY)
+      .then(function(raw){
+        if (!raw) return;
+        var data;
+        try { data = JSON.parse(raw); } catch (e) { return; }
+        if (!data || typeof data !== "object") return;
+        if (data.checked) {              // current format
+          checked = data.checked;
+          if (data.theme) theme = data.theme;
+        } else {                         // earlier format: a flat map of ids
+          checked = data;
+        }
+      })
+      .catch(function(){ /* nothing saved yet - expected on first run */ })
+      .then(function(){
+        loaded = true;
+        applyTheme();
+        render();
+        if (store.kind === "memory") {
+          var c = document.getElementById("navCount");
+          if (c) c.title = "Storage is unavailable in this browser, so progress will reset on reload.";
+        }
+      });
+  }
+
+  function save(){
+    if (!loaded) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      store.set(KEY, payload())
+        .then(function(){ flashSaved(); })
+        .catch(function(err){ console.error("Could not save progress:", err); });
+    }, 350);
+  }
+
+  var dot = document.getElementById("saveDot");
+  var dotTimer = null;
+  function flashSaved(){
+    if (!dot) return;
+    dot.classList.add("on");
+    clearTimeout(dotTimer);
+    dotTimer = setTimeout(function(){ dot.classList.remove("on"); }, 1400);
+  }
+
+  /* ---------- rendering ---------- */
+  function render(){
+    var done = 0;
+    items.forEach(function(el){
+      var id = el.getAttribute("data-id");
+      var on = !!checked[id];
+      if (on) done++;
+      el.classList.toggle("done", on);
+      var btn = el.querySelector(".cb");
+      if (btn) btn.setAttribute("aria-checked", on ? "true" : "false");
+    });
+
+    var pct = total ? done / total : 0;
+
+    var hero = document.getElementById("heroRing");
+    if (hero) {
+      var hc = 2 * Math.PI * 54;
+      hero.setAttribute("stroke-dashoffset", hc - hc * pct);
+    }
+    var heroPct = document.getElementById("heroPct");
+    if (heroPct) heroPct.textContent = Math.round(pct * 100) + "%";
+
+    var mini = document.getElementById("miniRing");
+    if (mini) {
+      var mc = 2 * Math.PI * 10.5;
+      mini.setAttribute("stroke-dashoffset", mc - mc * pct);
+    }
+    var navCount = document.getElementById("navCount");
+    if (navCount) navCount.textContent = done + " / " + total;
+
+    var left = document.getElementById("stepsLeft");
+    if (left) left.textContent = total - done;
+
+    document.querySelectorAll("section[data-phase]").forEach(function(sec){
+      var kids = sec.querySelectorAll("[data-id]");
+      if (!kids.length) return;
+      var d = 0;
+      kids.forEach(function(k){ if (checked[k.getAttribute("data-id")]) d++; });
+      var bar = sec.querySelector(".pbar i");
+      var cnt = sec.querySelector(".pcount");
+      if (bar) bar.style.width = (d / kids.length * 100) + "%";
+      if (cnt) cnt.textContent = d + " of " + kids.length + " done";
+    });
+  }
+
+  function toggle(el){
+    var id = el.getAttribute("data-id");
+    if (checked[id]) { delete checked[id]; } else { checked[id] = 1; }
+    render();
+    save();
+  }
+
+  items.forEach(function(el){
+    var btn = el.querySelector(".cb");
+    if (btn) btn.addEventListener("click", function(){ toggle(el); });
+    var title = el.querySelector(".step-title");
+    if (title) title.addEventListener("click", function(){ toggle(el); });
+  });
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById("resetBtn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function(){
+      if (!confirm("Clear all " + total + " checkmarks on this page? This cannot be undone.")) return;
+      checked = {};
+      render();
+      store.set(KEY, payload())
+        .then(flashSaved)
+        .catch(function(err){ console.error("Could not clear progress:", err); });
+    });
+  }
+
+  /* ---------- resume ---------- */
+  var resumeBtn = document.getElementById("resumeBtn");
+  if (resumeBtn) {
+    resumeBtn.addEventListener("click", function(){
+      var next = null;
+      for (var i = 0; i < items.length; i++) {
+        if (!checked[items[i].getAttribute("data-id")]) { next = items[i]; break; }
+      }
+      var target = next || items[0];
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      var btn = target.querySelector(".cb");
+      if (btn) setTimeout(function(){ btn.focus(); }, 600);
+    });
+  }
+
+  /* ---------- countdown ---------- */
+  var daysEl = document.getElementById("daysLeft");
+  if (daysEl) {
+    var jam = new Date(2026, 7, 14);
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    var days = Math.round((jam - now) / 86400000);
+    daysEl.textContent = days > 0 ? days : (days === 0 ? "Today" : "—");
+    if (days === 0) daysEl.style.fontSize = "26px";
+  }
+
+  /* ---------- scroll reveal ---------- */
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -60px 0px" });
+    document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".rv").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>

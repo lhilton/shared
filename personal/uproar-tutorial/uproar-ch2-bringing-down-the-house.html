@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Godot Guide — Uproar Chapter 2 — Bringing Down The House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#fbfbfd;
+  --surface:#ffffff;
+  --ink:#1d1d1f;
+  --ink-2:#6e6e73;
+  --ink-3:#86868b;
+  --hairline:#d2d2d7;
+  --hairline-soft:#e8e8ed;
+  --accent:#0066cc;
+  --accent-fill:#0071e3;
+  --accent-hover:#0077ed;
+  --accent-soft:rgba(0,102,204,.08);
+  --godot:#478cbf;
+  --warn-bg:#fff6e9;
+  --warn-ink:#8a5200;
+  --warn-ink-strong:#7a4800;
+  --note-bg:#f2f2f5;
+  --key-bg:#eef5fd;
+  --key-ink:#0a4a86;
+  --key-ink-strong:#053b6e;
+  --code-bg:#f0f0f3;
+  --pre-bg:#f5f5f7;
+  --th-bg:#f8f8fa;
+  --nav-bg:rgba(251,251,253,.78);
+  --hover-bg:rgba(0,0,0,.05);
+  --cb-bg:#ffffff;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 6px 20px rgba(0,0,0,.07);
+  --cc0-bg:#e6f4ea;  --cc0-ink:#1a6c34;
+  --ccby-bg:#fdf0e3; --ccby-ink:#8a5200;
+  --paid-bg:#f0f0f3;
+  --radius:18px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+/* Dark palette — applied automatically by system preference, or manually
+   when the theme button sets data-theme="dark" on <html>. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#000000;
+    --surface:#1c1c1e;
+    --ink:#f5f5f7;
+    --ink-2:#a1a1a6;
+    --ink-3:#8e8e93;
+    --hairline:#3a3a3c;
+    --hairline-soft:#2c2c2e;
+    --accent:#2997ff;
+    --accent-fill:#0a84ff;
+    --accent-hover:#3ba2ff;
+    --accent-soft:rgba(41,151,255,.16);
+    --godot:#6fb3e0;
+    --warn-bg:#38290f;
+    --warn-ink:#ffb340;
+    --warn-ink-strong:#ffc871;
+    --note-bg:#2c2c2e;
+    --key-bg:#0f2a44;
+    --key-ink:#7fbcf7;
+    --key-ink-strong:#a8d3fb;
+    --code-bg:#2c2c2e;
+    --pre-bg:#131315;
+    --th-bg:#2c2c2e;
+    --nav-bg:rgba(0,0,0,.7);
+    --hover-bg:rgba(255,255,255,.09);
+    --cb-bg:#2c2c2e;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+    --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+    --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+    --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+    --paid-bg:#2c2c2e;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#000000;
+  --surface:#1c1c1e;
+  --ink:#f5f5f7;
+  --ink-2:#a1a1a6;
+  --ink-3:#8e8e93;
+  --hairline:#3a3a3c;
+  --hairline-soft:#2c2c2e;
+  --accent:#2997ff;
+  --accent-fill:#0a84ff;
+  --accent-hover:#3ba2ff;
+  --accent-soft:rgba(41,151,255,.16);
+  --godot:#6fb3e0;
+  --warn-bg:#38290f;
+  --warn-ink:#ffb340;
+  --warn-ink-strong:#ffc871;
+  --note-bg:#2c2c2e;
+  --key-bg:#0f2a44;
+  --key-ink:#7fbcf7;
+  --key-ink-strong:#a8d3fb;
+  --code-bg:#2c2c2e;
+  --pre-bg:#131315;
+  --th-bg:#2c2c2e;
+  --nav-bg:rgba(0,0,0,.7);
+  --hover-bg:rgba(255,255,255,.09);
+  --cb-bg:#2c2c2e;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+  --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+  --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+  --paid-bg:#2c2c2e;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:76px;}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+:focus-visible{outline:2px solid var(--accent-fill);outline-offset:3px;border-radius:6px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:#000;color:#f5f5f7;min-height:86vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:110px 22px 90px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(72% 52% at 50% 8%, rgba(71,140,191,.26), transparent 68%);
+}
+.hero > *{position:relative;z-index:1;}
+.eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--godot);margin:0 0 18px;
+}
+.hero h1{
+  font-size:clamp(42px,8.2vw,92px);font-weight:600;letter-spacing:-.035em;
+  line-height:1.03;margin:0 0 22px;max-width:14ch;
+}
+.hero h1 em{font-style:normal;color:#8fb9d9;}
+.hero p.lede{
+  font-size:clamp(17px,2.2vw,21px);color:#a1a1a6;max-width:46ch;margin:0 auto 40px;
+  line-height:1.45;
+}
+.hero-meta{display:flex;gap:38px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:8px;}
+.stat{min-width:96px;}
+.stat b{display:block;font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.1;}
+.stat span{display:block;font-size:12px;color:#86868b;letter-spacing:.03em;margin-top:5px;}
+.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ring{transform:rotate(-90deg);}
+.ring circle{fill:none;stroke-linecap:round;}
+.ring .track{stroke:rgba(255,255,255,.14);}
+.ring .fill{stroke:url(#grad);transition:stroke-dashoffset .7s cubic-bezier(.32,.72,0,1);}
+.ring-label{font-size:12px;color:#86868b;letter-spacing:.03em;}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:8px;margin-top:44px;background:var(--accent-fill);
+  color:#fff;padding:12px 24px;border-radius:980px;font-size:16px;font-weight:500;border:none;
+  cursor:pointer;transition:transform .2s,background .2s;font-family:inherit;
+}
+.hero-cta:hover{background:var(--accent-hover);transform:scale(1.02);text-decoration:none;}
+
+/* ---------- NAV ---------- */
+nav{
+  position:sticky;top:0;z-index:60;background:var(--nav-bg);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--hairline-soft);
+}
+.nav-in{
+  max-width:1080px;margin:0 auto;padding:0 20px;height:54px;
+  display:flex;align-items:center;gap:16px;
+}
+.nav-title{font-size:14px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;}
+.nav-links{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-links a{
+  font-size:13px;color:var(--ink-2);padding:6px 11px;border-radius:980px;white-space:nowrap;
+  transition:background .15s,color .15s;
+}
+.nav-links a:hover{background:var(--hover-bg);color:var(--ink);text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.mini-count{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.mini-ring .track{stroke:var(--hairline);}
+.mini-ring .fill{stroke:var(--accent-fill);}
+.ghost-btn{
+  font-family:inherit;font-size:13px;color:var(--accent);background:none;border:none;
+  cursor:pointer;padding:6px 8px;border-radius:8px;white-space:nowrap;
+}
+.ghost-btn:hover{background:var(--accent-soft);}
+.icon-btn{font-size:15px;line-height:1;padding:7px 9px;}
+
+/* ---------- LAYOUT ---------- */
+section{max-width:800px;margin:0 auto;padding:88px 22px 0;}
+section:last-of-type{padding-bottom:110px;}
+.phase-head{margin-bottom:26px;}
+.phase-head .eyebrow{color:var(--accent);margin-bottom:10px;}
+.phase-head h2{
+  font-size:clamp(29px,4.4vw,42px);font-weight:600;letter-spacing:-.026em;
+  margin:0 0 14px;line-height:1.1;
+}
+.phase-meta{display:flex;align-items:center;gap:12px;margin-top:16px;}
+.pbar{height:4px;background:var(--hairline-soft);border-radius:99px;flex:1;overflow:hidden;}
+.pbar i{display:block;height:100%;width:0;background:var(--accent-fill);border-radius:99px;transition:width .5s cubic-bezier(.32,.72,0,1);}
+.pcount{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.bluf{
+  font-size:19px;line-height:1.5;color:var(--ink);margin:0 0 8px;font-weight:450;
+}
+.bluf b{font-weight:600;}
+.bluf .lbl{color:var(--accent);font-weight:600;}
+
+/* ---------- STEP CARD ---------- */
+.step{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:19px 21px;margin-bottom:12px;
+  box-shadow:var(--shadow-sm);transition:opacity .3s,border-color .2s,box-shadow .2s;
+}
+.step:hover{border-color:var(--hairline);}
+.step.done{opacity:.5;}
+.cb{
+  flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:1.6px solid var(--hairline);
+  background:var(--cb-bg);cursor:pointer;margin-top:2px;padding:0;position:relative;
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.cb:hover{border-color:var(--accent-fill);}
+.cb:active{transform:scale(.9);}
+.cb::after{
+  content:"";position:absolute;left:8px;top:4px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.cb[aria-checked="true"]{background:var(--accent-fill);border-color:var(--accent-fill);}
+.cb[aria-checked="true"]::after{transform:rotate(45deg) scale(1);}
+.step-body{flex:1;min-width:0;}
+.step-title{
+  font-size:17px;font-weight:600;letter-spacing:-.012em;margin:0 0 7px;cursor:pointer;
+  line-height:1.35;
+}
+.step.done .step-title{text-decoration:line-through;text-decoration-color:var(--hairline);color:var(--ink-2);}
+.step p{margin:0 0 10px;font-size:15px;color:var(--ink-2);line-height:1.55;}
+.step p:last-child{margin-bottom:0;}
+.step p strong,.step li strong{color:var(--ink);font-weight:600;}
+.step ul,.step ol{margin:0 0 10px;padding-left:20px;font-size:15px;color:var(--ink-2);line-height:1.6;}
+.step li{margin-bottom:5px;}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:2px 6px;border-radius:5px;color:var(--ink);}
+pre{
+  background:var(--pre-bg);border:1px solid var(--hairline-soft);border-radius:12px;padding:15px 16px;
+  overflow-x:auto;margin:0 0 12px;
+}
+pre code{background:none;padding:0;font-size:13px;line-height:1.65;display:block;white-space:pre;}
+
+/* ---------- CALLOUTS ---------- */
+.call{border-radius:12px;padding:12px 15px;font-size:14.5px;line-height:1.55;margin:0 0 11px;}
+.call b{font-weight:600;}
+.call.warn{background:var(--warn-bg);color:var(--warn-ink);}
+.call.warn b{color:var(--warn-ink-strong);}
+.call.note{background:var(--note-bg);color:var(--ink-2);}
+.call.note b{color:var(--ink);}
+.call.key{background:var(--key-bg);color:var(--key-ink);}
+.call.key b{color:var(--key-ink-strong);}
+.exp{display:block;margin:0 0 11px;font-size:13.5px;color:var(--ink-3);padding-left:11px;border-left:2px solid var(--hairline-soft);line-height:1.55;}
+.exp b{color:var(--ink-2);}
+.src{font-size:12px;color:var(--ink-3);letter-spacing:.01em;}
+.src a{color:var(--ink-3);text-decoration:underline;text-decoration-color:var(--hairline);}
+
+/* ---------- TABLE ---------- */
+.tbl-wrap{overflow-x:auto;margin:0 0 12px;border:1px solid var(--hairline-soft);border-radius:12px;}
+table{border-collapse:collapse;width:100%;font-size:14px;}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--hairline-soft);}
+th{font-weight:600;color:var(--ink);background:var(--th-bg);font-size:12.5px;letter-spacing:.02em;}
+tr:last-child td{border-bottom:none;}
+td{color:var(--ink-2);}
+td:first-child{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;}
+
+/* ---------- ASSET / LINK CARDS ---------- */
+.link-card{
+  display:block;background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:15px 18px;margin-bottom:10px;transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.link-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg);border-color:var(--hairline);text-decoration:none;}
+.link-card h4{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:-.01em;}
+.link-card p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.badge{
+  display:inline-block;font-size:11px;font-weight:600;letter-spacing:.03em;padding:3px 9px;
+  border-radius:980px;margin-left:8px;vertical-align:2px;
+}
+.badge.cc0{background:var(--cc0-bg);color:var(--cc0-ink);}
+.badge.ccby{background:var(--ccby-bg);color:var(--ccby-ink);}
+.badge.paid{background:var(--paid-bg);color:var(--ink-2);}
+
+/* ---------- SCHEDULE ---------- */
+.day{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:17px 20px;margin-bottom:10px;
+  transition:opacity .3s;
+}
+.day.done{opacity:.5;}
+.day-date{
+  flex:0 0 62px;font-size:13px;font-weight:600;color:var(--accent);letter-spacing:-.01em;
+  padding-top:2px;
+}
+.day.done .day-date{color:var(--ink-3);}
+.day h4{margin:0 0 5px;font-size:15.5px;font-weight:600;letter-spacing:-.01em;}
+.day p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.day .bench{color:var(--ink-2);font-size:13.5px;margin-top:6px;}
+.day .bench b{color:var(--ink);}
+
+/* ---------- DETAILS ---------- */
+details{
+  background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:0;margin-bottom:10px;overflow:hidden;
+}
+summary{
+  cursor:pointer;padding:15px 18px;font-size:15.5px;font-weight:600;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;letter-spacing:-.01em;
+}
+summary::-webkit-details-marker{display:none;}
+summary::after{content:"+";font-weight:400;font-size:19px;color:var(--ink-3);}
+details[open] summary::after{content:"–";}
+.details-body{padding:0 18px 16px;font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+.details-body ul{padding-left:19px;margin:0;}
+.details-body li{margin-bottom:7px;word-break:break-word;}
+
+/* ---------- FOOTER ---------- */
+footer{
+  border-top:1px solid var(--hairline-soft);margin-top:70px;padding:34px 22px 60px;
+  text-align:center;font-size:12.5px;color:var(--ink-3);line-height:1.7;
+}
+.save-dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;background:#34c759;
+  margin-right:6px;vertical-align:1px;opacity:0;transition:opacity .3s;
+}
+.save-dot.on{opacity:1;}
+
+/* ---------- REVEAL ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.32,.72,0,1);}
+.rv.in{opacity:1;transform:none;}
+
+@media (max-width:640px){
+  .hero{min-height:auto;padding:80px 20px 64px;}
+  .hero-meta{gap:26px;}
+  .nav-title{display:none;}
+  section{padding-top:64px;}
+  .day{flex-wrap:wrap;}
+  .day-date{flex-basis:100%;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  html{scroll-behavior:auto;}
+  .rv{opacity:1;transform:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <svg width="0" height="0" aria-hidden="true"><defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#478cbf"/><stop offset="100%" stop-color="#5ac8fa"/>
+    </linearGradient>
+  </defs></svg>
+
+  <p class="eyebrow">Godot Guide · Uproar · Godot 4.7.1-stable</p>
+  <h1>Chapter Two <em>Bringing Down The House</em></h1>
+  <p class="lede">Buildings that break into chunks and fall. This picks up where Phase 5 of Chapter 1 ends, and drops on top of the mesh-swap collapse you already have working.</p>
+
+  <div class="hero-meta">
+    <div class="ring-wrap">
+      <svg class="ring" width="128" height="128" viewBox="0 0 128 128" aria-hidden="true">
+        <circle class="track" cx="64" cy="64" r="54" stroke-width="9"/>
+        <circle id="heroRing" class="fill" cx="64" cy="64" r="54" stroke-width="9"
+                stroke-dasharray="339.29" stroke-dashoffset="339.29"/>
+      </svg>
+      <span class="ring-label"><b id="heroPct" style="color:#f5f5f7;font-size:14px;">0%</b> complete</span>
+    </div>
+    <div class="stat"><b id="daysLeft">—</b><span>DAYS TO JAM</span></div>
+    <div class="stat"><b id="stepsLeft">—</b><span>STEPS LEFT</span></div>
+    <div class="stat"><b>½</b><span>DAY OF WORK</span></div>
+  </div>
+
+  <button class="hero-cta" id="resumeBtn">Start where you left off &nbsp;↓</button>
+</header>
+
+<!-- ================= NAV ================= -->
+<nav>
+  <div class="nav-in">
+    <span class="nav-title">Uproar · Ch 2</span>
+    <div class="nav-links">
+      <a href="#before">Before you start</a><a href="#a">Build the chunks</a>
+      <a href="#perf">Performance</a>
+      <a href="uproar-ch1-prototype.html">← Chapter 1</a><a href="uproar-ch3-going-to-pieces.html">Chapter 3 →</a>
+    </div>
+    <div class="nav-right">
+      <svg class="ring mini-ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle class="track" cx="13" cy="13" r="10.5" stroke-width="3"/>
+        <circle id="miniRing" class="fill" cx="13" cy="13" r="10.5" stroke-width="3"
+                stroke-dasharray="65.97" stroke-dashoffset="65.97"/>
+      </svg>
+      <span class="mini-count"><span class="save-dot" id="saveDot"></span><span id="navCount">0 / 0</span></span>
+      <button class="ghost-btn icon-btn" id="themeBtn" title="Switch appearance" aria-label="Switch appearance">☾</button>
+      <button class="ghost-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= BEFORE YOU START ================= -->
+<section id="before" class="rv" data-phase="before">
+  <div class="phase-head">
+    <p class="eyebrow">Before you start</p>
+    <h2>Do not begin this until the mesh swap works</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> This chapter adds falling chunks on top of a working collapse. If the mesh swap in Chapter 1 is not finished, go back and finish it — you will otherwise have no destruction at all if you run out of time here.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="c0">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">Confirm all four are true</h3>
+      <p><strong>Check each one in the running game before continuing.</strong> Every step below assumes all four.</p>
+      <ol>
+        <li>Punching a building reduces its health and prints values in the <strong>Output</strong> panel.</li>
+        <li>The building visibly changes appearance at 50% health.</li>
+        <li>The building flattens to rubble at 0% health and you can walk over it.</li>
+        <li><code>script/building.gd</code> contains a <code>_collapse()</code> function and typed <code>@onready</code> references named <code>intact</code>, <code>cracked</code>, <code>rubble</code> and <code>shape</code>.</li>
+      </ol>
+      <div class="call warn"><b>Warning — this is optional work.</b> A jam entry with a clean mesh-swap collapse scores better than one with beautiful debris and an unfinished level. Only continue if you are ahead of schedule.</div>
+      <div class="call note"><b>Note — this chapter needs no software but Godot.</b> The chunks are generated from Godot's own box primitives, which takes roughly 30 minutes. <a href="uproar-ch3-going-to-pieces.html">Chapter 3</a> upgrades those boxes to real fractured shards using Blender, and builds directly on the code below. Finish this chapter first.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ROUTE A ================= -->
+<section id="a" class="rv" data-phase="a">
+  <div class="phase-head">
+    <p class="eyebrow">Physics debris</p>
+    <h2>Generate the chunks in Godot</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Build the debris from plain boxes in code. At low-poly scale a skyscraper falling apart into 24 boxes reads perfectly well, and it needs no modelling software at all.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="a1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Add a container for the chunks</h3>
+      <p><strong>One empty node holds every chunk, so you can free them all together.</strong></p>
+      <ol>
+        <li>Open <code>scene/building.tscn</code> and select the <code>Building</code> root node.</li>
+        <li>Press <strong>Ctrl+A</strong>, add a <code>Node3D</code>, rename it to <code>Chunks</code>.</li>
+        <li>Leave its <strong>Position</strong> at <code>0, 0, 0</code>.</li>
+      </ol>
+      <span class="exp"><b>Expected:</b> an empty <code>Chunks</code> node under <code>Building</code>, alongside <code>Intact</code>, <code>Cracked</code> and <code>Rubble</code>.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="a2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Build the chunks in code</h3>
+      <p><strong>Add this to <code>script/building.gd</code>.</strong> It fills the building's volume with a grid of frozen boxes when the scene loads.</p>
+      <p><strong>What "frozen" means:</strong> a <code>RigidBody3D</code> with <code>freeze = true</code> ignores gravity and forces entirely. It sits exactly where you put it until you release it, so it costs almost nothing while the building is intact.</p>
+      <pre><code>&#35; Chunk grid: 2 wide, 3 tall, 2 deep = 12 chunks per building.
+@export var chunk_cols: int = 2
+@export var chunk_rows: int = 3
+@export var building_size: Vector3 = Vector3(12.0, 40.0, 12.0)
+
+@onready var chunks: Node3D = $Chunks
+
+
+func _build_chunks() -&gt; void:
+    var size: Vector3 = Vector3(
+        self.building_size.x / self.chunk_cols,
+        self.building_size.y / self.chunk_rows,
+        self.building_size.z / self.chunk_cols)
+
+    for x: int in range(self.chunk_cols):
+        for y: int in range(self.chunk_rows):
+            for z: int in range(self.chunk_cols):
+                var body: RigidBody3D = RigidBody3D.new()
+                body.freeze = true
+                body.freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+                body.collision_layer = 8      &#35; layer 4, Rubble
+                body.collision_mask = 1       &#35; collide with World only
+                body.position = Vector3(
+                    (x + 0.5) * size.x - self.building_size.x * 0.5,
+                    (y + 0.5) * size.y,
+                    (z + 0.5) * size.z - self.building_size.z * 0.5)
+
+                var mesh: MeshInstance3D = MeshInstance3D.new()
+                var box: BoxMesh = BoxMesh.new()
+                box.size = size * 0.98        &#35; small gap, so faces do not z-fight
+                mesh.mesh = box
+                body.add_child(mesh)
+
+                var col: CollisionShape3D = CollisionShape3D.new()
+                var shape_box: BoxShape3D = BoxShape3D.new()
+                shape_box.size = size
+                col.shape = shape_box
+                body.add_child(col)
+
+                self.chunks.add_child(body)</code></pre>
+      <p><strong>Action:</strong> call it from <code>_ready()</code>, after the existing lines:</p>
+      <pre><code>    self._build_chunks()
+    self.chunks.visible = false     &#35; hidden until the building dies</code></pre>
+      <div class="call key"><b>Key point — why <code>collision_layer = 8</code> and not <code>4</code>.</b> These properties are <b>bitmasks</b>, not layer numbers. Layer 1 is <code>1</code>, layer 2 is <code>2</code>, layer 3 is <code>4</code>, layer 4 is <code>8</code>. The pattern is 2 to the power of (layer − 1). Setting <code>4</code> here would put your rubble on layer 3, the Buildings layer.</div>
+      <div class="call note"><b>Note — start with 12 chunks.</b> Raise <code>chunk_cols</code> to 3 for 27 chunks once you have seen it run. Increasing the grid raises the count fast, because it is cubic.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="a3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. Release the chunks on collapse</h3>
+      <p><strong>Replace the <code>_collapse()</code> function from Chapter 1 with this version.</strong> It hides the intact meshes, shows the chunks, unfreezes them, and pushes each one outward.</p>
+      <pre><code>@export var blast_force: float = 6.0
+@export var debris_lifetime: float = 4.0
+
+
+func _collapse() -&gt; void:
+    self.intact.visible = false
+    self.cracked.visible = false
+    self.shape.set_deferred("disabled", true)
+    self.chunks.visible = true
+
+    for child in self.chunks.get_children():
+        var chunk: RigidBody3D = child as RigidBody3D
+        if chunk == null:
+            continue
+        chunk.freeze = false
+        var dir: Vector3 = (chunk.global_position
+                            - self.global_position).normalized()
+        dir.y = absf(dir.y) + 0.4          &#35; bias upward, so it bursts
+        chunk.apply_impulse(dir * self.blast_force)</code></pre>
+      <div class="call note"><b>Note — the <code>rubble</code> mesh is no longer shown here.</b> The chunks replace it visually. You will reveal it in the next step, once the debris has settled.</div>
+      <span class="exp"><b>Expected:</b> punch a building to zero health and it bursts into a dozen falling boxes.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="a4">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">4. Clean up after the debris settles</h3>
+      <p><strong>Free the chunks after a few seconds and reveal the rubble pile.</strong> Without this, every destroyed building leaves its physics bodies simulating for the rest of the match.</p>
+      <p><strong>Action:</strong> add these lines to the end of <code>_collapse()</code>:</p>
+      <pre><code>    await get_tree().create_timer(self.debris_lifetime).timeout
+
+    for child in self.chunks.get_children():
+        child.queue_free()
+
+    self.rubble.visible = true</code></pre>
+      <div class="call key"><b>Key point — this is the step people skip.</b> Twelve chunks per building across ten buildings is 120 rigid bodies, all simulating forever. Freeing them is what keeps the frame rate stable through a whole play session.</div>
+      <div class="call note"><b>Note — tune <code>debris_lifetime</code> in the Inspector.</b> Four seconds is enough for chunks to land and stop moving. Shorter looks abrupt; longer costs performance for no visual gain.</div>
+      <span class="exp"><b>Checkpoint for this chapter:</b> buildings burst into boxes, the boxes land and rest, then they disappear a few seconds later and leave a rubble pile.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PERFORMANCE ================= -->
+<section id="perf" class="rv" data-phase="perf">
+  <div class="phase-head">
+    <p class="eyebrow">Performance</p>
+    <h2>Keeping the frame rate</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Aim for tens of simultaneously falling chunks, not hundreds. Watch the actual numbers rather than guessing.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="p1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Measure before you tune</h3>
+      <p><strong>Godot has a live performance panel; use it instead of guessing.</strong></p>
+      <ol>
+        <li>Run the game with <strong>F5</strong>.</li>
+        <li>In the editor, open the <strong>Debugger</strong> panel at the bottom.</li>
+        <li>Select the <strong>Monitors</strong> tab.</li>
+        <li>Watch <strong>Physics Process</strong> time while you destroy several buildings at once.</li>
+      </ol>
+      <div class="call note"><b>Note — the budget.</b> At 60 frames per second you have 16.6 milliseconds per frame for everything. If physics alone approaches 8 milliseconds, reduce the chunk count.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Turn the three dials that matter</h3>
+      <p><strong>All three are exported, so you can tune them in the Inspector without editing code.</strong></p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Setting</th><th>Start at</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>chunk_cols</code> / <code>chunk_rows</code></td><td>2 / 3</td><td>Total chunks per building. Cubic growth — 3 columns means 27 pieces, not 18.</td></tr>
+          <tr><td><code>debris_lifetime</code></td><td>4.0</td><td>How long chunks simulate before being freed. The single biggest lever.</td></tr>
+          <tr><td><code>blast_force</code></td><td>6.0</td><td>Visual only. Higher scatters debris further without costing performance.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="call key"><b>Key point — chunks only cost while unfrozen.</b> A frozen RigidBody3D is nearly free, so a city full of intact buildings runs fine no matter how many chunks each one holds. Cost arrives only when buildings actually fall, which is why <code>debris_lifetime</code> matters more than the chunk count.</div>
+    </div>
+  </div>
+
+  <div class="step" data-id="p3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. If it still stutters, cut in this order</h3>
+      <p><strong>Work down this list until the frame rate holds.</strong></p>
+      <ol>
+        <li>Drop <code>debris_lifetime</code> to <strong>2.0</strong>.</li>
+        <li>Drop <code>chunk_rows</code> to <strong>2</strong>, giving 8 chunks per building.</li>
+        <li>Cap concurrent collapses, so only one building can be falling apart at a time.</li>
+        <li>Revert to the mesh-swap collapse from Chapter 1. It always looks better than a game running at 20 frames per second.</li>
+      </ol>
+      <div class="call warn"><b>Warning — do not attempt runtime fracture.</b> Computing a fracture pattern while the game runs is CPU-heavy and unpredictable. Pre-fracturing, whether as the box grid above or the Blender shards in Chapter 3, is the correct approach for a jam.</div>
+      <div class="call note"><b>Note — third-party tools, not officially documented.</b> <b>VoronoiShatter</b> (MIT, on the Godot Asset Library) fractures meshes inside the Godot editor; its author labels it "highly experimental" and lists support for Godot 4.2 to 4.6, so 4.7.1 compatibility is unconfirmed. <b>Godot-Destruction</b> is a runtime alternative. Neither is needed for this chapter or for Chapter 3.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOURCES ================= -->
+<section id="sources" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Verification</p>
+    <h2>Sources</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> API behaviour here is checked against the official Godot documentation. Third-party tools are labelled as such in the text.</p>
+  </div>
+  <details>
+    <summary>Official Godot documentation</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html" target="_blank" rel="noopener">RigidBody3D class reference — freeze, freeze_mode, apply_impulse</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/physics/physics_introduction.html" target="_blank" rel="noopener">Physics introduction — collision layers and masks</a></li>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/physics/using_jolt_physics.html" target="_blank" rel="noopener">Using Jolt Physics</a></li>
+      <li><a href="https://godotengine.org/releases/4.6/" target="_blank" rel="noopener">Godot 4.6 release notes — Jolt becomes the default</a></li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Assets and third-party tools</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://majadroid.itch.io/3d-apocalyptic-building-city-cc0" target="_blank" rel="noopener">3D Apocalyptic Building / City by Majadroid (CC0)</a></li>
+      <li><a href="https://github.com/robertvaradan/voronoishatter" target="_blank" rel="noopener">VoronoiShatter (third-party, experimental)</a></li>
+      <li><a href="https://github.com/the-dunk/Godot-Destruction" target="_blank" rel="noopener">Godot-Destruction (third-party)</a></li>
+    </ul></div>
+  </details>
+</section>
+
+<footer>
+  Godot Guide — Uproar, Chapter 2: Bringing Down The House · Godot 4.7.1-stable · Progress on this page is saved separately.<br>
+  <a href="uproar-ch1-prototype.html">← Back to Chapter 1</a> &nbsp;·&nbsp; <a href="uproar-ch3-going-to-pieces.html">Chapter 3: Going To Pieces →</a>
+</footer>
+
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "godot-kong-destruction-v1";
+  var checked = {};
+  var theme = "auto";              // "auto" | "light" | "dark"
+  var saveTimer = null;
+  var loaded = false;
+
+  var items = Array.prototype.slice.call(document.querySelectorAll("[data-id]"));
+  var total = items.length;
+
+  /* ---------- storage adapter ----------
+     Tries three backends in order, so progress persists whether this page is
+     rendered inside Claude or opened as a downloaded file in a browser.
+       1. window.storage  - available when rendered as an artifact
+       2. localStorage    - available when opened as a local/hosted file
+       3. memory          - last resort; survives navigation but not a reload
+  */
+  var store = (function(){
+    if (window.storage && typeof window.storage.get === "function") {
+      return {
+        kind: "synced",
+        get: function(k){
+          return window.storage.get(k).then(function(r){
+            return (r && typeof r.value === "string") ? r.value : null;
+          });
+        },
+        set: function(k, v){ return window.storage.set(k, v); }
+      };
+    }
+    try {
+      var probe = "__probe__";
+      window.localStorage.setItem(probe, "1");
+      window.localStorage.removeItem(probe);
+      return {
+        kind: "local",
+        get: function(k){ return Promise.resolve(window.localStorage.getItem(k)); },
+        set: function(k, v){ window.localStorage.setItem(k, v); return Promise.resolve(true); }
+      };
+    } catch (e) { /* storage blocked or unavailable */ }
+    var mem = {};
+    return {
+      kind: "memory",
+      get: function(k){ return Promise.resolve(Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null); },
+      set: function(k, v){ mem[k] = v; return Promise.resolve(true); }
+    };
+  })();
+
+  /* ---------- appearance ---------- */
+  var themeBtn = document.getElementById("themeBtn");
+  var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function resolvedTheme(){
+    return theme === "auto" ? (darkQuery.matches ? "dark" : "light") : theme;
+  }
+
+  function applyTheme(){
+    var root = document.documentElement;
+    if (theme === "auto") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", theme);
+    var isDark = resolvedTheme() === "dark";
+    themeBtn.textContent = isDark ? "☀" : "☾";
+    var label = isDark ? "Switch to light appearance" : "Switch to dark appearance";
+    themeBtn.setAttribute("aria-label", label);
+    themeBtn.setAttribute("title", label);
+  }
+
+  themeBtn.addEventListener("click", function(){
+    theme = resolvedTheme() === "dark" ? "light" : "dark";
+    applyTheme();
+    save();
+  });
+
+  if (darkQuery.addEventListener) {
+    darkQuery.addEventListener("change", function(){ if (theme === "auto") applyTheme(); });
+  } else if (darkQuery.addListener) {
+    darkQuery.addListener(function(){ if (theme === "auto") applyTheme(); });
+  }
+
+  applyTheme();
+
+  /* ---------- load / save ---------- */
+  function payload(){
+    return JSON.stringify({ checked: checked, theme: theme });
+  }
+
+  function load(){
+    return store.get(KEY)
+      .then(function(raw){
+        if (!raw) return;
+        var data;
+        try { data = JSON.parse(raw); } catch (e) { return; }
+        if (!data || typeof data !== "object") return;
+        if (data.checked) {              // current format
+          checked = data.checked;
+          if (data.theme) theme = data.theme;
+        } else {                         // earlier format: a flat map of ids
+          checked = data;
+        }
+      })
+      .catch(function(){ /* nothing saved yet - expected on first run */ })
+      .then(function(){
+        loaded = true;
+        applyTheme();
+        render();
+        if (store.kind === "memory") {
+          var c = document.getElementById("navCount");
+          if (c) c.title = "Storage is unavailable in this browser, so progress will reset on reload.";
+        }
+      });
+  }
+
+  function save(){
+    if (!loaded) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      store.set(KEY, payload())
+        .then(function(){ flashSaved(); })
+        .catch(function(err){ console.error("Could not save progress:", err); });
+    }, 350);
+  }
+
+  var dot = document.getElementById("saveDot");
+  var dotTimer = null;
+  function flashSaved(){
+    if (!dot) return;
+    dot.classList.add("on");
+    clearTimeout(dotTimer);
+    dotTimer = setTimeout(function(){ dot.classList.remove("on"); }, 1400);
+  }
+
+  /* ---------- rendering ---------- */
+  function render(){
+    var done = 0;
+    items.forEach(function(el){
+      var id = el.getAttribute("data-id");
+      var on = !!checked[id];
+      if (on) done++;
+      el.classList.toggle("done", on);
+      var btn = el.querySelector(".cb");
+      if (btn) btn.setAttribute("aria-checked", on ? "true" : "false");
+    });
+
+    var pct = total ? done / total : 0;
+
+    var hero = document.getElementById("heroRing");
+    if (hero) {
+      var hc = 2 * Math.PI * 54;
+      hero.setAttribute("stroke-dashoffset", hc - hc * pct);
+    }
+    var heroPct = document.getElementById("heroPct");
+    if (heroPct) heroPct.textContent = Math.round(pct * 100) + "%";
+
+    var mini = document.getElementById("miniRing");
+    if (mini) {
+      var mc = 2 * Math.PI * 10.5;
+      mini.setAttribute("stroke-dashoffset", mc - mc * pct);
+    }
+    var navCount = document.getElementById("navCount");
+    if (navCount) navCount.textContent = done + " / " + total;
+
+    var left = document.getElementById("stepsLeft");
+    if (left) left.textContent = total - done;
+
+    document.querySelectorAll("section[data-phase]").forEach(function(sec){
+      var kids = sec.querySelectorAll("[data-id]");
+      if (!kids.length) return;
+      var d = 0;
+      kids.forEach(function(k){ if (checked[k.getAttribute("data-id")]) d++; });
+      var bar = sec.querySelector(".pbar i");
+      var cnt = sec.querySelector(".pcount");
+      if (bar) bar.style.width = (d / kids.length * 100) + "%";
+      if (cnt) cnt.textContent = d + " of " + kids.length + " done";
+    });
+  }
+
+  function toggle(el){
+    var id = el.getAttribute("data-id");
+    if (checked[id]) { delete checked[id]; } else { checked[id] = 1; }
+    render();
+    save();
+  }
+
+  items.forEach(function(el){
+    var btn = el.querySelector(".cb");
+    if (btn) btn.addEventListener("click", function(){ toggle(el); });
+    var title = el.querySelector(".step-title");
+    if (title) title.addEventListener("click", function(){ toggle(el); });
+  });
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById("resetBtn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function(){
+      if (!confirm("Clear all " + total + " checkmarks on this page? This cannot be undone.")) return;
+      checked = {};
+      render();
+      store.set(KEY, payload())
+        .then(flashSaved)
+        .catch(function(err){ console.error("Could not clear progress:", err); });
+    });
+  }
+
+  /* ---------- resume ---------- */
+  var resumeBtn = document.getElementById("resumeBtn");
+  if (resumeBtn) {
+    resumeBtn.addEventListener("click", function(){
+      var next = null;
+      for (var i = 0; i < items.length; i++) {
+        if (!checked[items[i].getAttribute("data-id")]) { next = items[i]; break; }
+      }
+      var target = next || items[0];
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      var btn = target.querySelector(".cb");
+      if (btn) setTimeout(function(){ btn.focus(); }, 600);
+    });
+  }
+
+  /* ---------- countdown ---------- */
+  var daysEl = document.getElementById("daysLeft");
+  if (daysEl) {
+    var jam = new Date(2026, 7, 14);
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    var days = Math.round((jam - now) / 86400000);
+    daysEl.textContent = days > 0 ? days : (days === 0 ? "Today" : "—");
+    if (days === 0) daysEl.style.fontSize = "26px";
+  }
+
+  /* ---------- scroll reveal ---------- */
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -60px 0px" });
+    document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".rv").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
