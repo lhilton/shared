@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Godot Guide — Uproar — Series Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#fbfbfd;
+  --surface:#ffffff;
+  --ink:#1d1d1f;
+  --ink-2:#6e6e73;
+  --ink-3:#86868b;
+  --hairline:#d2d2d7;
+  --hairline-soft:#e8e8ed;
+  --accent:#0066cc;
+  --accent-fill:#0071e3;
+  --accent-hover:#0077ed;
+  --accent-soft:rgba(0,102,204,.08);
+  --godot:#478cbf;
+  --warn-bg:#fff6e9;
+  --warn-ink:#8a5200;
+  --warn-ink-strong:#7a4800;
+  --note-bg:#f2f2f5;
+  --key-bg:#eef5fd;
+  --key-ink:#0a4a86;
+  --key-ink-strong:#053b6e;
+  --code-bg:#f0f0f3;
+  --pre-bg:#f5f5f7;
+  --th-bg:#f8f8fa;
+  --nav-bg:rgba(251,251,253,.78);
+  --hover-bg:rgba(0,0,0,.05);
+  --cb-bg:#ffffff;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 6px 20px rgba(0,0,0,.07);
+  --cc0-bg:#e6f4ea;  --cc0-ink:#1a6c34;
+  --ccby-bg:#fdf0e3; --ccby-ink:#8a5200;
+  --paid-bg:#f0f0f3;
+  --radius:18px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+/* Dark palette — applied automatically by system preference, or manually
+   when the theme button sets data-theme="dark" on <html>. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#000000;
+    --surface:#1c1c1e;
+    --ink:#f5f5f7;
+    --ink-2:#a1a1a6;
+    --ink-3:#8e8e93;
+    --hairline:#3a3a3c;
+    --hairline-soft:#2c2c2e;
+    --accent:#2997ff;
+    --accent-fill:#0a84ff;
+    --accent-hover:#3ba2ff;
+    --accent-soft:rgba(41,151,255,.16);
+    --godot:#6fb3e0;
+    --warn-bg:#38290f;
+    --warn-ink:#ffb340;
+    --warn-ink-strong:#ffc871;
+    --note-bg:#2c2c2e;
+    --key-bg:#0f2a44;
+    --key-ink:#7fbcf7;
+    --key-ink-strong:#a8d3fb;
+    --code-bg:#2c2c2e;
+    --pre-bg:#131315;
+    --th-bg:#2c2c2e;
+    --nav-bg:rgba(0,0,0,.7);
+    --hover-bg:rgba(255,255,255,.09);
+    --cb-bg:#2c2c2e;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+    --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+    --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+    --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+    --paid-bg:#2c2c2e;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#000000;
+  --surface:#1c1c1e;
+  --ink:#f5f5f7;
+  --ink-2:#a1a1a6;
+  --ink-3:#8e8e93;
+  --hairline:#3a3a3c;
+  --hairline-soft:#2c2c2e;
+  --accent:#2997ff;
+  --accent-fill:#0a84ff;
+  --accent-hover:#3ba2ff;
+  --accent-soft:rgba(41,151,255,.16);
+  --godot:#6fb3e0;
+  --warn-bg:#38290f;
+  --warn-ink:#ffb340;
+  --warn-ink-strong:#ffc871;
+  --note-bg:#2c2c2e;
+  --key-bg:#0f2a44;
+  --key-ink:#7fbcf7;
+  --key-ink-strong:#a8d3fb;
+  --code-bg:#2c2c2e;
+  --pre-bg:#131315;
+  --th-bg:#2c2c2e;
+  --nav-bg:rgba(0,0,0,.7);
+  --hover-bg:rgba(255,255,255,.09);
+  --cb-bg:#2c2c2e;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+  --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+  --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+  --paid-bg:#2c2c2e;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:76px;}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+:focus-visible{outline:2px solid var(--accent-fill);outline-offset:3px;border-radius:6px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:#000;color:#f5f5f7;min-height:86vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:110px 22px 90px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(72% 52% at 50% 8%, rgba(71,140,191,.26), transparent 68%);
+}
+.hero > *{position:relative;z-index:1;}
+.eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--godot);margin:0 0 18px;
+}
+.hero h1{
+  font-size:clamp(42px,8.2vw,92px);font-weight:600;letter-spacing:-.035em;
+  line-height:1.03;margin:0 0 22px;max-width:14ch;
+}
+.hero h1 em{font-style:normal;color:#8fb9d9;}
+.hero p.lede{
+  font-size:clamp(17px,2.2vw,21px);color:#a1a1a6;max-width:46ch;margin:0 auto 40px;
+  line-height:1.45;
+}
+.hero-meta{display:flex;gap:38px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:8px;}
+.stat{min-width:96px;}
+.stat b{display:block;font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.1;}
+.stat span{display:block;font-size:12px;color:#86868b;letter-spacing:.03em;margin-top:5px;}
+.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ring{transform:rotate(-90deg);}
+.ring circle{fill:none;stroke-linecap:round;}
+.ring .track{stroke:rgba(255,255,255,.14);}
+.ring .fill{stroke:url(#grad);transition:stroke-dashoffset .7s cubic-bezier(.32,.72,0,1);}
+.ring-label{font-size:12px;color:#86868b;letter-spacing:.03em;}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:8px;margin-top:44px;background:var(--accent-fill);
+  color:#fff;padding:12px 24px;border-radius:980px;font-size:16px;font-weight:500;border:none;
+  cursor:pointer;transition:transform .2s,background .2s;font-family:inherit;
+}
+.hero-cta:hover{background:var(--accent-hover);transform:scale(1.02);text-decoration:none;}
+
+/* ---------- NAV ---------- */
+nav{
+  position:sticky;top:0;z-index:60;background:var(--nav-bg);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--hairline-soft);
+}
+.nav-in{
+  max-width:1080px;margin:0 auto;padding:0 20px;height:54px;
+  display:flex;align-items:center;gap:16px;
+}
+.nav-title{font-size:14px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;}
+.nav-links{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-links a{
+  font-size:13px;color:var(--ink-2);padding:6px 11px;border-radius:980px;white-space:nowrap;
+  transition:background .15s,color .15s;
+}
+.nav-links a:hover{background:var(--hover-bg);color:var(--ink);text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.mini-count{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.mini-ring .track{stroke:var(--hairline);}
+.mini-ring .fill{stroke:var(--accent-fill);}
+.ghost-btn{
+  font-family:inherit;font-size:13px;color:var(--accent);background:none;border:none;
+  cursor:pointer;padding:6px 8px;border-radius:8px;white-space:nowrap;
+}
+.ghost-btn:hover{background:var(--accent-soft);}
+.icon-btn{font-size:15px;line-height:1;padding:7px 9px;}
+
+/* ---------- LAYOUT ---------- */
+section{max-width:800px;margin:0 auto;padding:88px 22px 0;}
+section:last-of-type{padding-bottom:110px;}
+.phase-head{margin-bottom:26px;}
+.phase-head .eyebrow{color:var(--accent);margin-bottom:10px;}
+.phase-head h2{
+  font-size:clamp(29px,4.4vw,42px);font-weight:600;letter-spacing:-.026em;
+  margin:0 0 14px;line-height:1.1;
+}
+.phase-meta{display:flex;align-items:center;gap:12px;margin-top:16px;}
+.pbar{height:4px;background:var(--hairline-soft);border-radius:99px;flex:1;overflow:hidden;}
+.pbar i{display:block;height:100%;width:0;background:var(--accent-fill);border-radius:99px;transition:width .5s cubic-bezier(.32,.72,0,1);}
+.pcount{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.bluf{
+  font-size:19px;line-height:1.5;color:var(--ink);margin:0 0 8px;font-weight:450;
+}
+.bluf b{font-weight:600;}
+.bluf .lbl{color:var(--accent);font-weight:600;}
+
+/* ---------- STEP CARD ---------- */
+.step{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:19px 21px;margin-bottom:12px;
+  box-shadow:var(--shadow-sm);transition:opacity .3s,border-color .2s,box-shadow .2s;
+}
+.step:hover{border-color:var(--hairline);}
+.step.done{opacity:.5;}
+.cb{
+  flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:1.6px solid var(--hairline);
+  background:var(--cb-bg);cursor:pointer;margin-top:2px;padding:0;position:relative;
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.cb:hover{border-color:var(--accent-fill);}
+.cb:active{transform:scale(.9);}
+.cb::after{
+  content:"";position:absolute;left:8px;top:4px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.cb[aria-checked="true"]{background:var(--accent-fill);border-color:var(--accent-fill);}
+.cb[aria-checked="true"]::after{transform:rotate(45deg) scale(1);}
+.step-body{flex:1;min-width:0;}
+.step-title{
+  font-size:17px;font-weight:600;letter-spacing:-.012em;margin:0 0 7px;cursor:pointer;
+  line-height:1.35;
+}
+.step.done .step-title{text-decoration:line-through;text-decoration-color:var(--hairline);color:var(--ink-2);}
+.step p{margin:0 0 10px;font-size:15px;color:var(--ink-2);line-height:1.55;}
+.step p:last-child{margin-bottom:0;}
+.step p strong,.step li strong{color:var(--ink);font-weight:600;}
+.step ul,.step ol{margin:0 0 10px;padding-left:20px;font-size:15px;color:var(--ink-2);line-height:1.6;}
+.step li{margin-bottom:5px;}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:2px 6px;border-radius:5px;color:var(--ink);}
+pre{
+  background:var(--pre-bg);border:1px solid var(--hairline-soft);border-radius:12px;padding:15px 16px;
+  overflow-x:auto;margin:0 0 12px;
+}
+pre code{background:none;padding:0;font-size:13px;line-height:1.65;display:block;white-space:pre;}
+
+/* ---------- CALLOUTS ---------- */
+.call{border-radius:12px;padding:12px 15px;font-size:14.5px;line-height:1.55;margin:0 0 11px;}
+.call b{font-weight:600;}
+.call.warn{background:var(--warn-bg);color:var(--warn-ink);}
+.call.warn b{color:var(--warn-ink-strong);}
+.call.note{background:var(--note-bg);color:var(--ink-2);}
+.call.note b{color:var(--ink);}
+.call.key{background:var(--key-bg);color:var(--key-ink);}
+.call.key b{color:var(--key-ink-strong);}
+.exp{display:block;margin:0 0 11px;font-size:13.5px;color:var(--ink-3);padding-left:11px;border-left:2px solid var(--hairline-soft);line-height:1.55;}
+.exp b{color:var(--ink-2);}
+.src{font-size:12px;color:var(--ink-3);letter-spacing:.01em;}
+.src a{color:var(--ink-3);text-decoration:underline;text-decoration-color:var(--hairline);}
+
+/* ---------- TABLE ---------- */
+.tbl-wrap{overflow-x:auto;margin:0 0 12px;border:1px solid var(--hairline-soft);border-radius:12px;}
+table{border-collapse:collapse;width:100%;font-size:14px;}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--hairline-soft);}
+th{font-weight:600;color:var(--ink);background:var(--th-bg);font-size:12.5px;letter-spacing:.02em;}
+tr:last-child td{border-bottom:none;}
+td{color:var(--ink-2);}
+td:first-child{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;}
+
+/* ---------- ASSET / LINK CARDS ---------- */
+.link-card{
+  display:block;background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:15px 18px;margin-bottom:10px;transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.link-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg);border-color:var(--hairline);text-decoration:none;}
+.link-card h4{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:-.01em;}
+.link-card p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.badge{
+  display:inline-block;font-size:11px;font-weight:600;letter-spacing:.03em;padding:3px 9px;
+  border-radius:980px;margin-left:8px;vertical-align:2px;
+}
+.badge.cc0{background:var(--cc0-bg);color:var(--cc0-ink);}
+.badge.ccby{background:var(--ccby-bg);color:var(--ccby-ink);}
+.badge.paid{background:var(--paid-bg);color:var(--ink-2);}
+
+/* ---------- SCHEDULE ---------- */
+.day{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:17px 20px;margin-bottom:10px;
+  transition:opacity .3s;
+}
+.day.done{opacity:.5;}
+.day-date{
+  flex:0 0 62px;font-size:13px;font-weight:600;color:var(--accent);letter-spacing:-.01em;
+  padding-top:2px;
+}
+.day.done .day-date{color:var(--ink-3);}
+.day h4{margin:0 0 5px;font-size:15.5px;font-weight:600;letter-spacing:-.01em;}
+.day p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.day .bench{color:var(--ink-2);font-size:13.5px;margin-top:6px;}
+.day .bench b{color:var(--ink);}
+
+/* ---------- DETAILS ---------- */
+details{
+  background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:0;margin-bottom:10px;overflow:hidden;
+}
+summary{
+  cursor:pointer;padding:15px 18px;font-size:15.5px;font-weight:600;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;letter-spacing:-.01em;
+}
+summary::-webkit-details-marker{display:none;}
+summary::after{content:"+";font-weight:400;font-size:19px;color:var(--ink-3);}
+details[open] summary::after{content:"–";}
+.details-body{padding:0 18px 16px;font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+.details-body ul{padding-left:19px;margin:0;}
+.details-body li{margin-bottom:7px;word-break:break-word;}
+
+/* ---------- FOOTER ---------- */
+footer{
+  border-top:1px solid var(--hairline-soft);margin-top:70px;padding:34px 22px 60px;
+  text-align:center;font-size:12.5px;color:var(--ink-3);line-height:1.7;
+}
+.save-dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;background:#34c759;
+  margin-right:6px;vertical-align:1px;opacity:0;transition:opacity .3s;
+}
+.save-dot.on{opacity:1;}
+
+/* ---------- REVEAL ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.32,.72,0,1);}
+.rv.in{opacity:1;transform:none;}
+
+@media (max-width:640px){
+  .hero{min-height:auto;padding:80px 20px 64px;}
+  .hero-meta{gap:26px;}
+  .nav-title{display:none;}
+  section{padding-top:64px;}
+  .day{flex-wrap:wrap;}
+  .day-date{flex-basis:100%;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  html{scroll-behavior:auto;}
+  .rv{opacity:1;transform:none;}
+}
+
+/* ---------- INDEX: CHAPTER CARDS ---------- */
+.ch-card{
+  display:flex;gap:18px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:12px;box-shadow:var(--shadow-sm);
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+a.ch-card{color:inherit;}
+a.ch-card:hover{
+  transform:translateY(-1px);box-shadow:var(--shadow-lg);border-color:var(--hairline);
+  text-decoration:none;
+}
+.ch-num{
+  flex:0 0 46px;font-size:30px;font-weight:600;letter-spacing:-.03em;color:var(--accent);
+  font-variant-numeric:tabular-nums;line-height:1.15;
+}
+.ch-card.soon .ch-num{color:var(--ink-3);}
+.ch-body{flex:1;min-width:0;}
+.ch-body h3{margin:0 0 6px;font-size:19px;font-weight:600;letter-spacing:-.015em;color:var(--ink);}
+.ch-body p{margin:0 0 11px;font-size:15px;color:var(--ink-2);line-height:1.55;}
+.ch-topics{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 13px;padding:0;list-style:none;}
+.ch-topics li{
+  font-size:12px;color:var(--ink-2);background:var(--note-bg);border-radius:980px;padding:4px 10px;
+  line-height:1.4;
+}
+.badge.pub{background:var(--cc0-bg);color:var(--cc0-ink);}
+.badge.next{background:var(--key-bg);color:var(--key-ink);}
+.badge.soon{background:var(--paid-bg);color:var(--ink-2);}
+.legend{font-size:12.5px;color:var(--ink-3);line-height:1.6;margin:14px 0 0;}
+@media (max-width:640px){
+  .ch-card{gap:13px;padding:17px 18px;}
+  .ch-num{flex-basis:36px;font-size:24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <svg width="0" height="0" aria-hidden="true"><defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#478cbf"/><stop offset="100%" stop-color="#5ac8fa"/>
+    </linearGradient>
+  </defs></svg>
+
+  <p class="eyebrow">Godot Guide · Uproar · Godot 4.7.1-stable</p>
+  <h1>Uproar <em>The Series</em></h1>
+  <p class="lede">A giant gorilla, a climbable city, and buildings that come apart. Every chapter is a standalone page of checkable steps. Start at Chapter 1 and work down; each chapter builds on the project file the previous one left behind.</p>
+
+  <div class="hero-meta">
+    <div class="ring-wrap">
+      <svg class="ring" width="128" height="128" viewBox="0 0 128 128" aria-hidden="true">
+        <circle class="track" cx="64" cy="64" r="54" stroke-width="9"/>
+        <circle id="heroRing" class="fill" cx="64" cy="64" r="54" stroke-width="9"
+                stroke-dasharray="339.29" stroke-dashoffset="339.29"/>
+      </svg>
+      <span class="ring-label"><b id="heroPct" style="color:#f5f5f7;font-size:14px;">0%</b> of the series</span>
+    </div>
+    <div class="stat"><b id="chapterCount">3</b><span>CHAPTERS OUT</span></div>
+    <div class="stat"><b id="stepTotal">63</b><span>STEPS TOTAL</span></div>
+    <div class="stat"><b id="stepsLeft">63</b><span>STEPS LEFT</span></div>
+  </div>
+
+  <button class="hero-cta" id="resumeBtn">Go to the next unfinished chapter &nbsp;↓</button>
+</header>
+
+<!-- ================= NAV ================= -->
+<nav>
+  <div class="nav-in">
+    <span class="nav-title">Uproar · Index</span>
+    <div class="nav-links">
+      <a href="#chapters">Chapters</a><a href="#planned">Coming next</a>
+      <a href="#conventions">Conventions</a><a href="#reading">How to read this</a>
+    </div>
+    <div class="nav-right">
+      <svg class="ring mini-ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle class="track" cx="13" cy="13" r="10.5" stroke-width="3"/>
+        <circle id="miniRing" class="fill" cx="13" cy="13" r="10.5" stroke-width="3"
+                stroke-dasharray="65.97" stroke-dashoffset="65.97"/>
+      </svg>
+      <span class="mini-count"><span class="save-dot" id="saveDot"></span><span id="navCount">0 / 63</span></span>
+      <button class="ghost-btn icon-btn" id="themeBtn" title="Switch appearance" aria-label="Switch appearance">☾</button>
+      <button class="ghost-btn" id="refreshBtn">Refresh</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= PUBLISHED CHAPTERS ================= -->
+<section id="chapters" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Published</p>
+    <h2>Chapters you can work through today</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Three chapters are finished, 63 steps in total. Do them in order. Chapter 2 requires a working Chapter 1 project, and Chapter 3 edits the code Chapter 2 writes.</p>
+  </div>
+
+  <a class="ch-card" href="./uproar-ch1-prototype.html" data-ch="ch1">
+    <div class="ch-num">01</div>
+    <div class="ch-body">
+      <h3>Prototype <span class="badge pub">Published</span></h3>
+      <p>Builds the whole playable core from an empty project: a third-person gorilla controller, a city block to climb, punching, and buildings that collapse by swapping to a rubble mesh. Start here even if you have used Godot for 2D.</p>
+      <ul class="ch-topics">
+        <li>Project setup</li><li>CharacterBody3D</li><li>SpringArm camera</li>
+        <li>Collision layers</li><li>Climbing</li><li>Punching</li><li>Mesh-swap collapse</li><li>Export</li>
+      </ul>
+      <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount">40 steps</span></div>
+    </div>
+  </a>
+
+  <a class="ch-card" href="./uproar-ch2-bringing-down-the-house.html" data-ch="ch2">
+    <div class="ch-num">02</div>
+    <div class="ch-body">
+      <h3>Bringing Down The House <span class="badge pub">Published</span></h3>
+      <p>Replaces the mesh swap with physics debris, generated from Godot's own box primitives at load time. Needs no software beyond Godot and takes roughly 30 minutes of editor work.</p>
+      <ul class="ch-topics">
+        <li>RigidBody3D chunks</li><li>Frozen bodies</li><li>Blast impulse</li>
+        <li>Debris lifetime</li><li>Frame-rate budget</li>
+      </ul>
+      <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount">8 steps</span></div>
+    </div>
+  </a>
+
+  <a class="ch-card" href="./uproar-ch3-going-to-pieces.html" data-ch="ch3">
+    <div class="ch-num">03</div>
+    <div class="ch-body">
+      <h3>Going To Pieces <span class="badge pub">Published</span></h3>
+      <p>Upgrades the box chunks to irregular shards cut in Blender with Cell Fracture. The Chapter 2 box path stays in the file, so clearing one Inspector field switches back to it. Budget one evening if you have never opened Blender.</p>
+      <ul class="ch-topics">
+        <li>Cell Fracture</li><li>glTF export</li><li>ConvexPolygonShape3D</li>
+        <li>Per-shard mass</li><li>Troubleshooting table</li>
+      </ul>
+      <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount">15 steps</span></div>
+    </div>
+  </a>
+
+  <div class="call note"><b>Note — the bars above read each chapter's own saved progress.</b> That only works when this index and the chapter files sit in the same folder and are opened in the same browser. If a bar reads zero on a chapter you have finished, the browser is keeping the two files' storage separate; your ticks are still safe on the chapter's own page. Press <b>Refresh</b> in the bar at the top after ticking steps in another tab.</div>
+</section>
+
+<!-- ================= PLANNED ================= -->
+<section id="planned" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Coming next</p>
+    <h2>What the rest of the series covers</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Six chapters are planned. The numbers below are provisional, because a chapter that grows past 15 steps gets split in two rather than compressed, which shifts everything after it.</p>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>#</th><th>Title</th><th>Covers</th></tr></thead>
+    <tbody>
+      <tr><td>04</td><td>Animation &amp; Feel</td><td>Importing the rigged gorilla, AnimationTree, state-driven animation, Call Method Track hitboxes</td></tr>
+      <tr><td>05</td><td>Building A City</td><td>Kenney kit assembly, level layout, modular blockouts, performance at scale</td></tr>
+      <tr><td>06</td><td>The Game Loop</td><td>Score, timer, win and lose conditions, menus, HUD, scene transitions</td></tr>
+      <tr><td>07</td><td>Juice</td><td>Particles, camera shake, sound design, post-processing</td></tr>
+      <tr><td>08</td><td>Something To Fight</td><td>Helicopters and tanks, player health, threat AI</td></tr>
+      <tr><td>09</td><td>Shipping</td><td>Export presets, distribution, web builds, playtesting</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="call key"><b>Key point — the list is open-ended.</b> Chapters past 09 are expected, and the order changes as the game grows. Nothing here is a fixed sequence.</div>
+</section>
+
+<!-- ================= HOW TO READ ================= -->
+<section id="reading" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">How to read this</p>
+    <h2>Four things worth knowing before you start</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Each chapter is one HTML file that saves its own progress. Nothing is installed, and no chapter depends on this index page.</p>
+  </div>
+
+  <div class="ch-card soon">
+    <div class="ch-num">1</div>
+    <div class="ch-body">
+      <h3>Tick steps as you finish them</h3>
+      <p>Click the circle or the step title to mark a step done. Progress is written to browser storage on the chapter's own page, so keep the files in one folder and open them from there. The <b>Reset</b> button in a chapter's top bar clears that chapter only.</p>
+    </div>
+  </div>
+
+  <div class="ch-card soon">
+    <div class="ch-num">2</div>
+    <div class="ch-body">
+      <h3>Every procedure ends with an Expected line</h3>
+      <p>An <b>Expected:</b> line describes what you should see when the step worked. If what you see does not match, stop there rather than continuing, because later steps assume the earlier result.</p>
+    </div>
+  </div>
+
+  <div class="ch-card soon">
+    <div class="ch-num">3</div>
+    <div class="ch-body">
+      <h3>Callouts mean specific things</h3>
+      <p><b>Key point</b> is the reason something works. <b>Warning</b> is a mistake that costs you time. <b>Note</b> is context you can skip on a first pass. Anything marked <b>[Unverified]</b> could not be confirmed against the official Godot documentation.</p>
+    </div>
+  </div>
+
+  <div class="ch-card soon">
+    <div class="ch-num">4</div>
+    <div class="ch-body">
+      <h3>The version is fixed at Godot 4.7.1-stable</h3>
+      <p>Every chapter is written and checked against the Standard build of Godot 4.7.1-stable using GDScript, not the .NET build. Earlier 4.x versions differ in the physics engine default and in some import settings.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONVENTIONS ================= -->
+<section id="conventions" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Reference</p>
+    <h2>Conventions used in every chapter</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Names, folders and layer numbers are identical across the series. If a chapter names a node, it means the node in the tree below.</p>
+  </div>
+
+  <details>
+    <summary>Folder layout</summary>
+    <div class="details-body">
+      <p>Godot's <strong>Attach Script</strong> dialog defaults to the scene's folder. Change it to <code>res://script/</code> every time.</p>
+<pre><code>res://scene/          player.tscn, building.tscn, level.tscn
+res://script/         player.gd, building.gd, hud.gd
+res://asset/model/    imported .glb files
+res://asset/audio/    sound files
+res://asset/material/ saved .tres materials</code></pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>Player scene tree</summary>
+    <div class="details-body">
+<pre><code>Player (CharacterBody3D)      ← player.gd attached here
+├── CollisionShape3D          CapsuleShape3D, radius 1.5, height 8, position y 4
+├── Facing (Node3D)           the ONLY node that rotates; must stay at 0,0,0
+│   ├── Body (MeshInstance3D)
+│   ├── WallRay (RayCast3D)
+│   └── Fist (Area3D)         monitoring stays ON
+└── CameraPivot (Node3D)      never rotates with the character
+    └── SpringArm3D
+        └── Camera3D</code></pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>Collision layers</summary>
+    <div class="details-body">
+      <p><code>collision_layer</code> is a bitmask, so the value for a layer is 2 raised to the power of the layer number minus one. Layer 4 is the value 8, not 4.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Layer</th><th>Name</th><th>Bitmask value</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>World</td><td><code>1</code></td></tr>
+          <tr><td>2</td><td>Player</td><td><code>2</code></td></tr>
+          <tr><td>3</td><td>Buildings</td><td><code>4</code></td></tr>
+          <tr><td>4</td><td>Rubble</td><td><code>8</code></td></tr>
+          <tr><td>5</td><td>HitDetection</td><td><code>16</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </details>
+
+  <details>
+    <summary>GDScript style in every code sample</summary>
+    <div class="details-body"><ul>
+      <li>Explicit <code>self.</code> on member access, and never on locals, parameters, globals, node paths or enum constants.</li>
+      <li>Explicit type hints everywhere: <code>var speed: float = 8.0</code>, never <code>:=</code>.</li>
+      <li>Typed <code>@onready</code> node references instead of repeated <code>$Path</code> lookups.</li>
+      <li>A return type on every function, usually <code>-&gt; void</code>.</li>
+      <li>Four-space indentation. Godot's own default is tabs; either works if you keep it consistent.</li>
+      <li>Tuning numbers are exported so you can change them in the Inspector.</li>
+    </ul></div>
+  </details>
+
+  <details>
+    <summary>Settled facts, checked against the official documentation</summary>
+    <div class="details-body">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Fact</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Version</td><td>Godot 4.7.1-stable, Standard build, GDScript</td></tr>
+          <tr><td>Physics</td><td>Jolt is the default 3D engine for new projects since 4.6</td></tr>
+          <tr><td>Movement</td><td><code>move_and_slide()</code> takes no arguments in Godot 4</td></tr>
+          <tr><td>Facing</td><td><code>atan2(-dir.x, -dir.z)</code>, both negated, because Node3D forward is <code>-Z</code></td></tr>
+          <tr><td>Area3D</td><td>The overlap list refreshes only during a physics step, so leave <code>monitoring</code> on</td></tr>
+          <tr><td>Models</td><td>glTF binary (<code>.glb</code>) is the recommended import format</td></tr>
+          <tr><td>Web export</td><td>Needs SharedArrayBuffer; reliable only in Chromium browsers, so ship a desktop build too</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Sources</summary>
+    <div class="details-body">
+      <p>Each chapter carries its own Sources section. These two are the primary references for the series.</p>
+      <ul>
+        <li><a href="https://docs.godotengine.org/en/stable/" target="_blank" rel="noopener">Godot Engine documentation, stable branch</a></li>
+        <li><a href="https://godotengine.org/news/" target="_blank" rel="noopener">Godot Engine release notes and news</a></li>
+      </ul>
+    </div>
+  </details>
+</section>
+
+<footer>
+  Godot Guide — Uproar · Series index · Godot 4.7.1-stable · Each chapter saves its progress separately.<br>
+  <a href="./uproar-ch1-prototype.html">Chapter 1</a> &nbsp;·&nbsp;
+  <a href="./uproar-ch2-bringing-down-the-house.html">Chapter 2</a> &nbsp;·&nbsp;
+  <a href="./uproar-ch3-going-to-pieces.html">Chapter 3</a>
+</footer>
+
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "godot-uproar-index-v1";   // this page stores the appearance choice only
+  var theme = "auto";                  // "auto" | "light" | "dark"
+  var loaded = false;
+  var saveTimer = null;
+
+  /* Each chapter saves its own ticks under its own key. This page reads those
+     keys but never writes to them. "total" is the step count in that file. */
+  var CHAPTERS = [
+    { ch: "ch1", key: "godot-kong-progress-v1",        total: 40 },
+    { ch: "ch2", key: "godot-kong-destruction-v1",     total: 8  },
+    { ch: "ch3", key: "godot-uproar-ch3-fracture-v1",  total: 15 }
+  ];
+
+  var GRAND_TOTAL = CHAPTERS.reduce(function(n, c){ return n + c.total; }, 0);
+  var doneByChapter = {};
+
+  /* ---------- storage adapter ----------
+     Tries three backends in order, so this page behaves the same whether it is
+     rendered inside Claude or opened as a downloaded file in a browser.
+       1. window.storage  - available when rendered as an artifact
+       2. localStorage    - available when opened as a local/hosted file
+       3. memory          - last resort; survives navigation but not a reload
+  */
+  var store = (function(){
+    if (window.storage && typeof window.storage.get === "function") {
+      return {
+        kind: "synced",
+        get: function(k){
+          return window.storage.get(k).then(function(r){
+            return (r && typeof r.value === "string") ? r.value : null;
+          });
+        },
+        set: function(k, v){ return window.storage.set(k, v); }
+      };
+    }
+    try {
+      var probe = "__probe__";
+      window.localStorage.setItem(probe, "1");
+      window.localStorage.removeItem(probe);
+      return {
+        kind: "local",
+        get: function(k){ return Promise.resolve(window.localStorage.getItem(k)); },
+        set: function(k, v){ window.localStorage.setItem(k, v); return Promise.resolve(true); }
+      };
+    } catch (e) { /* storage blocked or unavailable */ }
+    var mem = {};
+    return {
+      kind: "memory",
+      get: function(k){ return Promise.resolve(Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null); },
+      set: function(k, v){ mem[k] = v; return Promise.resolve(true); }
+    };
+  })();
+
+  /* ---------- appearance ---------- */
+  var themeBtn = document.getElementById("themeBtn");
+  var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function resolvedTheme(){
+    return theme === "auto" ? (darkQuery.matches ? "dark" : "light") : theme;
+  }
+
+  function applyTheme(){
+    var root = document.documentElement;
+    if (theme === "auto") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", theme);
+    var isDark = resolvedTheme() === "dark";
+    themeBtn.textContent = isDark ? "☀" : "☾";
+    var label = isDark ? "Switch to light appearance" : "Switch to dark appearance";
+    themeBtn.setAttribute("aria-label", label);
+    themeBtn.setAttribute("title", label);
+  }
+
+  themeBtn.addEventListener("click", function(){
+    theme = resolvedTheme() === "dark" ? "light" : "dark";
+    applyTheme();
+    save();
+  });
+
+  if (darkQuery.addEventListener) {
+    darkQuery.addEventListener("change", function(){ if (theme === "auto") applyTheme(); });
+  } else if (darkQuery.addListener) {
+    darkQuery.addListener(function(){ if (theme === "auto") applyTheme(); });
+  }
+
+  applyTheme();
+
+  /* ---------- load / save (appearance) ---------- */
+  function payload(){
+    return JSON.stringify({ theme: theme });
+  }
+
+  function loadTheme(){
+    return store.get(KEY)
+      .then(function(raw){
+        if (!raw) return;
+        var data;
+        try { data = JSON.parse(raw); } catch (e) { return; }
+        if (data && typeof data === "object" && data.theme) theme = data.theme;
+      })
+      .catch(function(){ /* nothing saved yet - expected on first run */ })
+      .then(function(){ loaded = true; applyTheme(); });
+  }
+
+  function save(){
+    if (!loaded) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      store.set(KEY, payload())
+        .then(function(){ flashSaved(); })
+        .catch(function(err){ console.error("Could not save appearance:", err); });
+    }, 350);
+  }
+
+  var dot = document.getElementById("saveDot");
+  var dotTimer = null;
+  function flashSaved(){
+    if (!dot) return;
+    dot.classList.add("on");
+    clearTimeout(dotTimer);
+    dotTimer = setTimeout(function(){ dot.classList.remove("on"); }, 1400);
+  }
+
+  /* ---------- read each chapter's progress ---------- */
+  function countTicks(raw, total){
+    if (!raw) return 0;
+    var data;
+    try { data = JSON.parse(raw); } catch (e) { return 0; }
+    if (!data || typeof data !== "object") return 0;
+    var map = data.checked && typeof data.checked === "object" ? data.checked : data;
+    var n = 0;
+    Object.keys(map).forEach(function(k){
+      if (k !== "theme" && map[k]) n++;
+    });
+    return Math.min(n, total);
+  }
+
+  function readProgress(){
+    var jobs = CHAPTERS.map(function(c){
+      return store.get(c.key)
+        .then(function(raw){ doneByChapter[c.ch] = countTicks(raw, c.total); })
+        .catch(function(){ doneByChapter[c.ch] = 0; });
+    });
+    return Promise.all(jobs).then(render);
+  }
+
+  /* ---------- rendering ---------- */
+  function render(){
+    var done = 0;
+
+    CHAPTERS.forEach(function(c){
+      var d = doneByChapter[c.ch] || 0;
+      done += d;
+      var card = document.querySelector('[data-ch="' + c.ch + '"]');
+      if (!card) return;
+      var bar = card.querySelector(".pbar i");
+      var cnt = card.querySelector(".pcount");
+      if (bar) bar.style.width = (d / c.total * 100) + "%";
+      if (cnt) cnt.textContent = d ? (d + " of " + c.total + " steps done") : (c.total + " steps");
+    });
+
+    var pct = GRAND_TOTAL ? done / GRAND_TOTAL : 0;
+
+    var hero = document.getElementById("heroRing");
+    if (hero) {
+      var hc = 2 * Math.PI * 54;
+      hero.setAttribute("stroke-dashoffset", hc - hc * pct);
+    }
+    var heroPct = document.getElementById("heroPct");
+    if (heroPct) heroPct.textContent = Math.round(pct * 100) + "%";
+
+    var mini = document.getElementById("miniRing");
+    if (mini) {
+      var mc = 2 * Math.PI * 10.5;
+      mini.setAttribute("stroke-dashoffset", mc - mc * pct);
+    }
+
+    var navCount = document.getElementById("navCount");
+    if (navCount) navCount.textContent = done + " / " + GRAND_TOTAL;
+
+    var chapters = document.getElementById("chapterCount");
+    if (chapters) chapters.textContent = CHAPTERS.length;
+
+    var stepTotal = document.getElementById("stepTotal");
+    if (stepTotal) stepTotal.textContent = GRAND_TOTAL;
+
+    var left = document.getElementById("stepsLeft");
+    if (left) left.textContent = GRAND_TOTAL - done;
+  }
+
+  /* ---------- refresh ---------- */
+  var refreshBtn = document.getElementById("refreshBtn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", function(){
+      readProgress().then(flashSaved);
+    });
+  }
+
+  /* ---------- resume ---------- */
+  var resumeBtn = document.getElementById("resumeBtn");
+  if (resumeBtn) {
+    resumeBtn.addEventListener("click", function(){
+      var target = null;
+      for (var i = 0; i < CHAPTERS.length; i++) {
+        var c = CHAPTERS[i];
+        if ((doneByChapter[c.ch] || 0) < c.total) {
+          target = document.querySelector('[data-ch="' + c.ch + '"]');
+          break;
+        }
+      }
+      if (!target) target = document.querySelector("[data-ch]");
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(function(){ target.focus(); }, 600);
+    });
+  }
+
+  /* ---------- scroll reveal ---------- */
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -60px 0px" });
+    document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".rv").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  loadTheme().then(readProgress);
+})();
+</script>
+</body>
+</html>
