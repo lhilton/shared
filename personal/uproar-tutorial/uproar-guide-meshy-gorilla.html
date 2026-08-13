@@ -465,7 +465,11 @@ footer{
 
       <div class="call key"><b>Key point &mdash; rights are fixed at generation time.</b> Meshy states that models created while you were on a paid plan keep those rights even if you later downgrade. Models generated after a downgrade follow the free plan's CC BY 4.0 terms. If your subscription is about to lapse, generate first.</div>
 
-      <p><strong>Action:</strong> open your Meshy account settings and confirm the paid plan is active before you generate anything.</p>
+      <div class="call key"><b>Key point &mdash; the licence is a control in the generation panel, not just a property of your plan.</b> The generate panel carries a <b>License</b> toggle with two settings, <b>CC BY 4.0</b> and <b>Private</b>. Set it to <b>Private</b> before generating. The same toggle appears on both the <b>Text to 3D</b> and <b>Image to 3D</b> panels. <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
+
+      <div class="call note"><b>Note &mdash; the licence can be changed after generation.</b> An existing asset’s <b>&hellip;</b> menu carries a <b>Change License</b> entry showing the current setting. Whether switching an asset from CC BY 4.0 to Private retroactively removes the attribution requirement is <b>not documented</b>, so set it correctly before you generate rather than relying on the fix. <b>[Unverified]</b> <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
+
+      <p><strong>Action:</strong> confirm the paid plan is active, then set <strong>License</strong> to <strong>Private</strong> in the generation panel before you generate anything.</p>
       <span class="exp"><b>Expected:</b> your account shows an active paid plan with credits available.</span>
       <p class="src">Source: <a href="https://help.meshy.ai/en/articles/10137554-what-is-the-ownership-of-the-generated-models" target="_blank" rel="noopener">Meshy Help &mdash; ownership of generated models</a> &middot; <a href="https://help.meshy.ai/en/articles/16102098-can-i-use-meshy-assets-commercially" target="_blank" rel="noopener">Meshy Help &mdash; commercial use</a></p>
     </div>
@@ -491,7 +495,8 @@ footer{
 
       <p><strong>Action &mdash; a starting prompt:</strong></p>
       <pre><code>A stylised silverback gorilla, full body, standing upright on two legs,
-T-pose, arms straight out to the sides, dark grey fur, broad chest,
+T-pose, arms straight out to the sides, palms facing the body,
+clear gap between arms and torso, dark grey fur, broad chest,
 game character, clean single mesh</code></pre>
 
       <p><strong>What each part is doing:</strong></p>
@@ -502,7 +507,19 @@ game character, clean single mesh</code></pre>
         <li><code>clean single mesh</code> discourages separate floating parts, which rig badly.</li>
       </ul>
 
-      <div class="call note"><b>Note &mdash; the image path has explicit pose controls.</b> If you use <b>Image to 3D</b> rather than a text prompt, Meshy's tutorial states you can configure the pose before generating, with a T-pose or A-pose toggle and a Custom Pose Control that takes a reference image. Set it there rather than hoping the source image is posed correctly.</div>
+      <div class="call key"><b>Key point &mdash; the Pose control differs between the two generators, and neither defaults to T-pose.</b> <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
+
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Panel</th><th>Pose control</th><th>Default</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Text to 3D</strong></td><td>Three buttons: <strong>None</strong>, <strong>A-Pose</strong>, <strong>T-Pose</strong></td><td><strong>None</strong></td><td>Click <strong>T-Pose</strong></td></tr>
+          <tr><td><strong>Image to 3D</strong></td><td>A <strong>Pose</strong> switch; enabling it activates <strong>A-Pose</strong>, <strong>T-Pose</strong>, <strong>Custom</strong></td><td>Switch off, selector on <strong>A-Pose</strong></td><td>Turn the switch on, <em>then</em> click <strong>T-Pose</strong></td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="call note"><b>Note &mdash; the two generators also default to different model versions.</b> <b>Text to 3D</b> opens on <b>Meshy 6</b> ("High quality and stable structure"); <b>Image to 3D</b> opens on <b>Meshy 7 &mdash; Flagship</b> ("Most detail, highest precision"). Both panels offer a <b>High Detail</b> / <b>Smart Topology</b> choice above the version selector. The prompt box accepts <b>800 characters</b>, and a generation costs <b>20 credits</b> and takes about a minute. <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
+
+      <div class="call warn"><b>Warning &mdash; add "palms facing the body" to your prompt.</b> Meshy's rigging dialog states its own input requirements: close to a T-pose or A-pose, a clear gap between the limbs and the body, and <b>palms facing the body</b>. Palm orientation is easy to get wrong and hard to correct afterwards, so ask for it up front.</div>
 
       <span class="exp"><b>Expected:</b> a prompt written down, containing the words "T-pose" and "full body".</span>
       <p class="src">Source: <a href="https://www.meshy.ai/tutorials/character-auto-rigging-workflow" target="_blank" rel="noopener">Meshy &mdash; character auto-rigging workflow</a> &middot; <a href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/retargeting_3d_skeletons.html" target="_blank" rel="noopener">Godot &mdash; Retargeting 3D Skeletons</a></p>
@@ -529,6 +546,8 @@ game character, clean single mesh</code></pre>
         <li><strong>The silhouette reads as a gorilla</strong> from the front and the side, not just from the angle the preview opened on.</li>
       </ul>
 
+      <div class="call key"><b>Key point &mdash; Meshy publishes the criteria it judges the mesh on.</b> Its rigging dialog shows a good and a bad example side by side. Good: close to a T-pose or A-pose, a clear gap between the limbs and the body, palms facing the body. Bad: obstructed views of the limbs, or the full body not shown. The checks below are those criteria. <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
+
       <div class="call warn"><b>Warning &mdash; if you generated from a photograph, check for background contamination.</b> Meshy's own quick-start documents this failure: a blurry, low-contrast photo with a complex background produces a model that captures background noise with distorted geometry. Their stated fix is to run <b>AI Background Removal</b> first, or to supply a cleaner input image.</div>
 
       <p>If any check fails, regenerate rather than continuing. A rig built on a bad mesh cannot be repaired later without redoing the rig.</p>
@@ -549,14 +568,16 @@ game character, clean single mesh</code></pre>
 
       <p><strong>Action:</strong></p>
       <ol>
-        <li>Open <strong>Remesh</strong> on the generated model.</li>
+        <li>Hover the model in the asset library, click the <strong>&hellip;</strong> button, then choose <strong>Edit Model &rarr; Remesh</strong>. That submenu also holds <strong>Edit Texture</strong>, <strong>Retexture</strong> and a second <strong>Rig</strong> entry.</li>
         <li>Set the target polycount within the range above.</li>
         <li>Choose <strong>triangle</strong> topology. Godot renders triangles regardless, so converting later gains you nothing.</li>
       </ol>
 
       <div class="call warn"><b>Warning &mdash; there is a hard face limit on rigging.</b> Meshy's API documentation states that models with more than <b>300,000 faces</b> are not supported for rigging and must be reduced with Remesh first. A generated character is unlikely to approach that, but if rigging refuses the model, face count is the first thing to check.</div>
 
-      <span class="exp"><b>Expected:</b> the model reports a polycount in your chosen range.</span>
+      <div class="call note"><b>Note &mdash; the counts are shown in the viewport.</b> With a model selected, a panel at the top-left of the preview reports <b>Topology</b>, <b>Faces</b> and <b>Vertices</b>. Read the face count there rather than estimating. A gorilla generated at default settings came out at <b>31,276 faces</b> and <b>21,816 vertices</b>, inside the range above and needing no Remesh at all. <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
+
+      <span class="exp"><b>Expected:</b> the viewport panel reports a face count in your chosen range, with <b>Topology</b> reading <b>Triangle</b>.</span>
       <p class="src">Source: <a href="https://docs.meshy.ai/en/api/rigging" target="_blank" rel="noopener">Meshy Docs &mdash; Rigging API</a> &middot; <a href="https://www.meshy.ai/use-cases/free-game-assets" target="_blank" rel="noopener">Meshy &mdash; game asset budgets</a></p>
     </div>
   </div>
@@ -579,23 +600,30 @@ game character, clean single mesh</code></pre>
 
       <p><strong>Action:</strong></p>
       <ol>
-        <li>Open your gorilla in Meshy and choose <strong>Rigging</strong>.</li>
-        <li>Select the <strong>Humanoid</strong> character type, per step 1.</li>
-        <li>Run the rig. Meshy states this typically completes in under 30 seconds in the browser.</li>
-        <li>Turn on the <strong>bone overlay</strong> and rotate the model.</li>
+        <li>Click <strong>Animate</strong> in the left-hand tool rail. The rail reads Assets, Agent, Image, Model, Print, Animate, Inspiration &mdash; <strong>there is no Rigging entry</strong>.</li>
+        <li>Select your gorilla from the asset library on the right. Until you do, the Animate panel header reads <strong>Select Model / Textured Model to Rig</strong>.</li>
+        <li>Click the <strong>Rig</strong> button. It appears in the panel header and again in the toolbar below the viewport, labelled <strong>+$20</strong>, meaning 20 credits. That toolbar reads <strong>Rig</strong>, <strong>DCC Bridge</strong>, <strong>Share</strong>, <strong>Download</strong>.</li>
+        <li><strong>Stage 1 of the Rig Model wizard &mdash; Select Character Type.</strong> Choose <strong>Humanoid</strong>. The alternatives are <strong>Quadruped Dog</strong> and <strong>Smart Rig (Beta)</strong>. Click <strong>Next</strong>.</li>
+        <li><strong>Stage 2 &mdash; position the model.</strong> Sliders for <strong>Rotate</strong> X, Y and Z, an <strong>Offset</strong>, and a <strong>Height</strong> field defaulting to <strong>1.7&nbsp;m</strong>, shown against a human silhouette for comparison. Centre the gorilla and face it forward. Click <strong>Next</strong>.</li>
+        <li><strong>Stage 3 &mdash; place the markers.</strong> Seven marker pairs: <strong>Chin, Shoulders, Elbows, Wrists, Groin, Knees, Ankles</strong>, with a <strong>Symmetry</strong> toggle on by default. Drag any marker that has landed in the wrong place.</li>
+        <li>Click <strong>Confirm</strong>. <strong>This is where the 20 credits are spent</strong>, not at any earlier stage.</li>
       </ol>
 
-      <p><strong>What to look for in the overlay:</strong></p>
+      <p><strong>What to check in the marker placement and the resulting rig:</strong></p>
       <ul>
         <li>A spine running up the centre of the torso, not off to one side.</li>
-        <li>Arm chains that end inside the hands, not short of them or past them.</li>
+        <li>Arm chains that end inside the hands, not short of them or past them. <strong>Check the elbow markers especially</strong> &mdash; a gorilla&rsquo;s forearms are proportionally far longer than a human&rsquo;s, and the automatic placement is guessing from a human template.</li>
         <li>Leg chains that reach the feet.</li>
         <li>No bones outside the mesh.</li>
       </ul>
 
+      <div class="call key"><b>Key point &mdash; rigging lives inside Animate, and the web app has no Rigging tool.</b> Meshy's documentation describes Rigging and Animate as separate pipeline stages. That is accurate as a description of the pipeline and misleading as navigation. In the workspace, <b>Animate</b> is the entry point and the <b>Rig</b> button sits inside it. <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
+
+      <div class="call warn"><b>Warning &mdash; two different buttons in this flow are labelled Confirm, and they do opposite things.</b> Nothing is charged until you press <b>Confirm</b> at stage 3, so you can walk the whole wizard and back out at no cost. But closing early raises a dialog reading <i>The rigging &amp; animation will not be saved upon closing</i>, and <b>that</b> dialog's Confirm button discards your work. Check which dialog you are in before clicking.</div>
+
       <div class="call key"><b>Key point &mdash; you can correct it here rather than in Blender.</b> Meshy states that bones and skinning weights can be fine-tuned in the browser before export. Fixing a misplaced shoulder bone now costs a minute; fixing it after you have applied six animations means redoing them.</div>
 
-      <span class="exp"><b>Expected:</b> a skeleton overlay that follows the gorilla's limbs, with no bones floating outside the body.</span>
+      <span class="exp"><b>Expected:</b> the rig completes and the gorilla becomes selectable for motion clips. Meshy states rigging typically finishes in under 30 seconds.</span>
       <p class="src">Source: <a href="https://www.meshy.ai/features/ai-auto-rigging" target="_blank" rel="noopener">Meshy &mdash; AI auto rigging</a></p>
     </div>
   </div>
@@ -604,7 +632,9 @@ game character, clean single mesh</code></pre>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
     <div class="step-body">
       <h3 class="step-title">7. Add the five animations Uproar needs</h3>
-      <p><strong>Add these five clips from the preset library, and no more for now.</strong> Meshy states that paid plans unlock over 600 motion presets while free users get more than 20.</p>
+      <p><strong>Add five clips from <em>Preset Motions</em>, and no more for now.</strong> Meshy states that paid plans unlock over 600 motion presets while free users get more than 20.</p>
+
+      <div class="call note"><b>Note &mdash; what the Animate panel holds.</b> A <b>Search motion</b> box at the top, then <b>Text to Motion</b> and <b>Video to Motion</b> generators, then <b>AI Motions</b> (empty until you generate one), then <b>Preset Motions</b>, the browsable library. Preset names are descriptive and idiosyncratic &mdash; <i>360 Power Spin Jump</i>, <i>Agree Gesture</i>, <i>Air Squat</i>, <i>Alert</i> &mdash; so search for the five roles in the table rather than expecting those exact words. <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
 
       <div class="tbl-wrap"><table>
         <thead><tr><th>Clip</th><th>Used by</th><th>Notes</th></tr></thead>
@@ -617,7 +647,7 @@ game character, clean single mesh</code></pre>
         </tbody>
       </table></div>
 
-      <div class="call warn"><b>Warning &mdash; there is probably no climbing preset, and Uproar needs one.</b> Climbing is the game's signature mechanic and it is not a common preset category. <b>[Unverified]</b> &mdash; search the library for "climb" before you assume. If nothing suitable exists, Chapter 4 will cover holding a static climbing pose instead of playing a clip, which is a legitimate solution and cheaper than authoring an animation.</div>
+      <div class="call warn"><b>Warning &mdash; there is probably no climbing preset, and Uproar needs one.</b> Climbing is the game's signature mechanic and it is not a common preset category. <b>[Unverified]</b> &mdash; type "climb" into the <b>Search motion</b> box before you assume. <b>Text to Motion</b> is a second fallback worth trying before writing the mechanic off. If nothing suitable exists, Chapter 4 will cover holding a static climbing pose instead of playing a clip, which is a legitimate solution and cheaper than authoring an animation.</div>
 
       <div class="call note"><b>Note &mdash; add a sixth clip only if it earns its place.</b> Every clip is another state to wire into the AnimationTree in Chapter 4. Five is enough to build a complete state machine. You can return and add more once the machine works.</div>
 
@@ -656,21 +686,41 @@ game character, clean single mesh</code></pre>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
     <div class="step-body">
       <h3 class="step-title">9. Download the rigged, animated character</h3>
-      <p><strong>Export as GLB first, then repeat the export as FBX.</strong> Meshy's tutorial gives the path as <strong>Download &rarr; Animation &rarr; All Added &rarr; Single File</strong>, offering FBX, GLB, or USDZ.</p>
+      <p><strong>Export as GLB first, then repeat the export as FBX.</strong> Click the green <strong>Download</strong> button at the right-hand end of the toolbar below the viewport, or use <strong>&hellip; &rarr; Download</strong> on the asset. A <strong>Download Settings</strong> panel opens.</p>
+
+      <div class="call warn"><b>Warning &mdash; Meshy’s own tutorial describes a different path, and it does not match the app.</b> That page gives <i>Download &rarr; Animation &rarr; All Added &rarr; Single File</i>. The workspace instead shows a <b>Download Settings</b> panel with Resize, Origin and Format controls. Follow the panel described here. <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
 
       <div class="call key"><b>Key point &mdash; the two sources disagree, so take both formats.</b> Godot's documentation lists glTF 2.0, which <code>.glb</code> is the binary form of, as the recommended import format. Meshy states that FBX is the most reliable choice for preserving skeletons and skinning across game engines. Both are credible. Download GLB for the project and keep the FBX beside it as a fallback for when a bone or a weight looks wrong.</div>
 
+      <p><strong>The Download Settings panel holds four controls:</strong></p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Control</th><th>Options</th><th>Set it to</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Resize</strong></td><td>Off or on</td><td><strong>On</strong></td></tr>
+          <tr><td><strong>Height</strong></td><td>A number, plus a unit: <strong>mm, cm, m, in, ft</strong></td><td><strong>8</strong> and <strong>m</strong></td></tr>
+          <tr><td><strong>Origin</strong></td><td><strong>Bottom</strong> or <strong>Center</strong></td><td><strong>Bottom</strong></td></tr>
+          <tr><td><strong>Format</strong></td><td>fbx, obj, <strong>glb</strong>, usdz, stl, blend, 3mf, dxf</td><td><strong>glb</strong>, then repeat with <strong>fbx</strong></td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="call key"><b>Key point &mdash; Resize and Origin solve two Godot problems before the file ever leaves Meshy.</b> Setting <b>Height</b> to <b>8 m</b> means the gorilla arrives at the size of the <code>Player</code> capsule instead of at 1.7&nbsp;m, so you do not have to scale it by eye in the editor. Setting <b>Origin</b> to <b>Bottom</b> puts the model’s origin at its feet, which is what a character standing on a floor needs &mdash; <b>Center</b> would bury the gorilla to its waist when you place it at <code>0, 0, 0</code>. Both default to the wrong thing for this project: Resize is off, so Height is ignored entirely. <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
+
       <p><strong>Action:</strong></p>
       <ol>
-        <li>Choose <strong>Download</strong>, then <strong>Animation</strong>, then <strong>All Added</strong>, then <strong>Single File</strong>.</li>
-        <li>Select <strong>GLB</strong> and download.</li>
-        <li>Repeat, selecting <strong>FBX</strong>.</li>
+        <li>Click the green <strong>Download</strong> button below the viewport.</li>
+        <li>Turn <strong>Resize</strong> on. The Height field becomes editable.</li>
+        <li>Set <strong>Height</strong> to <code>8</code> and the unit to <strong>m</strong>.</li>
+        <li>Set <strong>Origin</strong> to <strong>Bottom</strong>.</li>
+        <li>Set <strong>Format</strong> to <strong>glb</strong> and click <strong>Download</strong>.</li>
+        <li>Reopen the panel, change <strong>Format</strong> to <strong>fbx</strong>, and download again. The other settings persist.</li>
         <li>Put both files somewhere outside your Godot project for now.</li>
       </ol>
 
       <div class="call warn"><b>Warning &mdash; download rather than relying on the cloud copy.</b> Meshy's API documentation shows an <code>expires_at</code> timestamp on task results, marking when output assets expire and may be deleted. Whether the browser app applies the same retention is not documented, so keep your own copy.</div>
 
-      <div class="call note"><b>Note &mdash; "Single File" matters.</b> It packages the mesh, the skeleton, and every animation clip into one file. The alternative gives you separate files per clip, which Godot can use through its <b>As AnimationLibrary</b> import mode &mdash; but that is the harder path and Chapter 4 does not need it.</div>
+      <div class="call note"><b>Note &mdash; this panel was inspected on an <em>unrigged</em> model.</b> A rigged and animated character may add clip-selection controls to the same panel. The Resize, Origin and Format controls are the ones that matter for Godot and they are present either way. If extra options appear, take everything in a single file rather than one file per clip &mdash; separate clip files need Godot’s <b>As AnimationLibrary</b> import mode, which is the harder path and Chapter 4 does not use it. <b>[Unverified]</b> for the animated case.</div>
+
+      <div class="call note"><b>Note &mdash; <code>blend</code> is in the format list.</b> Exporting Blender’s native format is useful if you want to fix a weight or a bone rest by hand, using the Blender install Chapter 3 already had you set up. It is not the route into Godot.</div>
 
       <span class="exp"><b>Expected:</b> two files on disk, one <code>.glb</code> and one <code>.fbx</code>, both larger than the unrigged model.</span>
       <p class="src">Source: <a href="https://www.meshy.ai/tutorials/character-auto-rigging-workflow" target="_blank" rel="noopener">Meshy &mdash; character auto-rigging workflow</a> &middot; <a href="https://docs.meshy.ai/en/api/rigging" target="_blank" rel="noopener">Meshy Docs &mdash; Rigging API</a></p>
@@ -740,13 +790,15 @@ game character, clean single mesh</code></pre>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
     <div class="step-body">
       <h3 class="step-title">12. Check the scale and the facing direction</h3>
-      <p><strong>Meshy builds characters at human scale; your gorilla needs to be roughly 8 metres tall.</strong> The <code>Player</code> capsule is a <code>CapsuleShape3D</code> with radius 1.5 and height 8, positioned at y 4, so its top sits 8 metres above the floor.</p>
+      <div class="call key"><b>Key point &mdash; two different Height fields, and only one of them changes the exported size.</b> Stage 2 of the <b>Rig Model</b> wizard has a <b>Height</b> field defaulting to <b>1.7&nbsp;m</b>; that is a hint helping Meshy scale the <em>skeleton</em>, and it does not affect the file. The <b>Height</b> field in <b>Download Settings</b> is the one that resizes the exported model, and only when <b>Resize</b> is on. <i>Verified in the Meshy workspace on 13 August 2026.</i></div>
+
+      <p><strong>If you exported at 8&nbsp;m with Origin set to Bottom in step 9, this step is a check rather than a fix.</strong> The <code>Player</code> capsule is a <code>CapsuleShape3D</code> with radius 1.5 and height 8, positioned at y 4, so its top sits 8 metres above the floor. A gorilla exported at 8&nbsp;m should already fill it.</p>
 
       <p><strong>Action:</strong></p>
       <ol>
         <li>Open <code>res://scene/player.tscn</code>.</li>
         <li>Drag <code>gorilla.glb</code> from the FileSystem dock onto the <code>Facing</code> node &mdash; not onto <code>Player</code>, and not onto <code>CameraPivot</code>.</li>
-        <li>Adjust the imported node's <strong>Scale</strong> until the gorilla's head reaches the top of the capsule.</li>
+        <li>Compare the gorilla against the capsule. If you exported at 8&nbsp;m it should already match; if you skipped the Resize step, adjust the imported node’s <strong>Scale</strong> until its head reaches the top of the capsule.</li>
         <li>If the gorilla faces away from you, set its <strong>Rotation</strong> on Y to <code>180</code>.</li>
       </ol>
 
@@ -769,7 +821,7 @@ game character, clean single mesh</code></pre>
   <div class="phase-head">
     <p class="eyebrow">Verification</p>
     <h2>Where every claim came from</h2>
-    <p class="bluf"><span class="lbl">Bottom line:</span> Meshy claims are taken from Meshy's own documentation and help centre. Two claims come from Meshy product pages rather than documentation and are marked <b>[Unverified]</b> in the text. Godot claims are taken from official Godot documentation.</p>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Interface names and workflow steps were read from the live Meshy application on 13 August 2026 and are marked as such inline. Remaining Meshy claims come from Meshy’s documentation and help centre; a few come from product pages and are marked <b>[Unverified]</b>. Godot claims are taken from official Godot documentation.</p>
   </div>
   <details>
     <summary>Meshy &mdash; documentation and help centre</summary>
@@ -789,6 +841,14 @@ game character, clean single mesh</code></pre>
       <li><a href="https://www.meshy.ai/features/ai-animation-generator" target="_blank" rel="noopener">AI animation generator &mdash; supported body plans</a></li>
       <li><a href="https://www.meshy.ai/use-cases/free-game-assets" target="_blank" rel="noopener">Game assets &mdash; polygon budgets, preset counts by plan tier</a></li>
     </ul></div>
+  </details>
+  <details>
+    <summary>Meshy workspace &mdash; inspected directly, 13 August 2026</summary>
+    <div class="details-body">
+      <p>Every claim marked <i>Verified in the Meshy workspace</i> was read from the live application at <a href="https://www.meshy.ai/workspace" target="_blank" rel="noopener">meshy.ai/workspace</a> on 13 August 2026, not from documentation. This covers: the tool rail contents; the absence of a Rigging tool; the three-stage Rig Model wizard and its controls; the Pose and License controls on both generators; the <b>&hellip; &rarr; Edit Model</b> submenu; and the Download Settings panel.</p>
+      <p><b>Two documentation claims were contradicted by the application</b> and the guide follows the application: the download path <i>Download &rarr; Animation &rarr; All Added &rarr; Single File</i>, and the description of Rigging as a tool separate from Animate.</p>
+      <p><b>Not verified:</b> the rig was never built, so nothing downstream of pressing Confirm was observed &mdash; rig quality, bone names, the animated export panel, and whether a climbing preset exists all remain open.</p>
+    </div>
   </details>
   <details>
     <summary>Godot &mdash; official documentation</summary>
