@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Godot Guide — Uproar Chapter 2 — Bringing Down The House</title>
+<title>Godot Guide — Uproar — Series Index</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -354,6 +354,39 @@ footer{
   html{scroll-behavior:auto;}
   .rv{opacity:1;transform:none;}
 }
+
+/* ---------- INDEX: CHAPTER CARDS ---------- */
+.ch-card{
+  display:flex;gap:18px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:20px 22px;margin-bottom:12px;box-shadow:var(--shadow-sm);
+  transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+a.ch-card{color:inherit;}
+a.ch-card:hover{
+  transform:translateY(-1px);box-shadow:var(--shadow-lg);border-color:var(--hairline);
+  text-decoration:none;
+}
+.ch-num{
+  flex:0 0 46px;font-size:30px;font-weight:600;letter-spacing:-.03em;color:var(--accent);
+  font-variant-numeric:tabular-nums;line-height:1.15;
+}
+.ch-card.soon .ch-num{color:var(--ink-3);}
+.ch-body{flex:1;min-width:0;}
+.ch-body h3{margin:0 0 6px;font-size:19px;font-weight:600;letter-spacing:-.015em;color:var(--ink);}
+.ch-body p{margin:0 0 11px;font-size:15px;color:var(--ink-2);line-height:1.55;}
+.ch-topics{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 13px;padding:0;list-style:none;}
+.ch-topics li{
+  font-size:12px;color:var(--ink-2);background:var(--note-bg);border-radius:980px;padding:4px 10px;
+  line-height:1.4;
+}
+.badge.pub{background:var(--cc0-bg);color:var(--cc0-ink);}
+.badge.next{background:var(--key-bg);color:var(--key-ink);}
+.badge.soon{background:var(--paid-bg);color:var(--ink-2);}
+.legend{font-size:12.5px;color:var(--ink-3);line-height:1.6;margin:14px 0 0;}
+@media (max-width:640px){
+  .ch-card{gap:13px;padding:17px 18px;}
+  .ch-num{flex-basis:36px;font-size:24px;}
+}
 </style>
 </head>
 <body>
@@ -367,8 +400,8 @@ footer{
   </defs></svg>
 
   <p class="eyebrow">Godot Guide · Uproar · Godot 4.7.1-stable</p>
-  <h1>Chapter Two <em>Bringing Down The House</em></h1>
-  <p class="lede">Buildings that break into chunks and fall. This picks up where Phase 5 of Chapter 1 ends, and drops on top of the mesh-swap collapse you already have working.</p>
+  <h1>Uproar <em>The Series</em></h1>
+  <p class="lede">A giant gorilla, a climbable city, and buildings that come apart. Every chapter is a standalone page of checkable steps. Start at Chapter 1 and work down; each chapter builds on the project file the previous one left behind.</p>
 
   <div class="hero-meta">
     <div class="ring-wrap">
@@ -377,24 +410,23 @@ footer{
         <circle id="heroRing" class="fill" cx="64" cy="64" r="54" stroke-width="9"
                 stroke-dasharray="339.29" stroke-dashoffset="339.29"/>
       </svg>
-      <span class="ring-label"><b id="heroPct" style="color:#f5f5f7;font-size:14px;">0%</b> complete</span>
+      <span class="ring-label"><b id="heroPct" style="color:#f5f5f7;font-size:14px;">0%</b> of the series</span>
     </div>
-    <div class="stat"><b id="stepsLeft">—</b><span>STEPS LEFT</span></div>
-    <div class="stat"><b>½</b><span>DAY OF WORK</span></div>
+    <div class="stat"><b id="chapterCount">3</b><span>CHAPTERS OUT</span></div>
+    <div class="stat"><b id="stepTotal">63</b><span>STEPS TOTAL</span></div>
+    <div class="stat"><b id="stepsLeft">63</b><span>STEPS LEFT</span></div>
   </div>
 
-  <button class="hero-cta" id="resumeBtn">Start where you left off &nbsp;↓</button>
+  <button class="hero-cta" id="resumeBtn">Go to the next unfinished chapter &nbsp;↓</button>
 </header>
 
 <!-- ================= NAV ================= -->
 <nav>
   <div class="nav-in">
-    <span class="nav-title">Uproar · Ch 2</span>
+    <span class="nav-title">Uproar · Index</span>
     <div class="nav-links">
-      <a href="#before">Before you start</a><a href="#a">Build the chunks</a>
-      <a href="#perf">Performance</a>
-      <a href="./index.html">↑ Index</a>
-      <a href="./uproar-ch1-prototype.html">← Chapter 1</a><a href="./uproar-ch3-going-to-pieces.html">Chapter 3 →</a>
+      <a href="#chapters">Chapters</a><a href="#supplements">Supplements</a><a href="#planned">Coming next</a>
+      <a href="#conventions">Conventions</a><a href="#reading">How to read this</a>
     </div>
     <div class="nav-right">
       <svg class="ring mini-ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
@@ -402,268 +434,277 @@ footer{
         <circle id="miniRing" class="fill" cx="13" cy="13" r="10.5" stroke-width="3"
                 stroke-dasharray="65.97" stroke-dashoffset="65.97"/>
       </svg>
-      <span class="mini-count"><span class="save-dot" id="saveDot"></span><span id="navCount">0 / 0</span></span>
+      <span class="mini-count"><span class="save-dot" id="saveDot"></span><span id="navCount">0 / 63</span></span>
       <button class="ghost-btn icon-btn" id="themeBtn" title="Switch appearance" aria-label="Switch appearance">☾</button>
-      <button class="ghost-btn" id="resetBtn">Reset</button>
+      <button class="ghost-btn" id="refreshBtn">Refresh</button>
     </div>
   </div>
 </nav>
 
-<!-- ================= BEFORE YOU START ================= -->
-<section id="before" class="rv" data-phase="before">
+<!-- ================= PUBLISHED CHAPTERS ================= -->
+<section id="chapters" class="rv">
   <div class="phase-head">
-    <p class="eyebrow">Before you start</p>
-    <h2>Do not begin this until the mesh swap works</h2>
-    <p class="bluf"><span class="lbl">Bottom line:</span> This chapter adds falling chunks on top of a working collapse. If the mesh swap in Chapter 1 is not finished, go back and finish it — you will otherwise have no destruction at all if you run out of time here.</p>
-    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+    <p class="eyebrow">Published</p>
+    <h2>Chapters you can work through today</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Three chapters are finished, 63 steps in total. Do them in order. Chapter 2 requires a working Chapter 1 project, and Chapter 3 edits the code Chapter 2 writes.</p>
   </div>
 
-  <div class="step" data-id="c0">
-    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
-    <div class="step-body">
-      <h3 class="step-title">Confirm all four are true</h3>
-      <p><strong>Check each one in the running game before continuing.</strong> Every step below assumes all four.</p>
-      <ol>
-        <li>Punching a building reduces its health and prints values in the <strong>Output</strong> panel.</li>
-        <li>The building visibly changes appearance at 50% health.</li>
-        <li>The building flattens to rubble at 0% health and you can walk over it.</li>
-        <li><code>script/building.gd</code> contains a <code>_collapse()</code> function and typed <code>@onready</code> references named <code>intact</code>, <code>cracked</code>, <code>rubble</code> and <code>shape</code>.</li>
-      </ol>
-      <div class="call warn"><b>Warning — this is optional work.</b> A clean mesh-swap collapse in a finished level is worth more than beautiful debris in an unfinished one. Only continue once Chapter 1 works end to end.</div>
-      <div class="call note"><b>Note — this chapter needs no software but Godot.</b> The chunks are generated from Godot's own box primitives, which takes roughly 30 minutes. <a href="./uproar-ch3-going-to-pieces.html">Chapter 3</a> upgrades those boxes to real fractured shards using Blender, and builds directly on the code below. Finish this chapter first.</div>
+  <a class="ch-card" href="./uproar-ch1-prototype.html" data-ch="ch1">
+    <div class="ch-num">01</div>
+    <div class="ch-body">
+      <h3>Prototype <span class="badge pub">Published</span></h3>
+      <p>Builds the whole playable core from an empty project: a third-person gorilla controller, a city block to climb, punching, and buildings that collapse by swapping to a rubble mesh. Start here even if you have used Godot for 2D.</p>
+      <ul class="ch-topics">
+        <li>Project setup</li><li>CharacterBody3D</li><li>SpringArm camera</li>
+        <li>Collision layers</li><li>Climbing</li><li>Punching</li><li>Mesh-swap collapse</li><li>Export</li>
+      </ul>
+      <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount">40 steps</span></div>
+    </div>
+  </a>
+
+  <a class="ch-card" href="./uproar-ch2-bringing-down-the-house.html" data-ch="ch2">
+    <div class="ch-num">02</div>
+    <div class="ch-body">
+      <h3>Bringing Down The House <span class="badge pub">Published</span></h3>
+      <p>Replaces the mesh swap with physics debris, generated from Godot's own box primitives at load time. Needs no software beyond Godot and takes roughly 30 minutes of editor work.</p>
+      <ul class="ch-topics">
+        <li>RigidBody3D chunks</li><li>Frozen bodies</li><li>Blast impulse</li>
+        <li>Debris lifetime</li><li>Frame-rate budget</li>
+      </ul>
+      <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount">8 steps</span></div>
+    </div>
+  </a>
+
+  <a class="ch-card" href="./uproar-ch3-going-to-pieces.html" data-ch="ch3">
+    <div class="ch-num">03</div>
+    <div class="ch-body">
+      <h3>Going To Pieces <span class="badge pub">Published</span></h3>
+      <p>Upgrades the box chunks to irregular shards cut in Blender with Cell Fracture. The Chapter 2 box path stays in the file, so clearing one Inspector field switches back to it. Budget one evening if you have never opened Blender.</p>
+      <ul class="ch-topics">
+        <li>Cell Fracture</li><li>glTF export</li><li>ConvexPolygonShape3D</li>
+        <li>Per-shard mass</li><li>Troubleshooting table</li>
+      </ul>
+      <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount">15 steps</span></div>
+    </div>
+  </a>
+
+  <div class="call note"><b>Note — the bars above read each chapter's own saved progress.</b> That only works when this index and the chapter files sit in the same folder and are opened in the same browser. If a bar reads zero on a chapter you have finished, the browser is keeping the two files' storage separate; your ticks are still safe on the chapter's own page. Press <b>Refresh</b> in the bar at the top after ticking steps in another tab.</div>
+</section>
+
+<!-- ================= SUPPLEMENTS ================= -->
+<section id="supplements" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Supplements</p>
+    <h2>Side guides that are not chapters</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Supplements cover tools outside Godot. They sit beside the numbered chapters rather than inside the sequence, and none of them is required &mdash; each one names the alternative if you skip it.</p>
+  </div>
+
+  <a class="ch-card" href="./uproar-guide-meshy-gorilla.html" data-ch="meshy">
+    <div class="ch-num">M</div>
+    <div class="ch-body">
+      <h3>Making The Gorilla In Meshy <span class="badge pub">Published</span></h3>
+      <p>Generates a gorilla in Meshy, rigs it as a humanoid, adds five animation clips, and gets the result into <code>res://asset/model/</code>. Ends with the two checks that decide how much work Chapter 4 needs.</p>
+      <ul class="ch-topics">
+        <li>Humanoid vs quadruped rigs</li><li>Asset licensing</li><li>T-pose prompting</li>
+        <li>Remesh budgets</li><li>glTF export</li><li>Bone-name inspection</li>
+      </ul>
+      <div class="phase-meta"><span class="pcount">12 steps &middot; progress saved separately</span></div>
+    </div>
+  </a>
+
+  <div class="call note"><b>Note &mdash; supplements do not count towards the ring above.</b> The completion ring and step totals at the top of this page cover the numbered chapters only, so the series percentage means the same thing whether or not you use a paid third-party tool. The supplement saves its own progress on its own page.</div>
+
+  <div class="call warn"><b>Warning &mdash; Meshy is a paid service.</b> A free Meshy plan works, but its output is licensed CC BY 4.0 and requires crediting Meshy. Chapter 1 names a free CC-BY rigged gorilla on Sketchfab that needs no subscription at all. Either route feeds Chapter 4.</div>
+</section>
+
+<!-- ================= PLANNED ================= -->
+<section id="planned" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Coming next</p>
+    <h2>What the rest of the series covers</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Six chapters are planned. The numbers below are provisional, because a chapter that grows past 15 steps gets split in two rather than compressed, which shifts everything after it.</p>
+  </div>
+
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>#</th><th>Title</th><th>Covers</th></tr></thead>
+    <tbody>
+      <tr><td>04</td><td>Animation &amp; Feel</td><td>Importing the rigged gorilla, AnimationTree, state-driven animation, Call Method Track hitboxes. Needs a rigged model first &mdash; see the Meshy supplement above, or the Sketchfab model named in Chapter 1</td></tr>
+      <tr><td>05</td><td>Building A City</td><td>Kenney kit assembly, level layout, modular blockouts, performance at scale</td></tr>
+      <tr><td>06</td><td>The Game Loop</td><td>Score, timer, win and lose conditions, menus, HUD, scene transitions</td></tr>
+      <tr><td>07</td><td>Juice</td><td>Particles, camera shake, sound design, post-processing</td></tr>
+      <tr><td>08</td><td>Something To Fight</td><td>Helicopters and tanks, player health, threat AI</td></tr>
+      <tr><td>09</td><td>Shipping</td><td>Export presets, distribution, web builds, playtesting</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="call key"><b>Key point — the list is open-ended.</b> Chapters past 09 are expected, and the order changes as the game grows. Nothing here is a fixed sequence.</div>
+</section>
+
+<!-- ================= HOW TO READ ================= -->
+<section id="reading" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">How to read this</p>
+    <h2>Four things worth knowing before you start</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Each chapter is one HTML file that saves its own progress. Nothing is installed, and no chapter depends on this index page.</p>
+  </div>
+
+  <div class="ch-card soon">
+    <div class="ch-num">1</div>
+    <div class="ch-body">
+      <h3>Tick steps as you finish them</h3>
+      <p>Click the circle or the step title to mark a step done. Progress is written to browser storage on the chapter's own page, so keep the files in one folder and open them from there. The <b>Reset</b> button in a chapter's top bar clears that chapter only.</p>
+    </div>
+  </div>
+
+  <div class="ch-card soon">
+    <div class="ch-num">2</div>
+    <div class="ch-body">
+      <h3>Every procedure ends with an Expected line</h3>
+      <p>An <b>Expected:</b> line describes what you should see when the step worked. If what you see does not match, stop there rather than continuing, because later steps assume the earlier result.</p>
+    </div>
+  </div>
+
+  <div class="ch-card soon">
+    <div class="ch-num">3</div>
+    <div class="ch-body">
+      <h3>Callouts mean specific things</h3>
+      <p><b>Key point</b> is the reason something works. <b>Warning</b> is a mistake that costs you time. <b>Note</b> is context you can skip on a first pass. Anything marked <b>[Unverified]</b> could not be confirmed against the official Godot documentation.</p>
+    </div>
+  </div>
+
+  <div class="ch-card soon">
+    <div class="ch-num">4</div>
+    <div class="ch-body">
+      <h3>The version is fixed at Godot 4.7.1-stable</h3>
+      <p>Every chapter is written and checked against the Standard build of Godot 4.7.1-stable using GDScript, not the .NET build. Earlier 4.x versions differ in the physics engine default and in some import settings.</p>
     </div>
   </div>
 </section>
 
-<!-- ================= ROUTE A ================= -->
-<section id="a" class="rv" data-phase="a">
+<!-- ================= CONVENTIONS ================= -->
+<section id="conventions" class="rv">
   <div class="phase-head">
-    <p class="eyebrow">Physics debris</p>
-    <h2>Generate the chunks in Godot</h2>
-    <p class="bluf"><span class="lbl">Bottom line:</span> Build the debris from plain boxes in code. At low-poly scale a skyscraper falling apart into 24 boxes reads perfectly well, and it needs no modelling software at all.</p>
-    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+    <p class="eyebrow">Reference</p>
+    <h2>Conventions used in every chapter</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Names, folders and layer numbers are identical across the series. If a chapter names a node, it means the node in the tree below.</p>
   </div>
 
-  <div class="step" data-id="a1">
-    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
-    <div class="step-body">
-      <h3 class="step-title">1. Add a container for the chunks</h3>
-      <p><strong>One empty node holds every chunk, so you can free them all together.</strong></p>
-      <ol>
-        <li>Open <code>scene/building.tscn</code> and select the <code>Building</code> root node.</li>
-        <li>Press <strong>Ctrl+A</strong>, add a <code>Node3D</code>, rename it to <code>Chunks</code>.</li>
-        <li>Leave its <strong>Position</strong> at <code>0, 0, 0</code>.</li>
-      </ol>
-      <span class="exp"><b>Expected:</b> an empty <code>Chunks</code> node under <code>Building</code>, alongside <code>Intact</code>, <code>Cracked</code> and <code>Rubble</code>.</span>
+  <details>
+    <summary>Folder layout</summary>
+    <div class="details-body">
+      <p>Godot's <strong>Attach Script</strong> dialog defaults to the scene's folder. Change it to <code>res://script/</code> every time.</p>
+<pre><code>res://scene/          player.tscn, building.tscn, level.tscn
+res://script/         player.gd, building.gd, hud.gd
+res://asset/model/    imported .glb files
+res://asset/audio/    sound files
+res://asset/material/ saved .tres materials</code></pre>
     </div>
-  </div>
+  </details>
 
-  <div class="step" data-id="a2">
-    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
-    <div class="step-body">
-      <h3 class="step-title">2. Build the chunks in code</h3>
-      <p><strong>Add this to <code>script/building.gd</code>.</strong> It fills the building's volume with a grid of frozen boxes when the scene loads.</p>
-      <p><strong>What "frozen" means:</strong> a <code>RigidBody3D</code> with <code>freeze = true</code> ignores gravity and forces entirely. It sits exactly where you put it until you release it, so it costs almost nothing while the building is intact.</p>
-      <pre><code>&#35; Chunk grid: 2 wide, 3 tall, 2 deep = 12 chunks per building.
-@export var chunk_cols: int = 2
-@export var chunk_rows: int = 3
-@export var building_size: Vector3 = Vector3(12.0, 40.0, 12.0)
-
-@onready var chunks: Node3D = $Chunks
-
-
-func _build_chunks() -&gt; void:
-    var size: Vector3 = Vector3(
-        self.building_size.x / self.chunk_cols,
-        self.building_size.y / self.chunk_rows,
-        self.building_size.z / self.chunk_cols)
-
-    for x: int in range(self.chunk_cols):
-        for y: int in range(self.chunk_rows):
-            for z: int in range(self.chunk_cols):
-                var body: RigidBody3D = RigidBody3D.new()
-                body.freeze = true
-                body.freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
-                body.collision_layer = 8      &#35; layer 4, Rubble
-                body.collision_mask = 1       &#35; collide with World only
-                body.position = Vector3(
-                    (x + 0.5) * size.x - self.building_size.x * 0.5,
-                    (y + 0.5) * size.y,
-                    (z + 0.5) * size.z - self.building_size.z * 0.5)
-
-                var mesh: MeshInstance3D = MeshInstance3D.new()
-                var box: BoxMesh = BoxMesh.new()
-                box.size = size * 0.98        &#35; small gap, so faces do not z-fight
-                mesh.mesh = box
-                body.add_child(mesh)
-
-                var col: CollisionShape3D = CollisionShape3D.new()
-                var shape_box: BoxShape3D = BoxShape3D.new()
-                shape_box.size = size
-                col.shape = shape_box
-                body.add_child(col)
-
-                self.chunks.add_child(body)</code></pre>
-      <p><strong>Action:</strong> call it from <code>_ready()</code>, after the existing lines:</p>
-      <pre><code>    self._build_chunks()
-    self.chunks.visible = false     &#35; hidden until the building dies</code></pre>
-      <div class="call key"><b>Key point — why <code>collision_layer = 8</code> and not <code>4</code>.</b> These properties are <b>bitmasks</b>, not layer numbers. Layer 1 is <code>1</code>, layer 2 is <code>2</code>, layer 3 is <code>4</code>, layer 4 is <code>8</code>. The pattern is 2 to the power of (layer − 1). Setting <code>4</code> here would put your rubble on layer 3, the Buildings layer.</div>
-      <div class="call note"><b>Note — start with 12 chunks.</b> Raise <code>chunk_cols</code> to 3 for 27 chunks once you have seen it run. Increasing the grid raises the count fast, because it is cubic.</div>
+  <details>
+    <summary>Player scene tree</summary>
+    <div class="details-body">
+<pre><code>Player (CharacterBody3D)      ← player.gd attached here
+├── CollisionShape3D          CapsuleShape3D, radius 1.5, height 8, position y 4
+├── Facing (Node3D)           the ONLY node that rotates; must stay at 0,0,0
+│   ├── Body (MeshInstance3D)
+│   ├── WallRay (RayCast3D)
+│   └── Fist (Area3D)         monitoring stays ON
+└── CameraPivot (Node3D)      never rotates with the character
+    └── SpringArm3D
+        └── Camera3D</code></pre>
     </div>
-  </div>
+  </details>
 
-  <div class="step" data-id="a3">
-    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
-    <div class="step-body">
-      <h3 class="step-title">3. Release the chunks on collapse</h3>
-      <p><strong>Replace the <code>_collapse()</code> function from Chapter 1 with this version.</strong> It hides the intact meshes, shows the chunks, unfreezes them, and pushes each one outward.</p>
-      <pre><code>@export var blast_force: float = 6.0
-@export var debris_lifetime: float = 4.0
-
-
-func _collapse() -&gt; void:
-    self.intact.visible = false
-    self.cracked.visible = false
-    self.shape.set_deferred("disabled", true)
-    self.chunks.visible = true
-
-    for child in self.chunks.get_children():
-        var chunk: RigidBody3D = child as RigidBody3D
-        if chunk == null:
-            continue
-        chunk.freeze = false
-        var dir: Vector3 = (chunk.global_position
-                            - self.global_position).normalized()
-        dir.y = absf(dir.y) + 0.4          &#35; bias upward, so it bursts
-        chunk.apply_impulse(dir * self.blast_force)</code></pre>
-      <div class="call note"><b>Note — the <code>rubble</code> mesh is no longer shown here.</b> The chunks replace it visually. You will reveal it in the next step, once the debris has settled.</div>
-      <span class="exp"><b>Expected:</b> punch a building to zero health and it bursts into a dozen falling boxes.</span>
-    </div>
-  </div>
-
-  <div class="step" data-id="a4">
-    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
-    <div class="step-body">
-      <h3 class="step-title">4. Clean up after the debris settles</h3>
-      <p><strong>Free the chunks after a few seconds and reveal the rubble pile.</strong> Without this, every destroyed building leaves its physics bodies simulating for the rest of the match.</p>
-      <p><strong>Action:</strong> add these lines to the end of <code>_collapse()</code>:</p>
-      <pre><code>    await get_tree().create_timer(self.debris_lifetime).timeout
-
-    for child in self.chunks.get_children():
-        child.queue_free()
-
-    self.rubble.visible = true</code></pre>
-      <div class="call key"><b>Key point — this is the step people skip.</b> Twelve chunks per building across ten buildings is 120 rigid bodies, all simulating forever. Freeing them is what keeps the frame rate stable through a whole play session.</div>
-      <div class="call note"><b>Note — tune <code>debris_lifetime</code> in the Inspector.</b> Four seconds is enough for chunks to land and stop moving. Shorter looks abrupt; longer costs performance for no visual gain.</div>
-      <span class="exp"><b>Checkpoint for this chapter:</b> buildings burst into boxes, the boxes land and rest, then they disappear a few seconds later and leave a rubble pile.</span>
-    </div>
-  </div>
-</section>
-
-<!-- ================= PERFORMANCE ================= -->
-<section id="perf" class="rv" data-phase="perf">
-  <div class="phase-head">
-    <p class="eyebrow">Performance</p>
-    <h2>Keeping the frame rate</h2>
-    <p class="bluf"><span class="lbl">Bottom line:</span> Aim for tens of simultaneously falling chunks, not hundreds. Watch the actual numbers rather than guessing.</p>
-    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
-  </div>
-
-  <div class="step" data-id="p1">
-    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
-    <div class="step-body">
-      <h3 class="step-title">1. Measure before you tune</h3>
-      <p><strong>Godot has a live performance panel; use it instead of guessing.</strong></p>
-      <ol>
-        <li>Run the game with <strong>F5</strong>.</li>
-        <li>In the editor, open the <strong>Debugger</strong> panel at the bottom.</li>
-        <li>Select the <strong>Monitors</strong> tab.</li>
-        <li>Watch <strong>Physics Process</strong> time while you destroy several buildings at once.</li>
-      </ol>
-      <div class="call note"><b>Note — the budget.</b> At 60 frames per second you have 16.6 milliseconds per frame for everything. If physics alone approaches 8 milliseconds, reduce the chunk count.</div>
-    </div>
-  </div>
-
-  <div class="step" data-id="p2">
-    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
-    <div class="step-body">
-      <h3 class="step-title">2. Turn the three dials that matter</h3>
-      <p><strong>All three are exported, so you can tune them in the Inspector without editing code.</strong></p>
+  <details>
+    <summary>Collision layers</summary>
+    <div class="details-body">
+      <p><code>collision_layer</code> is a bitmask, so the value for a layer is 2 raised to the power of the layer number minus one. Layer 4 is the value 8, not 4.</p>
       <div class="tbl-wrap"><table>
-        <thead><tr><th>Setting</th><th>Start at</th><th>Effect</th></tr></thead>
+        <thead><tr><th>Layer</th><th>Name</th><th>Bitmask value</th></tr></thead>
         <tbody>
-          <tr><td><code>chunk_cols</code> / <code>chunk_rows</code></td><td>2 / 3</td><td>Total chunks per building. Cubic growth — 3 columns means 27 pieces, not 18.</td></tr>
-          <tr><td><code>debris_lifetime</code></td><td>4.0</td><td>How long chunks simulate before being freed. The single biggest lever.</td></tr>
-          <tr><td><code>blast_force</code></td><td>6.0</td><td>Visual only. Higher scatters debris further without costing performance.</td></tr>
+          <tr><td>1</td><td>World</td><td><code>1</code></td></tr>
+          <tr><td>2</td><td>Player</td><td><code>2</code></td></tr>
+          <tr><td>3</td><td>Buildings</td><td><code>4</code></td></tr>
+          <tr><td>4</td><td>Rubble</td><td><code>8</code></td></tr>
+          <tr><td>5</td><td>HitDetection</td><td><code>16</code></td></tr>
         </tbody>
       </table></div>
-      <div class="call key"><b>Key point — chunks only cost while unfrozen.</b> A frozen RigidBody3D is nearly free, so a city full of intact buildings runs fine no matter how many chunks each one holds. Cost arrives only when buildings actually fall, which is why <code>debris_lifetime</code> matters more than the chunk count.</div>
     </div>
-  </div>
+  </details>
 
-  <div class="step" data-id="p3">
-    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
-    <div class="step-body">
-      <h3 class="step-title">3. If it still stutters, cut in this order</h3>
-      <p><strong>Work down this list until the frame rate holds.</strong></p>
-      <ol>
-        <li>Drop <code>debris_lifetime</code> to <strong>2.0</strong>.</li>
-        <li>Drop <code>chunk_rows</code> to <strong>2</strong>, giving 8 chunks per building.</li>
-        <li>Cap concurrent collapses, so only one building can be falling apart at a time.</li>
-        <li>Revert to the mesh-swap collapse from Chapter 1. It always looks better than a game running at 20 frames per second.</li>
-      </ol>
-      <div class="call warn"><b>Warning — do not attempt runtime fracture.</b> Computing a fracture pattern while the game runs is CPU-heavy and unpredictable. Pre-fracturing, whether as the box grid above or the Blender shards in Chapter 3, is the correct approach.</div>
-      <div class="call note"><b>Note — third-party tools, not officially documented.</b> <b>VoronoiShatter</b> (MIT, on the Godot Asset Library) fractures meshes inside the Godot editor; its author labels it "highly experimental" and lists support for Godot 4.2 to 4.6, so 4.7.1 compatibility is unconfirmed. <b>Godot-Destruction</b> is a runtime alternative. Neither is needed for this chapter or for Chapter 3.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= SOURCES ================= -->
-<section id="sources" class="rv">
-  <div class="phase-head">
-    <p class="eyebrow">Verification</p>
-    <h2>Sources</h2>
-    <p class="bluf"><span class="lbl">Bottom line:</span> API behaviour here is checked against the official Godot documentation. Third-party tools are labelled as such in the text.</p>
-  </div>
   <details>
-    <summary>Official Godot documentation</summary>
+    <summary>GDScript style in every code sample</summary>
     <div class="details-body"><ul>
-      <li><a href="https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html" target="_blank" rel="noopener">RigidBody3D class reference — freeze, freeze_mode, apply_impulse</a></li>
-      <li><a href="https://docs.godotengine.org/en/stable/tutorials/physics/physics_introduction.html" target="_blank" rel="noopener">Physics introduction — collision layers and masks</a></li>
-      <li><a href="https://docs.godotengine.org/en/stable/tutorials/physics/using_jolt_physics.html" target="_blank" rel="noopener">Using Jolt Physics</a></li>
-      <li><a href="https://godotengine.org/releases/4.6/" target="_blank" rel="noopener">Godot 4.6 release notes — Jolt becomes the default</a></li>
+      <li>Explicit <code>self.</code> on member access, and never on locals, parameters, globals, node paths or enum constants.</li>
+      <li>Explicit type hints everywhere: <code>var speed: float = 8.0</code>, never <code>:=</code>.</li>
+      <li>Typed <code>@onready</code> node references instead of repeated <code>$Path</code> lookups.</li>
+      <li>A return type on every function, usually <code>-&gt; void</code>.</li>
+      <li>Four-space indentation. Godot's own default is tabs; either works if you keep it consistent.</li>
+      <li>Tuning numbers are exported so you can change them in the Inspector.</li>
     </ul></div>
   </details>
+
   <details>
-    <summary>Assets and third-party tools</summary>
-    <div class="details-body"><ul>
-      <li><a href="https://majadroid.itch.io/3d-apocalyptic-building-city-cc0" target="_blank" rel="noopener">3D Apocalyptic Building / City by Majadroid (CC0)</a></li>
-      <li><a href="https://github.com/robertvaradan/voronoishatter" target="_blank" rel="noopener">VoronoiShatter (third-party, experimental)</a></li>
-      <li><a href="https://github.com/the-dunk/Godot-Destruction" target="_blank" rel="noopener">Godot-Destruction (third-party)</a></li>
-    </ul></div>
+    <summary>Settled facts, checked against the official documentation</summary>
+    <div class="details-body">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Fact</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Version</td><td>Godot 4.7.1-stable, Standard build, GDScript</td></tr>
+          <tr><td>Physics</td><td>Jolt is the default 3D engine for new projects since 4.6</td></tr>
+          <tr><td>Movement</td><td><code>move_and_slide()</code> takes no arguments in Godot 4</td></tr>
+          <tr><td>Facing</td><td><code>atan2(-dir.x, -dir.z)</code>, both negated, because Node3D forward is <code>-Z</code></td></tr>
+          <tr><td>Area3D</td><td>The overlap list refreshes only during a physics step, so leave <code>monitoring</code> on</td></tr>
+          <tr><td>Models</td><td>glTF binary (<code>.glb</code>) is the recommended import format</td></tr>
+          <tr><td>Web export</td><td>Needs SharedArrayBuffer; reliable only in Chromium browsers, so ship a desktop build too</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Sources</summary>
+    <div class="details-body">
+      <p>Each chapter carries its own Sources section. These two are the primary references for the series.</p>
+      <ul>
+        <li><a href="https://docs.godotengine.org/en/stable/" target="_blank" rel="noopener">Godot Engine documentation, stable branch</a></li>
+        <li><a href="https://godotengine.org/news/" target="_blank" rel="noopener">Godot Engine release notes and news</a></li>
+      </ul>
+    </div>
   </details>
 </section>
 
 <footer>
-  Godot Guide — Uproar, Chapter 2: Bringing Down The House · Godot 4.7.1-stable · Progress on this page is saved separately.<br>
-  <a href="./index.html">Series index</a> &nbsp;·&nbsp; <a href="./uproar-ch1-prototype.html">← Back to Chapter 1</a> &nbsp;·&nbsp; <a href="./uproar-ch3-going-to-pieces.html">Chapter 3: Going To Pieces →</a>
+  Godot Guide — Uproar · Series index · Godot 4.7.1-stable · Each chapter saves its progress separately.<br>
+  <a href="./uproar-ch1-prototype.html">Chapter 1</a> &nbsp;·&nbsp;
+  <a href="./uproar-ch2-bringing-down-the-house.html">Chapter 2</a> &nbsp;·&nbsp;
+  <a href="./uproar-ch3-going-to-pieces.html">Chapter 3</a> &nbsp;·&nbsp;
+  <a href="./uproar-guide-meshy-gorilla.html">Supplement: Making The Gorilla In Meshy</a>
 </footer>
 
 
 <script>
 (function(){
   "use strict";
-  var KEY = "godot-kong-destruction-v1";
-  var checked = {};
-  var theme = "auto";              // "auto" | "light" | "dark"
-  var saveTimer = null;
+  var KEY = "godot-uproar-index-v1";   // this page stores the appearance choice only
+  var theme = "auto";                  // "auto" | "light" | "dark"
   var loaded = false;
+  var saveTimer = null;
 
-  var items = Array.prototype.slice.call(document.querySelectorAll("[data-id]"));
-  var total = items.length;
+  /* Each chapter saves its own ticks under its own key. This page reads those
+     keys but never writes to them. "total" is the step count in that file. */
+  var CHAPTERS = [
+    { ch: "ch1", key: "godot-kong-progress-v1",        total: 40 },
+    { ch: "ch2", key: "godot-kong-destruction-v1",     total: 8  },
+    { ch: "ch3", key: "godot-uproar-ch3-fracture-v1",  total: 15 }
+  ];
+
+  var GRAND_TOTAL = CHAPTERS.reduce(function(n, c){ return n + c.total; }, 0);
+  var doneByChapter = {};
 
   /* ---------- storage adapter ----------
-     Tries three backends in order, so progress persists whether this page is
+     Tries three backends in order, so this page behaves the same whether it is
      rendered inside Claude or opened as a downloaded file in a browser.
        1. window.storage  - available when rendered as an artifact
        2. localStorage    - available when opened as a local/hosted file
@@ -732,35 +773,21 @@ func _collapse() -&gt; void:
 
   applyTheme();
 
-  /* ---------- load / save ---------- */
+  /* ---------- load / save (appearance) ---------- */
   function payload(){
-    return JSON.stringify({ checked: checked, theme: theme });
+    return JSON.stringify({ theme: theme });
   }
 
-  function load(){
+  function loadTheme(){
     return store.get(KEY)
       .then(function(raw){
         if (!raw) return;
         var data;
         try { data = JSON.parse(raw); } catch (e) { return; }
-        if (!data || typeof data !== "object") return;
-        if (data.checked) {              // current format
-          checked = data.checked;
-          if (data.theme) theme = data.theme;
-        } else {                         // earlier format: a flat map of ids
-          checked = data;
-        }
+        if (data && typeof data === "object" && data.theme) theme = data.theme;
       })
       .catch(function(){ /* nothing saved yet - expected on first run */ })
-      .then(function(){
-        loaded = true;
-        applyTheme();
-        render();
-        if (store.kind === "memory") {
-          var c = document.getElementById("navCount");
-          if (c) c.title = "Storage is unavailable in this browser, so progress will reset on reload.";
-        }
-      });
+      .then(function(){ loaded = true; applyTheme(); });
   }
 
   function save(){
@@ -769,7 +796,7 @@ func _collapse() -&gt; void:
     saveTimer = setTimeout(function(){
       store.set(KEY, payload())
         .then(function(){ flashSaved(); })
-        .catch(function(err){ console.error("Could not save progress:", err); });
+        .catch(function(err){ console.error("Could not save appearance:", err); });
     }, 350);
   }
 
@@ -782,19 +809,45 @@ func _collapse() -&gt; void:
     dotTimer = setTimeout(function(){ dot.classList.remove("on"); }, 1400);
   }
 
+  /* ---------- read each chapter's progress ---------- */
+  function countTicks(raw, total){
+    if (!raw) return 0;
+    var data;
+    try { data = JSON.parse(raw); } catch (e) { return 0; }
+    if (!data || typeof data !== "object") return 0;
+    var map = data.checked && typeof data.checked === "object" ? data.checked : data;
+    var n = 0;
+    Object.keys(map).forEach(function(k){
+      if (k !== "theme" && map[k]) n++;
+    });
+    return Math.min(n, total);
+  }
+
+  function readProgress(){
+    var jobs = CHAPTERS.map(function(c){
+      return store.get(c.key)
+        .then(function(raw){ doneByChapter[c.ch] = countTicks(raw, c.total); })
+        .catch(function(){ doneByChapter[c.ch] = 0; });
+    });
+    return Promise.all(jobs).then(render);
+  }
+
   /* ---------- rendering ---------- */
   function render(){
     var done = 0;
-    items.forEach(function(el){
-      var id = el.getAttribute("data-id");
-      var on = !!checked[id];
-      if (on) done++;
-      el.classList.toggle("done", on);
-      var btn = el.querySelector(".cb");
-      if (btn) btn.setAttribute("aria-checked", on ? "true" : "false");
+
+    CHAPTERS.forEach(function(c){
+      var d = doneByChapter[c.ch] || 0;
+      done += d;
+      var card = document.querySelector('[data-ch="' + c.ch + '"]');
+      if (!card) return;
+      var bar = card.querySelector(".pbar i");
+      var cnt = card.querySelector(".pcount");
+      if (bar) bar.style.width = (d / c.total * 100) + "%";
+      if (cnt) cnt.textContent = d ? (d + " of " + c.total + " steps done") : (c.total + " steps");
     });
 
-    var pct = total ? done / total : 0;
+    var pct = GRAND_TOTAL ? done / GRAND_TOTAL : 0;
 
     var hero = document.getElementById("heroRing");
     if (hero) {
@@ -809,48 +862,25 @@ func _collapse() -&gt; void:
       var mc = 2 * Math.PI * 10.5;
       mini.setAttribute("stroke-dashoffset", mc - mc * pct);
     }
+
     var navCount = document.getElementById("navCount");
-    if (navCount) navCount.textContent = done + " / " + total;
+    if (navCount) navCount.textContent = done + " / " + GRAND_TOTAL;
+
+    var chapters = document.getElementById("chapterCount");
+    if (chapters) chapters.textContent = CHAPTERS.length;
+
+    var stepTotal = document.getElementById("stepTotal");
+    if (stepTotal) stepTotal.textContent = GRAND_TOTAL;
 
     var left = document.getElementById("stepsLeft");
-    if (left) left.textContent = total - done;
-
-    document.querySelectorAll("section[data-phase]").forEach(function(sec){
-      var kids = sec.querySelectorAll("[data-id]");
-      if (!kids.length) return;
-      var d = 0;
-      kids.forEach(function(k){ if (checked[k.getAttribute("data-id")]) d++; });
-      var bar = sec.querySelector(".pbar i");
-      var cnt = sec.querySelector(".pcount");
-      if (bar) bar.style.width = (d / kids.length * 100) + "%";
-      if (cnt) cnt.textContent = d + " of " + kids.length + " done";
-    });
+    if (left) left.textContent = GRAND_TOTAL - done;
   }
 
-  function toggle(el){
-    var id = el.getAttribute("data-id");
-    if (checked[id]) { delete checked[id]; } else { checked[id] = 1; }
-    render();
-    save();
-  }
-
-  items.forEach(function(el){
-    var btn = el.querySelector(".cb");
-    if (btn) btn.addEventListener("click", function(){ toggle(el); });
-    var title = el.querySelector(".step-title");
-    if (title) title.addEventListener("click", function(){ toggle(el); });
-  });
-
-  /* ---------- reset ---------- */
-  var resetBtn = document.getElementById("resetBtn");
-  if (resetBtn) {
-    resetBtn.addEventListener("click", function(){
-      if (!confirm("Clear all " + total + " checkmarks on this page? This cannot be undone.")) return;
-      checked = {};
-      render();
-      store.set(KEY, payload())
-        .then(flashSaved)
-        .catch(function(err){ console.error("Could not clear progress:", err); });
+  /* ---------- refresh ---------- */
+  var refreshBtn = document.getElementById("refreshBtn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", function(){
+      readProgress().then(flashSaved);
     });
   }
 
@@ -858,15 +888,18 @@ func _collapse() -&gt; void:
   var resumeBtn = document.getElementById("resumeBtn");
   if (resumeBtn) {
     resumeBtn.addEventListener("click", function(){
-      var next = null;
-      for (var i = 0; i < items.length; i++) {
-        if (!checked[items[i].getAttribute("data-id")]) { next = items[i]; break; }
+      var target = null;
+      for (var i = 0; i < CHAPTERS.length; i++) {
+        var c = CHAPTERS[i];
+        if ((doneByChapter[c.ch] || 0) < c.total) {
+          target = document.querySelector('[data-ch="' + c.ch + '"]');
+          break;
+        }
       }
-      var target = next || items[0];
+      if (!target) target = document.querySelector("[data-ch]");
       if (!target) return;
       target.scrollIntoView({ behavior: "smooth", block: "center" });
-      var btn = target.querySelector(".cb");
-      if (btn) setTimeout(function(){ btn.focus(); }, 600);
+      setTimeout(function(){ target.focus(); }, 600);
     });
   }
 
@@ -882,7 +915,7 @@ func _collapse() -&gt; void:
     document.querySelectorAll(".rv").forEach(function(el){ el.classList.add("in"); });
   }
 
-  load();
+  loadTheme().then(readProgress);
 })();
 </script>
 </body>

@@ -379,7 +379,6 @@ footer{
       </svg>
       <span class="ring-label"><b id="heroPct" style="color:#f5f5f7;font-size:14px;">0%</b> complete</span>
     </div>
-    <div class="stat"><b id="daysLeft">—</b><span>DAYS TO JAM</span></div>
     <div class="stat"><b id="stepsLeft">—</b><span>STEPS LEFT</span></div>
     <div class="stat"><b>7</b><span>PHASES</span></div>
   </div>
@@ -395,6 +394,7 @@ footer{
       <a href="#p0">Setup</a><a href="#p1">Controller</a><a href="#p2">Buildings</a>
       <a href="#p3">Climbing</a><a href="#p4">Punching</a><a href="#p5">Destruction</a>
       <a href="#p6">Polish</a><a href="#assets">Assets</a><a href="#plan">Plan</a>
+      <a href="./index.html">↑ Index</a><a href="./uproar-ch2-bringing-down-the-house.html">Chapter 2 →</a>
     </div>
     <div class="nav-right">
       <svg class="ring mini-ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
@@ -420,7 +420,7 @@ footer{
       <li><strong>Your version guess was right.</strong> Godot <strong>4.7.1-stable</strong> shipped 14 July 2026. Take the <strong>Standard build</strong> (GDScript), not .NET.</li>
       <li><strong>Build in this order:</strong> controller → buildings → climbing → punching → destruction → polish. Each phase depends on the one before it.</li>
       <li><strong>The one non-obvious trap is collision layers.</strong> Set them up properly in Phase 2 and half your later bugs never happen.</li>
-      <li><strong>Destruction is pre-fractured chunks as frozen RigidBody3D nodes.</strong> You unfreeze them on death. No runtime fracture, ever, in a jam.</li>
+      <li><strong>Destruction is pre-fractured chunks as frozen RigidBody3D nodes.</strong> You unfreeze them on death. Never compute a fracture while the game is running.</li>
       <li><strong>There is no free CC0 rigged gorilla.</strong> The best model is CC-BY, so budget one line of credits.</li>
     </ul>
   </div>
@@ -441,7 +441,7 @@ footer{
     <div class="step-body">
       <h3 class="step-title">1. Download Godot 4.7.1-stable, Standard build</h3>
       <p><strong>Take the Standard build.</strong> The Standard build ships with <strong>GDScript</strong> — Godot's built-in Python-like scripting language. The <strong>.NET build</strong> adds C# support plus an external toolchain you do not want to configure this week.</p>
-      <p><strong>Why it matters:</strong> GDScript has the fastest edit-run loop and the best documentation coverage. For an 11-day jam that is the whole argument.</p>
+      <p><strong>Why it matters:</strong> GDScript has the fastest edit-run loop and the best documentation coverage. For a first 3D project, that is the whole argument.</p>
       <ol>
         <li>Open the official archive page for 4.7.1-stable.</li>
         <li>Download the file for your OS under the heading <strong>Standard</strong>, not <strong>.NET</strong>.</li>
@@ -481,7 +481,7 @@ footer{
         <li>Choose the <strong>Renderer</strong>:
           <ul>
             <li><strong>Forward+</strong> — best visuals, desktop only. Pick this if you will ship a downloadable build.</li>
-            <li><strong>Compatibility</strong> — OpenGL-based, far more reliable in browsers. Pick this if the jam requires a web playable.</li>
+            <li><strong>Compatibility</strong> — OpenGL-based, far more reliable in browsers. Pick this if you need the game to run in a browser.</li>
             <li><strong>Mobile</strong> — not relevant here.</li>
           </ul>
         </li>
@@ -489,7 +489,7 @@ footer{
         <li>Click <strong>Create &amp; Edit</strong>.</li>
       </ol>
       <span class="exp"><b>Expected:</b> the editor opens on an empty scene, with the <strong>Scene</strong> dock top-left offering <em>Create Root Node: 3D Scene / 2D Scene / User Interface / Other Node</em>.</span>
-      <div class="call warn"><b>Warning:</b> if the jam rules require a browser-playable entry, choose <b>Compatibility</b> now. Switching a Forward+ project to Compatibility later means re-checking every material and light in the game.</div>
+      <div class="call warn"><b>Warning:</b> if you need a browser-playable build, choose <b>Compatibility</b> now. Switching a Forward+ project to Compatibility later means re-checking every material and light in the game.</div>
     </div>
   </div>
 
@@ -1325,7 +1325,7 @@ func _on_damaged(current: float) -&gt; void:
       <h3 class="step-title">5. Decide whether you want physics debris</h3>
       <p><strong>Only continue to physics debris once everything above works and you are ahead of schedule.</strong> Falling chunks look better, but they are a separate half-day of work and they can cost you frame rate.</p>
       <p>The full method — building the chunks, freezing them, releasing them on collapse, and keeping the count under control — is in the companion document. It is written to drop on top of what you just built, and it does not require Blender.</p>
-      <a class="link-card" href="uproar-ch2-bringing-down-the-house.html" target="_blank" rel="noopener">
+      <a class="link-card" href="./uproar-ch2-bringing-down-the-house.html" target="_blank" rel="noopener">
         <h4>Chapter 2 — Bringing Down The House →</h4>
         <p>Pre-fractured chunks as frozen RigidBody3D nodes, generated in Godot or fractured in Blender. Ten steps, roughly half a day.</p>
       </a>
@@ -1339,7 +1339,7 @@ func _on_damaged(current: float) -&gt; void:
   <div class="phase-head">
     <p class="eyebrow">Phase 6</p>
     <h2>Juice, and getting it out the door</h2>
-    <p class="bluf"><span class="lbl">Bottom line:</span> Four small effects and a working export are worth more jam points than any additional mechanic. Export on day 13, not day 14.</p>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Four small effects and a working export are worth more than any additional mechanic. Get the export working before you polish, not after.</p>
     <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
   </div>
 
@@ -1488,7 +1488,7 @@ func _process(delta: float) -&gt; void:
       </ol>
       <div class="call key"><b>Key point — do not delete the CollisionShape3D.</b> The imported model is visual only. Physics still uses the capsule, which is both correct and much faster than colliding against a detailed mesh.</div>
       <p><strong>If your model lacks the animations you need,</strong> Godot 4 has a documented retargeting system: import the model <strong>As Scene</strong> with a <strong>BoneMap</strong> and <strong>SkeletonProfileHumanoid</strong>, then import the animation source <strong>As AnimationLibrary</strong> with the same bone map.</p>
-      <div class="call warn"><b>Warning:</b> matching bone names is not enough — Godot needs matching <b>Bone Rests</b>, which is what the BoneMap step supplies. The built-in profile is humanoid, so a gorilla's proportions may need a custom SkeletonProfile. <b>For an 11-day jam, prefer a model that already ships with the animations over retargeting.</b></div>
+      <div class="call warn"><b>Warning:</b> matching bone names is not enough — Godot needs matching <b>Bone Rests</b>, which is what the BoneMap step supplies. The built-in profile is humanoid, so a gorilla's proportions may need a custom SkeletonProfile. <b>Prefer a model that already ships with the animations you need over retargeting one that does not.</b></div>
       <p class="src">Source: <a href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/retargeting_3d_skeletons.html" target="_blank" rel="noopener">Retargeting 3D skeletons</a> · <a href="https://godotengine.org/article/introducing-the-improved-ufbx-importer-in-godot-4-3/" target="_blank" rel="noopener">ufbx importer</a></p>
     </div>
   </div>
@@ -1497,65 +1497,65 @@ func _process(delta: float) -&gt; void:
 <!-- ================= PLAN ================= -->
 <section id="plan" class="rv" data-phase="plan">
   <div class="phase-head">
-    <p class="eyebrow">3–14 August</p>
-    <h2>Eleven days, two hours a day</h2>
-    <p class="bluf"><span class="lbl">Bottom line:</span> Each block ends at a benchmark you can demonstrate. If a block runs over, cut from the list at the bottom rather than borrowing from tomorrow.</p>
+    <p class="eyebrow">Suggested order</p>
+    <h2>Eight sessions of roughly two hours</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Each session ends at a benchmark you can demonstrate. These are a suggested grouping of the work, not a schedule — take as long over each one as it needs.</p>
     <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
   </div>
 
-  <div class="day" data-id="d1"><div class="day-date">Aug 3–4</div>
+  <div class="day" data-id="d1"><div class="day-date">Session 1</div>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
     <div class="step-body"><h4 class="step-title">Setup and first movement</h4>
     <p>Phase 0 in full, then Phase 1 steps 1 and 2.</p>
     <p class="bench"><b>Benchmark:</b> a capsule standing on a lit floor, with a script attached.</p></div></div>
 
-  <div class="day" data-id="d2"><div class="day-date">Aug 5–6</div>
+  <div class="day" data-id="d2"><div class="day-date">Session 2</div>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
     <div class="step-body"><h4 class="step-title">Camera, controls, and the city</h4>
     <p>Finish Phase 1, then all of Phase 2.</p>
     <p class="bench"><b>Benchmark:</b> camera-relative walking and jumping, five buildings that block you, camera that never clips the player.</p></div></div>
 
-  <div class="day" data-id="d3"><div class="day-date">Aug 7–8</div>
+  <div class="day" data-id="d3"><div class="day-date">Session 3</div>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
     <div class="step-body"><h4 class="step-title">Climbing</h4>
-    <p>Phase 3. Budget the full two days — this is the fiddliest mechanic in the game.</p>
+    <p>Phase 3. Expect this to take longer than the sessions around it — climbing is the fiddliest mechanic in the game.</p>
     <p class="bench"><b>Benchmark:</b> climb one building, reach the roof, get down again, no soft-locks.</p></div></div>
 
-  <div class="day" data-id="d4"><div class="day-date">Aug 9–10</div>
+  <div class="day" data-id="d4"><div class="day-date">Session 4</div>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
     <div class="step-body"><h4 class="step-title">Punching and damage</h4>
     <p>Phase 4 in full.</p>
     <p class="bench"><b>Benchmark:</b> four punches print 75, 50, 25, 0 in the Output panel and the building disappears.</p></div></div>
 
-  <div class="day" data-id="d5"><div class="day-date">Aug 11</div>
+  <div class="day" data-id="d5"><div class="day-date">Session 5</div>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
     <div class="step-body"><h4 class="step-title">Destruction</h4>
-    <p>Phase 5 in full: the mesh-swap collapse. Only open Chapter 2 if this finishes early.</p>
+    <p>Phase 5 in full: the mesh-swap collapse. Only open Chapter 2 once this works.</p>
     <p class="bench"><b>Benchmark:</b> at least one building visibly collapses at zero health.</p></div></div>
 
-  <div class="day" data-id="d6"><div class="day-date">Aug 12</div>
+  <div class="day" data-id="d6"><div class="day-date">Session 6</div>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
     <div class="step-body"><h4 class="step-title">Juice and real assets</h4>
     <p>Phase 6 effects, plus swapping the placeholder capsule for the real gorilla model.</p>
     <p class="bench"><b>Benchmark:</b> the game looks like a game, not a physics test.</p></div></div>
 
-  <div class="day" data-id="d7"><div class="day-date">Aug 13</div>
+  <div class="day" data-id="d7"><div class="day-date">Session 7</div>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
     <div class="step-body"><h4 class="step-title">Export and bug fixing</h4>
     <p>Export, test the build, fix whatever breaks.</p>
     <p class="bench"><b>Benchmark:</b> a playable exported build exists on disk.</p></div></div>
 
-  <div class="day" data-id="d8"><div class="day-date">Aug 14</div>
+  <div class="day" data-id="d8"><div class="day-date">Session 8</div>
     <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle day"></button>
-    <div class="step-body"><h4 class="step-title">Buffer and submit</h4>
-    <p>Credits screen (remember the CC-BY attribution), screenshots, submission page.</p>
-    <p class="bench"><b>Benchmark:</b> submitted, with time to spare.</p></div></div>
+    <div class="step-body"><h4 class="step-title">Credits and presentation</h4>
+    <p>Credits screen (include the CC-BY attribution if you used the Sketchfab gorilla), screenshots, and a short written description of the build.</p>
+    <p class="bench"><b>Benchmark:</b> the build is ready to hand to someone else.</p></div></div>
 
   <details style="margin-top:26px;">
-    <summary>If you fall behind, cut in this order</summary>
+    <summary>If a session runs long, cut in this order</summary>
     <div class="details-body">
       <ul>
-        <li><strong>1. Runtime fracture.</strong> Never attempt it in a jam regardless.</li>
+        <li><strong>1. Runtime fracture.</strong> Never attempt it regardless.</li>
         <li><strong>2. Retargeted custom animations.</strong> Use whatever the model ships with.</li>
         <li><strong>3. Physics debris.</strong> Skip Chapter 2 entirely; the mesh-swap collapse in Phase 5 is enough.</li>
         <li><strong>4. Climbing polish.</strong> Drop the mantle-onto-roof transition; let the gorilla climb the face only.</li>
@@ -1606,7 +1606,8 @@ func _process(delta: float) -&gt; void:
 
 <footer>
   Godot Guide — Uproar, Chapter 1: Prototype · Godot 4.7.1-stable · Progress is saved automatically.<br>
-  Remember to credit <strong>luccacatalan</strong> for the gorilla model if you ship it.
+  Remember to credit <strong>luccacatalan</strong> for the gorilla model if you ship it.<br>
+  <a href="./index.html">Series index</a> &nbsp;·&nbsp; <a href="./uproar-ch2-bringing-down-the-house.html">Chapter 2: Bringing Down The House →</a>
 </footer>
 
 <script>
@@ -1827,17 +1828,6 @@ func _process(delta: float) -&gt; void:
       var btn = target.querySelector(".cb");
       if (btn) setTimeout(function(){ btn.focus(); }, 600);
     });
-  }
-
-  /* ---------- countdown ---------- */
-  var daysEl = document.getElementById("daysLeft");
-  if (daysEl) {
-    var jam = new Date(2026, 7, 14);
-    var now = new Date();
-    now.setHours(0, 0, 0, 0);
-    var days = Math.round((jam - now) / 86400000);
-    daysEl.textContent = days > 0 ? days : (days === 0 ? "Today" : "—");
-    if (days === 0) daysEl.style.fontSize = "26px";
   }
 
   /* ---------- scroll reveal ---------- */

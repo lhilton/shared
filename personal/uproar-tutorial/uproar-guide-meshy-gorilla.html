@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Godot Guide — Uproar Supplement — Making The Gorilla In Meshy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#fbfbfd;
+  --surface:#ffffff;
+  --ink:#1d1d1f;
+  --ink-2:#6e6e73;
+  --ink-3:#86868b;
+  --hairline:#d2d2d7;
+  --hairline-soft:#e8e8ed;
+  --accent:#0066cc;
+  --accent-fill:#0071e3;
+  --accent-hover:#0077ed;
+  --accent-soft:rgba(0,102,204,.08);
+  --godot:#478cbf;
+  --warn-bg:#fff6e9;
+  --warn-ink:#8a5200;
+  --warn-ink-strong:#7a4800;
+  --note-bg:#f2f2f5;
+  --key-bg:#eef5fd;
+  --key-ink:#0a4a86;
+  --key-ink-strong:#053b6e;
+  --code-bg:#f0f0f3;
+  --pre-bg:#f5f5f7;
+  --th-bg:#f8f8fa;
+  --nav-bg:rgba(251,251,253,.78);
+  --hover-bg:rgba(0,0,0,.05);
+  --cb-bg:#ffffff;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 6px 20px rgba(0,0,0,.07);
+  --cc0-bg:#e6f4ea;  --cc0-ink:#1a6c34;
+  --ccby-bg:#fdf0e3; --ccby-ink:#8a5200;
+  --paid-bg:#f0f0f3;
+  --radius:18px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+/* Dark palette — applied automatically by system preference, or manually
+   when the theme button sets data-theme="dark" on <html>. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#000000;
+    --surface:#1c1c1e;
+    --ink:#f5f5f7;
+    --ink-2:#a1a1a6;
+    --ink-3:#8e8e93;
+    --hairline:#3a3a3c;
+    --hairline-soft:#2c2c2e;
+    --accent:#2997ff;
+    --accent-fill:#0a84ff;
+    --accent-hover:#3ba2ff;
+    --accent-soft:rgba(41,151,255,.16);
+    --godot:#6fb3e0;
+    --warn-bg:#38290f;
+    --warn-ink:#ffb340;
+    --warn-ink-strong:#ffc871;
+    --note-bg:#2c2c2e;
+    --key-bg:#0f2a44;
+    --key-ink:#7fbcf7;
+    --key-ink-strong:#a8d3fb;
+    --code-bg:#2c2c2e;
+    --pre-bg:#131315;
+    --th-bg:#2c2c2e;
+    --nav-bg:rgba(0,0,0,.7);
+    --hover-bg:rgba(255,255,255,.09);
+    --cb-bg:#2c2c2e;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+    --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+    --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+    --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+    --paid-bg:#2c2c2e;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#000000;
+  --surface:#1c1c1e;
+  --ink:#f5f5f7;
+  --ink-2:#a1a1a6;
+  --ink-3:#8e8e93;
+  --hairline:#3a3a3c;
+  --hairline-soft:#2c2c2e;
+  --accent:#2997ff;
+  --accent-fill:#0a84ff;
+  --accent-hover:#3ba2ff;
+  --accent-soft:rgba(41,151,255,.16);
+  --godot:#6fb3e0;
+  --warn-bg:#38290f;
+  --warn-ink:#ffb340;
+  --warn-ink-strong:#ffc871;
+  --note-bg:#2c2c2e;
+  --key-bg:#0f2a44;
+  --key-ink:#7fbcf7;
+  --key-ink-strong:#a8d3fb;
+  --code-bg:#2c2c2e;
+  --pre-bg:#131315;
+  --th-bg:#2c2c2e;
+  --nav-bg:rgba(0,0,0,.7);
+  --hover-bg:rgba(255,255,255,.09);
+  --cb-bg:#2c2c2e;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.5);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.6);
+  --cc0-bg:rgba(48,209,88,.17);  --cc0-ink:#5fd67c;
+  --ccby-bg:rgba(255,159,10,.17); --ccby-ink:#ffb340;
+  --paid-bg:#2c2c2e;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:76px;}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+:focus-visible{outline:2px solid var(--accent-fill);outline-offset:3px;border-radius:6px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:#000;color:#f5f5f7;min-height:86vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:110px 22px 90px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(72% 52% at 50% 8%, rgba(71,140,191,.26), transparent 68%);
+}
+.hero > *{position:relative;z-index:1;}
+.eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--godot);margin:0 0 18px;
+}
+.hero h1{
+  font-size:clamp(42px,8.2vw,92px);font-weight:600;letter-spacing:-.035em;
+  line-height:1.03;margin:0 0 22px;max-width:14ch;
+}
+.hero h1 em{font-style:normal;color:#8fb9d9;}
+.hero p.lede{
+  font-size:clamp(17px,2.2vw,21px);color:#a1a1a6;max-width:46ch;margin:0 auto 40px;
+  line-height:1.45;
+}
+.hero-meta{display:flex;gap:38px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:8px;}
+.stat{min-width:96px;}
+.stat b{display:block;font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.1;}
+.stat span{display:block;font-size:12px;color:#86868b;letter-spacing:.03em;margin-top:5px;}
+.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ring{transform:rotate(-90deg);}
+.ring circle{fill:none;stroke-linecap:round;}
+.ring .track{stroke:rgba(255,255,255,.14);}
+.ring .fill{stroke:url(#grad);transition:stroke-dashoffset .7s cubic-bezier(.32,.72,0,1);}
+.ring-label{font-size:12px;color:#86868b;letter-spacing:.03em;}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:8px;margin-top:44px;background:var(--accent-fill);
+  color:#fff;padding:12px 24px;border-radius:980px;font-size:16px;font-weight:500;border:none;
+  cursor:pointer;transition:transform .2s,background .2s;font-family:inherit;
+}
+.hero-cta:hover{background:var(--accent-hover);transform:scale(1.02);text-decoration:none;}
+
+/* ---------- NAV ---------- */
+nav{
+  position:sticky;top:0;z-index:60;background:var(--nav-bg);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--hairline-soft);
+}
+.nav-in{
+  max-width:1080px;margin:0 auto;padding:0 20px;height:54px;
+  display:flex;align-items:center;gap:16px;
+}
+.nav-title{font-size:14px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;}
+.nav-links{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-links a{
+  font-size:13px;color:var(--ink-2);padding:6px 11px;border-radius:980px;white-space:nowrap;
+  transition:background .15s,color .15s;
+}
+.nav-links a:hover{background:var(--hover-bg);color:var(--ink);text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.mini-count{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.mini-ring .track{stroke:var(--hairline);}
+.mini-ring .fill{stroke:var(--accent-fill);}
+.ghost-btn{
+  font-family:inherit;font-size:13px;color:var(--accent);background:none;border:none;
+  cursor:pointer;padding:6px 8px;border-radius:8px;white-space:nowrap;
+}
+.ghost-btn:hover{background:var(--accent-soft);}
+.icon-btn{font-size:15px;line-height:1;padding:7px 9px;}
+
+/* ---------- LAYOUT ---------- */
+section{max-width:800px;margin:0 auto;padding:88px 22px 0;}
+section:last-of-type{padding-bottom:110px;}
+.phase-head{margin-bottom:26px;}
+.phase-head .eyebrow{color:var(--accent);margin-bottom:10px;}
+.phase-head h2{
+  font-size:clamp(29px,4.4vw,42px);font-weight:600;letter-spacing:-.026em;
+  margin:0 0 14px;line-height:1.1;
+}
+.phase-meta{display:flex;align-items:center;gap:12px;margin-top:16px;}
+.pbar{height:4px;background:var(--hairline-soft);border-radius:99px;flex:1;overflow:hidden;}
+.pbar i{display:block;height:100%;width:0;background:var(--accent-fill);border-radius:99px;transition:width .5s cubic-bezier(.32,.72,0,1);}
+.pcount{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.bluf{
+  font-size:19px;line-height:1.5;color:var(--ink);margin:0 0 8px;font-weight:450;
+}
+.bluf b{font-weight:600;}
+.bluf .lbl{color:var(--accent);font-weight:600;}
+
+/* ---------- STEP CARD ---------- */
+.step{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:19px 21px;margin-bottom:12px;
+  box-shadow:var(--shadow-sm);transition:opacity .3s,border-color .2s,box-shadow .2s;
+}
+.step:hover{border-color:var(--hairline);}
+.step.done{opacity:.5;}
+.cb{
+  flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:1.6px solid var(--hairline);
+  background:var(--cb-bg);cursor:pointer;margin-top:2px;padding:0;position:relative;
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.cb:hover{border-color:var(--accent-fill);}
+.cb:active{transform:scale(.9);}
+.cb::after{
+  content:"";position:absolute;left:8px;top:4px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.cb[aria-checked="true"]{background:var(--accent-fill);border-color:var(--accent-fill);}
+.cb[aria-checked="true"]::after{transform:rotate(45deg) scale(1);}
+.step-body{flex:1;min-width:0;}
+.step-title{
+  font-size:17px;font-weight:600;letter-spacing:-.012em;margin:0 0 7px;cursor:pointer;
+  line-height:1.35;
+}
+.step.done .step-title{text-decoration:line-through;text-decoration-color:var(--hairline);color:var(--ink-2);}
+.step p{margin:0 0 10px;font-size:15px;color:var(--ink-2);line-height:1.55;}
+.step p:last-child{margin-bottom:0;}
+.step p strong,.step li strong{color:var(--ink);font-weight:600;}
+.step ul,.step ol{margin:0 0 10px;padding-left:20px;font-size:15px;color:var(--ink-2);line-height:1.6;}
+.step li{margin-bottom:5px;}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:2px 6px;border-radius:5px;color:var(--ink);}
+pre{
+  background:var(--pre-bg);border:1px solid var(--hairline-soft);border-radius:12px;padding:15px 16px;
+  overflow-x:auto;margin:0 0 12px;
+}
+pre code{background:none;padding:0;font-size:13px;line-height:1.65;display:block;white-space:pre;}
+
+/* ---------- CALLOUTS ---------- */
+.call{border-radius:12px;padding:12px 15px;font-size:14.5px;line-height:1.55;margin:0 0 11px;}
+.call b{font-weight:600;}
+.call.warn{background:var(--warn-bg);color:var(--warn-ink);}
+.call.warn b{color:var(--warn-ink-strong);}
+.call.note{background:var(--note-bg);color:var(--ink-2);}
+.call.note b{color:var(--ink);}
+.call.key{background:var(--key-bg);color:var(--key-ink);}
+.call.key b{color:var(--key-ink-strong);}
+.exp{display:block;margin:0 0 11px;font-size:13.5px;color:var(--ink-3);padding-left:11px;border-left:2px solid var(--hairline-soft);line-height:1.55;}
+.exp b{color:var(--ink-2);}
+.src{font-size:12px;color:var(--ink-3);letter-spacing:.01em;}
+.src a{color:var(--ink-3);text-decoration:underline;text-decoration-color:var(--hairline);}
+
+/* ---------- TABLE ---------- */
+.tbl-wrap{overflow-x:auto;margin:0 0 12px;border:1px solid var(--hairline-soft);border-radius:12px;}
+table{border-collapse:collapse;width:100%;font-size:14px;}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--hairline-soft);}
+th{font-weight:600;color:var(--ink);background:var(--th-bg);font-size:12.5px;letter-spacing:.02em;}
+tr:last-child td{border-bottom:none;}
+td{color:var(--ink-2);}
+td:first-child{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;}
+
+/* ---------- ASSET / LINK CARDS ---------- */
+.link-card{
+  display:block;background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:15px 18px;margin-bottom:10px;transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.link-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-lg);border-color:var(--hairline);text-decoration:none;}
+.link-card h4{margin:0 0 4px;font-size:16px;font-weight:600;color:var(--ink);letter-spacing:-.01em;}
+.link-card p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.badge{
+  display:inline-block;font-size:11px;font-weight:600;letter-spacing:.03em;padding:3px 9px;
+  border-radius:980px;margin-left:8px;vertical-align:2px;
+}
+.badge.cc0{background:var(--cc0-bg);color:var(--cc0-ink);}
+.badge.ccby{background:var(--ccby-bg);color:var(--ccby-ink);}
+.badge.paid{background:var(--paid-bg);color:var(--ink-2);}
+
+/* ---------- SCHEDULE ---------- */
+.day{
+  display:flex;gap:15px;background:var(--surface);border:1px solid var(--hairline-soft);
+  border-radius:var(--radius);padding:17px 20px;margin-bottom:10px;
+  transition:opacity .3s;
+}
+.day.done{opacity:.5;}
+.day-date{
+  flex:0 0 62px;font-size:13px;font-weight:600;color:var(--accent);letter-spacing:-.01em;
+  padding-top:2px;
+}
+.day.done .day-date{color:var(--ink-3);}
+.day h4{margin:0 0 5px;font-size:15.5px;font-weight:600;letter-spacing:-.01em;}
+.day p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.5;}
+.day .bench{color:var(--ink-2);font-size:13.5px;margin-top:6px;}
+.day .bench b{color:var(--ink);}
+
+/* ---------- DETAILS ---------- */
+details{
+  background:var(--surface);border:1px solid var(--hairline-soft);border-radius:14px;
+  padding:0;margin-bottom:10px;overflow:hidden;
+}
+summary{
+  cursor:pointer;padding:15px 18px;font-size:15.5px;font-weight:600;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;letter-spacing:-.01em;
+}
+summary::-webkit-details-marker{display:none;}
+summary::after{content:"+";font-weight:400;font-size:19px;color:var(--ink-3);}
+details[open] summary::after{content:"–";}
+.details-body{padding:0 18px 16px;font-size:14.5px;color:var(--ink-2);line-height:1.6;}
+.details-body ul{padding-left:19px;margin:0;}
+.details-body li{margin-bottom:7px;word-break:break-word;}
+
+/* ---------- FOOTER ---------- */
+footer{
+  border-top:1px solid var(--hairline-soft);margin-top:70px;padding:34px 22px 60px;
+  text-align:center;font-size:12.5px;color:var(--ink-3);line-height:1.7;
+}
+.save-dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;background:#34c759;
+  margin-right:6px;vertical-align:1px;opacity:0;transition:opacity .3s;
+}
+.save-dot.on{opacity:1;}
+
+/* ---------- REVEAL ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.32,.72,0,1);}
+.rv.in{opacity:1;transform:none;}
+
+@media (max-width:640px){
+  .hero{min-height:auto;padding:80px 20px 64px;}
+  .hero-meta{gap:26px;}
+  .nav-title{display:none;}
+  section{padding-top:64px;}
+  .day{flex-wrap:wrap;}
+  .day-date{flex-basis:100%;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;}
+  html{scroll-behavior:auto;}
+  .rv{opacity:1;transform:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <svg width="0" height="0" aria-hidden="true"><defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#478cbf"/><stop offset="100%" stop-color="#5ac8fa"/>
+    </linearGradient>
+  </defs></svg>
+
+  <p class="eyebrow">Godot Guide &middot; Uproar &middot; Supplement, not a chapter</p>
+  <h1>Making The Gorilla <em>In Meshy</em></h1>
+  <p class="lede">Generate a gorilla, rig it, animate it, and get it into <code>res://asset/model/</code> as a file Godot can read. This is the asset-production step that Chapter 4 depends on. It teaches no Godot code &mdash; it ends the moment the model imports cleanly.</p>
+
+  <div class="hero-meta">
+    <div class="ring-wrap">
+      <svg class="ring" width="128" height="128" viewBox="0 0 128 128" aria-hidden="true">
+        <circle class="track" cx="64" cy="64" r="54" stroke-width="9"/>
+        <circle id="heroRing" class="fill" cx="64" cy="64" r="54" stroke-width="9"
+                stroke-dasharray="339.29" stroke-dashoffset="339.29"/>
+      </svg>
+      <span class="ring-label"><b id="heroPct" style="color:#f5f5f7;font-size:14px;">0%</b> complete</span>
+    </div>
+    <div class="stat"><b id="stepsLeft">&mdash;</b><span>STEPS LEFT</span></div>
+    <div class="stat"><b>1</b><span>EVENING OF WORK</span></div>
+  </div>
+
+  <button class="hero-cta" id="resumeBtn">Start where you left off &nbsp;&darr;</button>
+</header>
+
+<!-- ================= NAV ================= -->
+<nav>
+  <div class="nav-in">
+    <span class="nav-title">Uproar &middot; Meshy</span>
+    <div class="nav-links">
+      <a href="#choose">Decide</a><a href="#generate">Generate</a><a href="#rig">Rig</a>
+      <a href="#export">Export</a><a href="#verify">Verify</a>
+      <a href="./index.html">&uarr; Index</a>
+      <a href="./uproar-ch1-prototype.html">Chapter 1</a>
+    </div>
+    <div class="nav-right">
+      <svg class="ring mini-ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle class="track" cx="13" cy="13" r="10.5" stroke-width="3"/>
+        <circle id="miniRing" class="fill" cx="13" cy="13" r="10.5" stroke-width="3"
+                stroke-dasharray="65.97" stroke-dashoffset="65.97"/>
+      </svg>
+      <span class="mini-count"><span class="save-dot" id="saveDot"></span><span id="navCount">0 / 0</span></span>
+      <button class="ghost-btn icon-btn" id="themeBtn" title="Switch appearance" aria-label="Switch appearance">&#9790;</button>
+      <button class="ghost-btn" id="resetBtn">Reset</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= DECIDE ================= -->
+<section id="choose" class="rv" data-phase="choose">
+  <div class="phase-head">
+    <p class="eyebrow">Part 1</p>
+    <h2>Two decisions before you open Meshy</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Rig the gorilla as a <strong>humanoid</strong>, and generate it from your own words rather than from a picture of someone else's gorilla. Both decisions are hard to reverse once you have spent credits.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="call note"><b>Note &mdash; what this guide is.</b> It is a <b>supplement</b>, not a numbered chapter. It covers a third-party paid service rather than Godot, so it sits outside the chapter sequence. Chapter 4 assumes you have finished it, but you can substitute any rigged gorilla you like &mdash; including the CC-BY Sketchfab model named in Chapter 1 &mdash; and skip this entirely.</div>
+
+  <div class="step" data-id="g1">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">1. Choose the Humanoid skeleton, not Quadruped</h3>
+      <p><strong>Meshy's web app offers three skeleton types &mdash; Humanoid, Quadruped Dog, and Smart Rig (Beta) &mdash; and you want Humanoid.</strong> Meshy's own tutorial states that humanoid characters have the widest range of ready-made animations and that quadrupeds currently have fewer.</p>
+
+      <p><strong>Three reasons Humanoid is right for Uproar specifically:</strong></p>
+      <ol>
+        <li><strong>Your controller already assumes an upright character.</strong> The <code>Player</code> capsule is 8&nbsp;m tall with a 1.5&nbsp;m radius, and the climbing state lays the character flat against a wall. A knuckle-walking quadruped rig fights all of that.</li>
+        <li><strong>Godot's retargeting system is humanoid.</strong> Godot ships one built-in profile, <code>SkeletonProfileHumanoid</code>. There is no built-in quadruped equivalent.</li>
+        <li><strong>King Kong stands upright.</strong> The reference the game is built on is a biped in almost every shot that matters.</li>
+      </ol>
+
+      <div class="call warn"><b>Warning &mdash; the Meshy API is more limited than the browser app.</b> Meshy's API documentation states that programmatic rigging currently only works well with standard humanoid bipedal assets, and lists non-humanoid assets among the models auto-rigging is not suitable for. Quadruped and Smart Rig are browser features. Use the web app for everything in this guide.</div>
+
+      <div class="call note"><b>Note &mdash; non-humanoid retargeting is a known weak spot.</b> An open Godot issue reports that animation retargeting for non-humanoid skeletons does not behave correctly, with bones snapping to absolute positions regardless of differing rest poses. <b>[Repo/Issue #103258]</b> This is a second reason to stay on the humanoid path rather than a claim about your specific model.</div>
+
+      <span class="exp"><b>Expected:</b> you have decided on Humanoid and have not yet spent a credit.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="g2">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">2. Confirm what your plan actually grants you</h3>
+      <p><strong>A paid Meshy plan gives you private ownership of what you generate; the free plan gives you a CC BY 4.0 licence instead.</strong> That difference decides whether your credits screen needs an attribution line.</p>
+
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Plan at time of generation</th><th>What you get</th><th>Attribution</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Paid</strong> (Pro and above)</td><td>Full private ownership of the assets you create</td><td>None required</td></tr>
+          <tr><td><strong>Free</strong></td><td>CC BY 4.0 licence &mdash; commercial use permitted</td><td>Credit Meshy in your project description</td></tr>
+        </tbody>
+      </table></div>
+
+      <p><strong>Two conditions attach to the paid grant,</strong> both stated in Meshy's own help documentation:</p>
+      <ul>
+        <li>You must not publish the asset publicly to the Meshy Community.</li>
+        <li>The source materials, <em>including any uploaded reference image</em>, must not infringe anyone else's copyright.</li>
+      </ul>
+
+      <div class="call warn"><b>Warning &mdash; do not feed it a King Kong still or the Sketchfab gorilla.</b> Meshy states that uploading a reference you do not own &mdash; someone else's artwork, a trademarked character, or licensed IP &mdash; can affect your ability to use the resulting model commercially <b>regardless of your plan tier</b>. Generate from a text prompt, or from a photograph or drawing you made yourself. A real gorilla photograph you took is fine; a film frame is not.</div>
+
+      <div class="call key"><b>Key point &mdash; rights are fixed at generation time.</b> Meshy states that models created while you were on a paid plan keep those rights even if you later downgrade. Models generated after a downgrade follow the free plan's CC BY 4.0 terms. If your subscription is about to lapse, generate first.</div>
+
+      <p><strong>Action:</strong> open your Meshy account settings and confirm the paid plan is active before you generate anything.</p>
+      <span class="exp"><b>Expected:</b> your account shows an active paid plan with credits available.</span>
+      <p class="src">Source: <a href="https://help.meshy.ai/en/articles/10137554-what-is-the-ownership-of-the-generated-models" target="_blank" rel="noopener">Meshy Help &mdash; ownership of generated models</a> &middot; <a href="https://help.meshy.ai/en/articles/16102098-can-i-use-meshy-assets-commercially" target="_blank" rel="noopener">Meshy Help &mdash; commercial use</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GENERATE ================= -->
+<section id="generate" class="rv" data-phase="generate">
+  <div class="phase-head">
+    <p class="eyebrow">Part 2</p>
+    <h2>Generate the gorilla</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Ask for a <strong>T-pose</strong> in the prompt itself, judge the mesh before you rig it, and set the polygon budget deliberately rather than accepting the default.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="g3">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">3. Write a prompt that specifies the pose</h3>
+      <p><strong>Put "T-pose" in the prompt text.</strong> A <strong>T-pose</strong> is a character standing with arms straight out sideways, forming a T. An <strong>A-pose</strong> has the arms angled down at roughly 45 degrees. Meshy's prompt helper suggests pose keywords for exactly this reason.</p>
+
+      <div class="call key"><b>Key point &mdash; why T-pose and not A-pose, even though Meshy prefers A-pose.</b> Meshy states that an A-pose gives more natural shoulder skinning. Godot's retargeting documentation states the opposite preference for its own purposes: with <code>SkeletonProfileHumanoid</code>, the <b>Fix Silhouette</b> import option does not need to be enabled for T-pose models but should be enabled for A-pose models. Choosing T-pose removes an import option you would otherwise have to get right. Slightly worse shoulders is the price, and on a gorilla with fur-shaded shoulders you will not see it.</div>
+
+      <p><strong>Action &mdash; a starting prompt:</strong></p>
+      <pre><code>A stylised silverback gorilla, full body, standing upright on two legs,
+T-pose, arms straight out to the sides, dark grey fur, broad chest,
+game character, clean single mesh</code></pre>
+
+      <p><strong>What each part is doing:</strong></p>
+      <ul>
+        <li><code>standing upright on two legs</code> pushes the body plan towards biped, which is what the Humanoid rigger needs to recognise.</li>
+        <li><code>T-pose, arms straight out to the sides</code> states the pose twice, in the term and in plain words.</li>
+        <li><code>full body</code> prevents a bust or a head-only result.</li>
+        <li><code>clean single mesh</code> discourages separate floating parts, which rig badly.</li>
+      </ul>
+
+      <div class="call note"><b>Note &mdash; the image path has explicit pose controls.</b> If you use <b>Image to 3D</b> rather than a text prompt, Meshy's tutorial states you can configure the pose before generating, with a T-pose or A-pose toggle and a Custom Pose Control that takes a reference image. Set it there rather than hoping the source image is posed correctly.</div>
+
+      <span class="exp"><b>Expected:</b> a prompt written down, containing the words "T-pose" and "full body".</span>
+      <p class="src">Source: <a href="https://www.meshy.ai/tutorials/character-auto-rigging-workflow" target="_blank" rel="noopener">Meshy &mdash; character auto-rigging workflow</a> &middot; <a href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/retargeting_3d_skeletons.html" target="_blank" rel="noopener">Godot &mdash; Retargeting 3D Skeletons</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="g4">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">4. Generate, then judge the mesh before rigging it</h3>
+      <p><strong>Rigging quality depends on mesh quality, so inspect the result first.</strong> Meshy's tutorial states that very broken geometry or unusual topology may reduce rig quality.</p>
+
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Open <strong>Text to 3D</strong> (or <strong>Image to 3D</strong>) and paste your prompt.</li>
+        <li>Generate, then rotate the preview and check four things.</li>
+      </ol>
+
+      <p><strong>The four checks:</strong></p>
+      <ul>
+        <li><strong>Arms are separated from the torso.</strong> Webbing between an arm and the ribs is the single most common cause of a bad rig, because the skinning cannot tell which bone owns those vertices.</li>
+        <li><strong>Legs are separated from each other.</strong> Same reason.</li>
+        <li><strong>It is one mesh,</strong> not a body with detached floating pieces.</li>
+        <li><strong>The silhouette reads as a gorilla</strong> from the front and the side, not just from the angle the preview opened on.</li>
+      </ul>
+
+      <div class="call warn"><b>Warning &mdash; if you generated from a photograph, check for background contamination.</b> Meshy's own quick-start documents this failure: a blurry, low-contrast photo with a complex background produces a model that captures background noise with distorted geometry. Their stated fix is to run <b>AI Background Removal</b> first, or to supply a cleaner input image.</div>
+
+      <p>If any check fails, regenerate rather than continuing. A rig built on a bad mesh cannot be repaired later without redoing the rig.</p>
+      <span class="exp"><b>Expected:</b> a textured gorilla mesh with clearly separated limbs, saved in your Meshy assets.</span>
+      <p class="src">Source: <a href="https://docs.meshy.ai/en/webapp/getting-started" target="_blank" rel="noopener">Meshy Docs &mdash; quick start</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="g5">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">5. Set the polygon budget with Remesh</h3>
+      <p><strong>Set the target polycount before export rather than accepting whatever the generator produced.</strong> <strong>Polycount</strong> is the number of triangles in the mesh; more triangles cost more time to draw every frame.</p>
+
+      <p>Meshy publishes these typical engine budgets: hero characters around 50,000 triangles, non-player characters around 10,000, and props around 3,000.</p>
+
+      <div class="call key"><b>Key point &mdash; the gorilla is a hero character, but Uproar has exactly one.</b> There is never a second gorilla on screen, so you can afford the upper end. Anywhere between 20,000 and 50,000 triangles is reasonable. The buildings and their fracture shards from Chapters 2 and 3 are where your frame budget actually goes.</div>
+
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Open <strong>Remesh</strong> on the generated model.</li>
+        <li>Set the target polycount within the range above.</li>
+        <li>Choose <strong>triangle</strong> topology. Godot renders triangles regardless, so converting later gains you nothing.</li>
+      </ol>
+
+      <div class="call warn"><b>Warning &mdash; there is a hard face limit on rigging.</b> Meshy's API documentation states that models with more than <b>300,000 faces</b> are not supported for rigging and must be reduced with Remesh first. A generated character is unlikely to approach that, but if rigging refuses the model, face count is the first thing to check.</div>
+
+      <span class="exp"><b>Expected:</b> the model reports a polycount in your chosen range.</span>
+      <p class="src">Source: <a href="https://docs.meshy.ai/en/api/rigging" target="_blank" rel="noopener">Meshy Docs &mdash; Rigging API</a> &middot; <a href="https://www.meshy.ai/use-cases/free-game-assets" target="_blank" rel="noopener">Meshy &mdash; game asset budgets</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RIG ================= -->
+<section id="rig" class="rv" data-phase="rig">
+  <div class="phase-head">
+    <p class="eyebrow">Part 3</p>
+    <h2>Rig it and add motion</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Rigging runs in the browser in about thirty seconds. Check the skeleton with the bone overlay before you commit to it, because every animation you add afterwards inherits its mistakes.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="g6">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">6. Run the auto-rigger and inspect the skeleton</h3>
+      <p><strong>Rigging binds a bone hierarchy and skinning weights to the mesh.</strong> <strong>Skinning weights</strong> decide how much each bone pulls on each vertex; they are what makes an elbow bend instead of tearing.</p>
+
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Open your gorilla in Meshy and choose <strong>Rigging</strong>.</li>
+        <li>Select the <strong>Humanoid</strong> character type, per step 1.</li>
+        <li>Run the rig. Meshy states this typically completes in under 30 seconds in the browser.</li>
+        <li>Turn on the <strong>bone overlay</strong> and rotate the model.</li>
+      </ol>
+
+      <p><strong>What to look for in the overlay:</strong></p>
+      <ul>
+        <li>A spine running up the centre of the torso, not off to one side.</li>
+        <li>Arm chains that end inside the hands, not short of them or past them.</li>
+        <li>Leg chains that reach the feet.</li>
+        <li>No bones outside the mesh.</li>
+      </ul>
+
+      <div class="call key"><b>Key point &mdash; you can correct it here rather than in Blender.</b> Meshy states that bones and skinning weights can be fine-tuned in the browser before export. Fixing a misplaced shoulder bone now costs a minute; fixing it after you have applied six animations means redoing them.</div>
+
+      <span class="exp"><b>Expected:</b> a skeleton overlay that follows the gorilla's limbs, with no bones floating outside the body.</span>
+      <p class="src">Source: <a href="https://www.meshy.ai/features/ai-auto-rigging" target="_blank" rel="noopener">Meshy &mdash; AI auto rigging</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="g7">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">7. Add the five animations Uproar needs</h3>
+      <p><strong>Add these five clips from the preset library, and no more for now.</strong> Meshy states that paid plans unlock over 600 motion presets while free users get more than 20.</p>
+
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Clip</th><th>Used by</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Idle</strong></td><td>Standing still</td><td>The default state. Pick a loop with visible breathing.</td></tr>
+          <tr><td><strong>Walk</strong></td><td>Low-speed movement</td><td>Must loop cleanly.</td></tr>
+          <tr><td><strong>Run</strong></td><td>Full-speed movement</td><td>Must loop cleanly.</td></tr>
+          <tr><td><strong>Attack or punch</strong></td><td>The punch in Chapter 1, Phase 4</td><td>One-shot, not looping.</td></tr>
+          <tr><td><strong>Jump</strong></td><td>Leaving the ground</td><td>One-shot.</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="call warn"><b>Warning &mdash; there is probably no climbing preset, and Uproar needs one.</b> Climbing is the game's signature mechanic and it is not a common preset category. <b>[Unverified]</b> &mdash; search the library for "climb" before you assume. If nothing suitable exists, Chapter 4 will cover holding a static climbing pose instead of playing a clip, which is a legitimate solution and cheaper than authoring an animation.</div>
+
+      <div class="call note"><b>Note &mdash; add a sixth clip only if it earns its place.</b> Every clip is another state to wire into the AnimationTree in Chapter 4. Five is enough to build a complete state machine. You can return and add more once the machine works.</div>
+
+      <span class="exp"><b>Expected:</b> five clips added to the character, each previewing correctly in the Meshy viewer.</span>
+    </div>
+  </div>
+
+  <div class="step" data-id="g8">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">8. Note what the bones are called</h3>
+      <p><strong>Meshy claims its rigs use Mixamo's bone-naming conventions.</strong> Their auto-rigging page states that bone names follow Mixamo's conventions and that a rigged character can be uploaded to Mixamo and given any motion clip without renaming or a plugin.</p>
+
+      <div class="call warn"><b>Warning &mdash; this is a vendor marketing claim, not documentation. [Unverified]</b> It appears on a product page rather than in Meshy's technical docs, and no Godot source confirms it. Treat it as promising rather than settled. Step 11 is where you find out for yourself.</div>
+
+      <p><strong>Why it matters to Godot.</strong> Godot's retargeting system maps a model's bones onto a <code>SkeletonProfileHumanoid</code> through a <code>BoneMap</code> resource. The engine's own release article states that auto-mapping works when bones carry common English names such as hips, shoulder, arm, leg and foot. Mixamo-style naming fits that description, so if the claim holds, auto-mapping should largely work and Chapter 4 gets considerably shorter.</p>
+
+      <div class="call key"><b>Key point &mdash; if it holds, Mixamo becomes available to you.</b> Chapter 1 correctly states that Mixamo's auto-rigger is bipedal-humanoid only and cannot rig a gorilla. That remains true. But rigging and animating are separate services. A gorilla already rigged by Meshy with Mixamo-compatible naming can potentially be animated by Mixamo, which is a far larger library than the five clips above.</div>
+
+      <span class="exp"><b>Expected:</b> nothing to do in Meshy. You are noting a claim to test in step 11.</span>
+      <p class="src">Source: <a href="https://www.meshy.ai/features/ai-auto-rigging" target="_blank" rel="noopener">Meshy &mdash; AI auto rigging</a> &middot; <a href="https://godotengine.org/article/animation-retargeting-in-godot-4-0/" target="_blank" rel="noopener">Godot &mdash; Animation retargeting in Godot 4.0</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPORT ================= -->
+<section id="export" class="rv" data-phase="export">
+  <div class="phase-head">
+    <p class="eyebrow">Part 4</p>
+    <h2>Export and file it</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Download <strong>both</strong> GLB and FBX, because the two sources disagree about which is safer, and one extra download costs nothing.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="g9">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">9. Download the rigged, animated character</h3>
+      <p><strong>Export as GLB first, then repeat the export as FBX.</strong> Meshy's tutorial gives the path as <strong>Download &rarr; Animation &rarr; All Added &rarr; Single File</strong>, offering FBX, GLB, or USDZ.</p>
+
+      <div class="call key"><b>Key point &mdash; the two sources disagree, so take both formats.</b> Godot's documentation lists glTF 2.0, which <code>.glb</code> is the binary form of, as the recommended import format. Meshy states that FBX is the most reliable choice for preserving skeletons and skinning across game engines. Both are credible. Download GLB for the project and keep the FBX beside it as a fallback for when a bone or a weight looks wrong.</div>
+
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Choose <strong>Download</strong>, then <strong>Animation</strong>, then <strong>All Added</strong>, then <strong>Single File</strong>.</li>
+        <li>Select <strong>GLB</strong> and download.</li>
+        <li>Repeat, selecting <strong>FBX</strong>.</li>
+        <li>Put both files somewhere outside your Godot project for now.</li>
+      </ol>
+
+      <div class="call warn"><b>Warning &mdash; download rather than relying on the cloud copy.</b> Meshy's API documentation shows an <code>expires_at</code> timestamp on task results, marking when output assets expire and may be deleted. Whether the browser app applies the same retention is not documented, so keep your own copy.</div>
+
+      <div class="call note"><b>Note &mdash; "Single File" matters.</b> It packages the mesh, the skeleton, and every animation clip into one file. The alternative gives you separate files per clip, which Godot can use through its <b>As AnimationLibrary</b> import mode &mdash; but that is the harder path and Chapter 4 does not need it.</div>
+
+      <span class="exp"><b>Expected:</b> two files on disk, one <code>.glb</code> and one <code>.fbx</code>, both larger than the unrigged model.</span>
+      <p class="src">Source: <a href="https://www.meshy.ai/tutorials/character-auto-rigging-workflow" target="_blank" rel="noopener">Meshy &mdash; character auto-rigging workflow</a> &middot; <a href="https://docs.meshy.ai/en/api/rigging" target="_blank" rel="noopener">Meshy Docs &mdash; Rigging API</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="g10">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">10. Rename and place the file</h3>
+      <p><strong>Rename the GLB to <code>gorilla.glb</code> before it enters the project.</strong> Meshy exports with a generated filename such as <code>Character_output.glb</code>, which tells you nothing in six months.</p>
+
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Rename the GLB to <code>gorilla.glb</code> and the FBX to <code>gorilla-backup.fbx</code>.</li>
+        <li>In Godot, open the <strong>FileSystem</strong> dock and select <code>res://asset/model/</code>.</li>
+        <li>Drag <code>gorilla.glb</code> into that folder. Godot imports it and writes a matching <code>.import</code> file beside it.</li>
+        <li>Keep <code>gorilla-backup.fbx</code> <em>outside</em> the project, so Godot does not import a second copy of the same character.</li>
+      </ol>
+
+      <div class="call warn"><b>Warning &mdash; move files inside Godot, never in your operating system's file manager.</b> This is the same rule as Chapter 1, Phase 0. Dragging a file within the <b>FileSystem dock</b> makes Godot rewrite every reference to it; moving it outside Godot breaks those references silently.</div>
+
+      <span class="exp"><b>Expected:</b> <code>res://asset/model/</code> contains <code>gorilla.glb</code>, and the FileSystem dock shows it with a scene icon rather than an error.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VERIFY ================= -->
+<section id="verify" class="rv" data-phase="verify">
+  <div class="phase-head">
+    <p class="eyebrow">Part 5</p>
+    <h2>Verify it in Godot</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Two checks decide whether Chapter 4 is short or long &mdash; whether the animations arrived, and what the bones are called. Do both before starting Chapter 4.</p>
+    <div class="phase-meta"><div class="pbar"><i></i></div><span class="pcount"></span></div>
+  </div>
+
+  <div class="step" data-id="g11">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">11. Open the model and read the bone list</h3>
+      <p><strong>This is the test that settles the naming question from step 8.</strong> An imported 3D scene is read-only in Godot, so you open an inherited scene to inspect it.</p>
+
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>In the <strong>FileSystem</strong> dock, right-click <code>gorilla.glb</code>.</li>
+        <li>Choose <strong>New Inherited Scene</strong>. Godot opens a scene tree built from the file.</li>
+        <li>Find the <strong>Skeleton3D</strong> node and the <strong>AnimationPlayer</strong> node in the tree.</li>
+        <li>Select the <strong>AnimationPlayer</strong> and open its animation dropdown. Count the clips.</li>
+        <li>Select the <strong>Skeleton3D</strong> and read the bone names listed in the Inspector.</li>
+        <li>Write down the first six bone names exactly as they appear.</li>
+      </ol>
+
+      <p><strong>What the bone names tell you:</strong></p>
+      <ul>
+        <li>Names like <code>mixamorig:Hips</code>, <code>Hips</code>, <code>Spine</code>, <code>LeftArm</code> confirm the Mixamo convention. Godot's auto-mapping should then largely work, and Chapter 4 can lean on it.</li>
+        <li>Names like <code>bone_01</code>, <code>joint_3</code>, or anything numeric mean auto-mapping will fail and every bone must be assigned by hand in the <code>BoneMap</code>.</li>
+      </ul>
+
+      <div class="call warn"><b>Warning &mdash; do not enable retargeting yet.</b> Godot's retargeting documentation warns that the rest-fixing option, which overwrites Bone Rests to match the profile's reference pose, can produce very poor results when the original Bone Rest matters. Chapter 4 will decide whether you need it at all. Just look at the names for now.</div>
+
+      <span class="exp"><b>Expected:</b> a scene containing a <strong>Skeleton3D</strong> and an <strong>AnimationPlayer</strong>, the AnimationPlayer listing five clips, and six bone names written down.</span>
+      <p class="src">Source: <a href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/retargeting_3d_skeletons.html" target="_blank" rel="noopener">Godot &mdash; Retargeting 3D Skeletons</a></p>
+    </div>
+  </div>
+
+  <div class="step" data-id="g12">
+    <button class="cb" role="checkbox" aria-checked="false" aria-label="Toggle step"></button>
+    <div class="step-body">
+      <h3 class="step-title">12. Check the scale and the facing direction</h3>
+      <p><strong>Meshy builds characters at human scale; your gorilla needs to be roughly 8 metres tall.</strong> The <code>Player</code> capsule is a <code>CapsuleShape3D</code> with radius 1.5 and height 8, positioned at y 4, so its top sits 8 metres above the floor.</p>
+
+      <p><strong>Action:</strong></p>
+      <ol>
+        <li>Open <code>res://scene/player.tscn</code>.</li>
+        <li>Drag <code>gorilla.glb</code> from the FileSystem dock onto the <code>Facing</code> node &mdash; not onto <code>Player</code>, and not onto <code>CameraPivot</code>.</li>
+        <li>Adjust the imported node's <strong>Scale</strong> until the gorilla's head reaches the top of the capsule.</li>
+        <li>If the gorilla faces away from you, set its <strong>Rotation</strong> on Y to <code>180</code>.</li>
+      </ol>
+
+      <div class="call key"><b>Key point &mdash; the model goes under <code>Facing</code>, and the capsule stays.</b> <code>Facing</code> is the only node that rotates, so the visual model must live under it to turn with the character. The <code>CollisionShape3D</code> remains on <code>Player</code> and remains the capsule &mdash; physics never uses the detailed mesh, which is both correct and far faster.</div>
+
+      <div class="call note"><b>Note &mdash; why 180 degrees.</b> Godot treats <code>-Z</code> as forward for a Node3D. Many exported models are authored facing <code>+Z</code>. Meshy's API documentation confirms this expectation from the other direction: it requires uploaded models to face <code>+Z</code>, which it calls the standard glTF forward direction.</div>
+
+      <p><strong>Delete the placeholder.</strong> The old <code>Body</code> MeshInstance3D under <code>Facing</code> can go once the gorilla is in place. Rename the imported node to <code>Body</code> so the existing script paths still resolve.</p>
+
+      <span class="exp"><b>Expected:</b> pressing F6 on <code>player.tscn</code> shows a gorilla roughly filling the capsule, facing away from the camera, moving and punching exactly as the capsule did.</span>
+      <p class="src">Source: <a href="https://docs.meshy.ai/en/api/rigging" target="_blank" rel="noopener">Meshy Docs &mdash; Rigging API, forward axis</a></p>
+    </div>
+  </div>
+
+  <div class="call key" style="margin-top:28px;"><b>Key point &mdash; what to carry into Chapter 4.</b> Three things: the six bone names from step 11, the number of animation clips the AnimationPlayer found, and whether a climbing clip exists. Chapter 4 builds an AnimationTree on top of all three.</div>
+</section>
+
+<!-- ================= SOURCES ================= -->
+<section id="sources" class="rv">
+  <div class="phase-head">
+    <p class="eyebrow">Verification</p>
+    <h2>Where every claim came from</h2>
+    <p class="bluf"><span class="lbl">Bottom line:</span> Meshy claims are taken from Meshy's own documentation and help centre. Two claims come from Meshy product pages rather than documentation and are marked <b>[Unverified]</b> in the text. Godot claims are taken from official Godot documentation.</p>
+  </div>
+  <details>
+    <summary>Meshy &mdash; documentation and help centre</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://docs.meshy.ai/en/api/rigging" target="_blank" rel="noopener">Rigging API &mdash; humanoid-only limitation, 300,000-face limit, +Z forward axis, asset expiry</a></li>
+      <li><a href="https://docs.meshy.ai/en/webapp/getting-started" target="_blank" rel="noopener">Quick start &mdash; generation workflow, background-contamination failure and fix</a></li>
+      <li><a href="https://docs.meshy.ai/en/webapp/concepts" target="_blank" rel="noopener">Core concepts &mdash; the generate, remesh, rig, export pipeline</a></li>
+      <li><a href="https://help.meshy.ai/en/articles/10137554-what-is-the-ownership-of-the-generated-models" target="_blank" rel="noopener">Help centre &mdash; ownership of generated models</a></li>
+      <li><a href="https://help.meshy.ai/en/articles/16102098-can-i-use-meshy-assets-commercially" target="_blank" rel="noopener">Help centre &mdash; commercial use, reference-image conditions, plan-at-generation rule</a></li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Meshy &mdash; product and tutorial pages (third-party marketing, lower confidence)</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://www.meshy.ai/tutorials/character-auto-rigging-workflow" target="_blank" rel="noopener">Character auto-rigging workflow &mdash; three skeleton types, pose guidance, download path</a></li>
+      <li><a href="https://www.meshy.ai/features/ai-auto-rigging" target="_blank" rel="noopener">AI auto rigging &mdash; 30-second claim, bone overlay, <b>Mixamo naming claim [Unverified]</b></a></li>
+      <li><a href="https://www.meshy.ai/features/ai-animation-generator" target="_blank" rel="noopener">AI animation generator &mdash; supported body plans</a></li>
+      <li><a href="https://www.meshy.ai/use-cases/free-game-assets" target="_blank" rel="noopener">Game assets &mdash; polygon budgets, preset counts by plan tier</a></li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Godot &mdash; official documentation</summary>
+    <div class="details-body"><ul>
+      <li><a href="https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/retargeting_3d_skeletons.html" target="_blank" rel="noopener">Retargeting 3D Skeletons &mdash; Fix Silhouette for A-pose, rest-fixing warning</a></li>
+      <li><a href="https://godotengine.org/article/animation-retargeting-in-godot-4-0/" target="_blank" rel="noopener">Animation retargeting in Godot 4.0 &mdash; BoneMap auto-mapping from common English bone names</a></li>
+      <li><a href="https://github.com/godotengine/godot/issues/103258" target="_blank" rel="noopener">Issue #103258 &mdash; non-humanoid retargeting behaviour (repository tier, open issue)</a></li>
+    </ul></div>
+  </details>
+</section>
+
+<footer>
+  Godot Guide &mdash; Uproar supplement: Making The Gorilla In Meshy &middot; Godot 4.7.1-stable &middot; Progress is saved automatically.<br>
+  Meshy is a paid third-party service and is not required &mdash; any rigged gorilla will do.<br>
+  <a href="./index.html">Series index</a> &nbsp;&middot;&nbsp; <a href="./uproar-ch1-prototype.html">Chapter 1: Prototype</a> &nbsp;&middot;&nbsp; <a href="./uproar-ch3-going-to-pieces.html">Chapter 3: Going To Pieces</a>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "godot-uproar-guide-meshy-v1";
+  var checked = {};
+  var theme = "auto";              // "auto" | "light" | "dark"
+  var saveTimer = null;
+  var loaded = false;
+
+  var items = Array.prototype.slice.call(document.querySelectorAll("[data-id]"));
+  var total = items.length;
+
+  /* ---------- storage adapter ----------
+     Tries three backends in order, so progress persists whether this page is
+     rendered inside Claude or opened as a downloaded file in a browser.
+       1. window.storage  - available when rendered as an artifact
+       2. localStorage    - available when opened as a local/hosted file
+       3. memory          - last resort; survives navigation but not a reload
+  */
+  var store = (function(){
+    if (window.storage && typeof window.storage.get === "function") {
+      return {
+        kind: "synced",
+        get: function(k){
+          return window.storage.get(k).then(function(r){
+            return (r && typeof r.value === "string") ? r.value : null;
+          });
+        },
+        set: function(k, v){ return window.storage.set(k, v); }
+      };
+    }
+    try {
+      var probe = "__probe__";
+      window.localStorage.setItem(probe, "1");
+      window.localStorage.removeItem(probe);
+      return {
+        kind: "local",
+        get: function(k){ return Promise.resolve(window.localStorage.getItem(k)); },
+        set: function(k, v){ window.localStorage.setItem(k, v); return Promise.resolve(true); }
+      };
+    } catch (e) { /* storage blocked or unavailable */ }
+    var mem = {};
+    return {
+      kind: "memory",
+      get: function(k){ return Promise.resolve(Object.prototype.hasOwnProperty.call(mem, k) ? mem[k] : null); },
+      set: function(k, v){ mem[k] = v; return Promise.resolve(true); }
+    };
+  })();
+
+  /* ---------- appearance ---------- */
+  var themeBtn = document.getElementById("themeBtn");
+  var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function resolvedTheme(){
+    return theme === "auto" ? (darkQuery.matches ? "dark" : "light") : theme;
+  }
+
+  function applyTheme(){
+    var root = document.documentElement;
+    if (theme === "auto") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", theme);
+    var isDark = resolvedTheme() === "dark";
+    themeBtn.textContent = isDark ? "☀" : "☾";
+    var label = isDark ? "Switch to light appearance" : "Switch to dark appearance";
+    themeBtn.setAttribute("aria-label", label);
+    themeBtn.setAttribute("title", label);
+  }
+
+  themeBtn.addEventListener("click", function(){
+    theme = resolvedTheme() === "dark" ? "light" : "dark";
+    applyTheme();
+    save();
+  });
+
+  if (darkQuery.addEventListener) {
+    darkQuery.addEventListener("change", function(){ if (theme === "auto") applyTheme(); });
+  } else if (darkQuery.addListener) {
+    darkQuery.addListener(function(){ if (theme === "auto") applyTheme(); });
+  }
+
+  applyTheme();
+
+  /* ---------- load / save ---------- */
+  function payload(){
+    return JSON.stringify({ checked: checked, theme: theme });
+  }
+
+  function load(){
+    return store.get(KEY)
+      .then(function(raw){
+        if (!raw) return;
+        var data;
+        try { data = JSON.parse(raw); } catch (e) { return; }
+        if (!data || typeof data !== "object") return;
+        if (data.checked) {              // current format
+          checked = data.checked;
+          if (data.theme) theme = data.theme;
+        } else {                         // earlier format: a flat map of ids
+          checked = data;
+        }
+      })
+      .catch(function(){ /* nothing saved yet - expected on first run */ })
+      .then(function(){
+        loaded = true;
+        applyTheme();
+        render();
+        if (store.kind === "memory") {
+          var c = document.getElementById("navCount");
+          if (c) c.title = "Storage is unavailable in this browser, so progress will reset on reload.";
+        }
+      });
+  }
+
+  function save(){
+    if (!loaded) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      store.set(KEY, payload())
+        .then(function(){ flashSaved(); })
+        .catch(function(err){ console.error("Could not save progress:", err); });
+    }, 350);
+  }
+
+  var dot = document.getElementById("saveDot");
+  var dotTimer = null;
+  function flashSaved(){
+    if (!dot) return;
+    dot.classList.add("on");
+    clearTimeout(dotTimer);
+    dotTimer = setTimeout(function(){ dot.classList.remove("on"); }, 1400);
+  }
+
+  /* ---------- rendering ---------- */
+  function render(){
+    var done = 0;
+    items.forEach(function(el){
+      var id = el.getAttribute("data-id");
+      var on = !!checked[id];
+      if (on) done++;
+      el.classList.toggle("done", on);
+      var btn = el.querySelector(".cb");
+      if (btn) btn.setAttribute("aria-checked", on ? "true" : "false");
+    });
+
+    var pct = total ? done / total : 0;
+
+    var hero = document.getElementById("heroRing");
+    if (hero) {
+      var hc = 2 * Math.PI * 54;
+      hero.setAttribute("stroke-dashoffset", hc - hc * pct);
+    }
+    var heroPct = document.getElementById("heroPct");
+    if (heroPct) heroPct.textContent = Math.round(pct * 100) + "%";
+
+    var mini = document.getElementById("miniRing");
+    if (mini) {
+      var mc = 2 * Math.PI * 10.5;
+      mini.setAttribute("stroke-dashoffset", mc - mc * pct);
+    }
+    var navCount = document.getElementById("navCount");
+    if (navCount) navCount.textContent = done + " / " + total;
+
+    var left = document.getElementById("stepsLeft");
+    if (left) left.textContent = total - done;
+
+    document.querySelectorAll("section[data-phase]").forEach(function(sec){
+      var kids = sec.querySelectorAll("[data-id]");
+      if (!kids.length) return;
+      var d = 0;
+      kids.forEach(function(k){ if (checked[k.getAttribute("data-id")]) d++; });
+      var bar = sec.querySelector(".pbar i");
+      var cnt = sec.querySelector(".pcount");
+      if (bar) bar.style.width = (d / kids.length * 100) + "%";
+      if (cnt) cnt.textContent = d + " of " + kids.length + " done";
+    });
+  }
+
+  function toggle(el){
+    var id = el.getAttribute("data-id");
+    if (checked[id]) { delete checked[id]; } else { checked[id] = 1; }
+    render();
+    save();
+  }
+
+  items.forEach(function(el){
+    var btn = el.querySelector(".cb");
+    if (btn) btn.addEventListener("click", function(){ toggle(el); });
+    var title = el.querySelector(".step-title");
+    if (title) title.addEventListener("click", function(){ toggle(el); });
+  });
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById("resetBtn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function(){
+      if (!confirm("Clear all " + total + " checkmarks on this page? This cannot be undone.")) return;
+      checked = {};
+      render();
+      store.set(KEY, payload())
+        .then(flashSaved)
+        .catch(function(err){ console.error("Could not clear progress:", err); });
+    });
+  }
+
+  /* ---------- resume ---------- */
+  var resumeBtn = document.getElementById("resumeBtn");
+  if (resumeBtn) {
+    resumeBtn.addEventListener("click", function(){
+      var next = null;
+      for (var i = 0; i < items.length; i++) {
+        if (!checked[items[i].getAttribute("data-id")]) { next = items[i]; break; }
+      }
+      var target = next || items[0];
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+      var btn = target.querySelector(".cb");
+      if (btn) setTimeout(function(){ btn.focus(); }, 600);
+    });
+  }
+
+  /* ---------- scroll reveal ---------- */
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -60px 0px" });
+    document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".rv").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>

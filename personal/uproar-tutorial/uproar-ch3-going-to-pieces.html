@@ -379,7 +379,6 @@ footer{
       </svg>
       <span class="ring-label"><b id="heroPct" style="color:#f5f5f7;font-size:14px;">0%</b> complete</span>
     </div>
-    <div class="stat"><b id="daysLeft">—</b><span>DAYS TO JAM</span></div>
     <div class="stat"><b id="stepsLeft">—</b><span>STEPS LEFT</span></div>
     <div class="stat"><b>1</b><span>EVENING OF WORK</span></div>
   </div>
@@ -394,7 +393,8 @@ footer{
     <div class="nav-links">
       <a href="#before">Before you start</a><a href="#blender">Fracture</a>
       <a href="#import">Import</a><a href="#feel">Feel</a><a href="#fix">When it breaks</a>
-      <a href="uproar-ch2-bringing-down-the-house.html">← Chapter 2</a>
+      <a href="./index.html">↑ Index</a>
+      <a href="./uproar-ch2-bringing-down-the-house.html">← Chapter 2</a>
     </div>
     <div class="nav-right">
       <svg class="ring mini-ring" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
@@ -640,7 +640,7 @@ footer{
         self._build_chunks()
 
     self.chunks.visible = false     &#35; hidden until the building dies</code></pre>
-      <div class="call key"><b>Key point — keep <code>_build_chunks()</code> in the file.</b> Deleting it would save nothing and cost you the fallback. If Blender misbehaves an hour before a deadline, clearing one Inspector field gets you back to working destruction.</div>
+      <div class="call key"><b>Key point — keep <code>_build_chunks()</code> in the file.</b> Deleting it would save nothing and cost you the fallback. If Blender misbehaves, clearing one Inspector field gets you back to working destruction.</div>
       <div class="call warn"><b>Warning — do not also delete the <code>Chunks</code> node.</b> Both builders add their output to it, and <code>_collapse()</code> reads it. It stays exactly where Chapter 2 put it, at position <code>0, 0, 0</code> under <code>Building</code>.</div>
       <span class="exp"><b>Checkpoint:</b> punch a building to zero health and it bursts into irregular shards instead of boxes, using the <code>_collapse()</code> code you have not touched.</span>
     </div>
@@ -774,7 +774,7 @@ footer{
 
 <footer>
   Godot Guide — Uproar, Chapter 3: Going To Pieces · Godot 4.7.1-stable · Progress on this page is saved separately.<br>
-  <a href="uproar-ch2-bringing-down-the-house.html">← Back to Chapter 2</a> &nbsp;·&nbsp; <a href="uproar-ch1-prototype.html">Chapter 1</a>
+  <a href="./index.html">Series index</a> &nbsp;·&nbsp; <a href="./uproar-ch2-bringing-down-the-house.html">← Back to Chapter 2</a> &nbsp;·&nbsp; <a href="./uproar-ch1-prototype.html">Chapter 1</a>
 </footer>
 
 
@@ -996,17 +996,6 @@ footer{
       var btn = target.querySelector(".cb");
       if (btn) setTimeout(function(){ btn.focus(); }, 600);
     });
-  }
-
-  /* ---------- countdown ---------- */
-  var daysEl = document.getElementById("daysLeft");
-  if (daysEl) {
-    var jam = new Date(2026, 7, 14);
-    var now = new Date();
-    now.setHours(0, 0, 0, 0);
-    var days = Math.round((jam - now) / 86400000);
-    daysEl.textContent = days > 0 ? days : (days === 0 ? "Today" : "—");
-    if (days === 0) daysEl.style.fontSize = "26px";
   }
 
   /* ---------- scroll reveal ---------- */
