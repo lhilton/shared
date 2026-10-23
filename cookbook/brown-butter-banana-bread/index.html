@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brown Butter Chocolate Chip Banana Bread — full batch (350 g banana), step by step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Theme: banana — caramel gold accent, brown-butter brown ink, walnut green secondary */
+  :root{
+    --crumb:   #FDF6E4;
+    --crumb-2: #F4E7C8;
+    --accent:  #D99E2B;   /* ripe banana gold */
+    --accent-d:#9C6B12;
+    --second:  #7A9150;   /* walnut-leaf green */
+    --second-d:#57683A;
+    --warn:    #C0492B;   /* toasted-crust rust */
+    --warn-d:  #96361F;
+    --ink:     #3D2E1C;
+    --ink-soft:#6E5B45;
+    --line:    #E5D3A8;
+    --maxw: 820px;
+    --shadow: 0 1px 2px rgba(61,46,28,.06), 0 14px 34px -18px rgba(61,46,28,.32);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 85% -10%, #F1E2B4 0%, rgba(241,226,180,0) 50%),
+      radial-gradient(90% 70% at 0% 0%, #FBEFCB 0%, rgba(251,239,203,0) 55%),
+      var(--crumb);
+    color:var(--ink);
+    font-family:"Hanken Grotesk", system-ui, -apple-system, sans-serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; font-weight:900; line-height:1.06; letter-spacing:-.01em}
+  a{color:var(--second-d)}
+  .eyebrow{font-weight:700; text-transform:uppercase; letter-spacing:.22em; font-size:.74rem; color:var(--accent-d)}
+
+  /* hero */
+  .hero{padding:52px 0 26px; text-align:center}
+  .hero .scene{width:158px; height:158px; margin:0 auto 14px}
+  .hero h1{font-size:clamp(2.1rem,5.6vw,3.3rem); margin:.1em 0 .14em}
+  .hero h1 .it{font-style:italic;font-weight:500;color:var(--second-d)}
+  .hero p.lede{font-size:1.1rem; color:var(--ink-soft); max-width:50ch; margin:6px auto 0}
+  .pill-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px}
+  .pill{display:inline-flex; align-items:center; gap:8px; background:#fffaf0; border:1px solid var(--line); border-radius:999px; padding:8px 15px; font-size:.86rem; font-weight:600; color:var(--ink-soft); box-shadow:var(--shadow)}
+  .pill b{color:var(--ink)}
+
+  /* phone card embed */
+  .phonecard{background:#fffaf0; border:1px solid var(--line); border-radius:18px;
+    box-shadow:var(--shadow); padding:24px; text-align:center; margin-top:20px}
+  .phonecard img{width:min(320px,80vw); border-radius:28px; box-shadow:0 18px 40px -18px rgba(61,46,28,.45)}
+  .phonecard p{font-size:.9rem; color:var(--ink-soft); margin:10px 0 0}
+
+  section{padding:26px 0}
+  .num-eyebrow{display:flex; align-items:center; gap:12px; margin:0 0 16px}
+  .num-eyebrow .n{
+    width:40px;height:40px;border-radius:12px;flex:none;display:grid;place-items:center;
+    font-family:"Fraunces",serif;font-weight:900;font-size:1.15rem;color:#fff;
+    background:var(--second); box-shadow:0 8px 16px -8px rgba(87,104,58,.7);
+  }
+  .num-eyebrow h2{font-size:clamp(1.5rem,3.4vw,2.1rem); margin:0}
+  .panel{background:#fffaf0; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:24px}
+
+  /* banana-count guidance box */
+  .about{
+    background:linear-gradient(180deg,var(--crumb-2),#FFFCF3);
+    border:1px solid var(--line); border-left:5px solid var(--accent);
+    border-radius:16px; box-shadow:var(--shadow); padding:22px 24px; margin-top:8px;
+  }
+  .about h2{font-size:1.35rem; margin:0 0 6px}
+  .about ul{margin:12px 0 0; padding:0; list-style:none; display:grid; gap:10px}
+  .about li{position:relative; padding-left:26px; font-size:.97rem}
+  .about li::before{content:"🍌"; position:absolute; left:0; top:0; font-size:.9rem}
+  .about b{color:var(--accent-d)}
+  .about table{width:100%; border-collapse:collapse; margin-top:12px; font-size:.95rem}
+  .about th{font-weight:800; text-transform:uppercase; letter-spacing:.08em; font-size:.72rem; color:var(--accent-d); text-align:left; padding:6px 10px; border-bottom:2px solid var(--line)}
+  .about td{padding:8px 10px; border-bottom:1px dashed var(--line); vertical-align:top}
+  .about td:first-child{font-weight:700; white-space:nowrap}
+  .about tr:last-child td{border-bottom:0}
+
+  .lab{display:inline-block; font-weight:800; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; padding:2px 9px; border-radius:6px; margin-right:8px; vertical-align:2px}
+  .lab.do{background:var(--second); color:#fff}
+  .lab.note{background:var(--crumb-2); color:var(--accent-d); border:1px solid var(--line)}
+  .lab.warn{background:var(--warn); color:#fff}
+  .lab.see{background:#EAF0E0; color:var(--ink); border:1px solid #CFDDBC}
+
+  .two{display:grid; gap:18px}
+  @media(min-width:620px){.two{grid-template-columns:1fr 1fr}}
+  .card{background:#fffaf0; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:20px 22px}
+  .card h3{font-size:1.18rem; margin:0 0 4px}
+  .card .sub{font-size:.84rem; color:var(--ink-soft); margin:0 0 14px}
+  ul.list{list-style:none; margin:0; padding:0}
+  ul.list li{display:flex; justify-content:space-between; gap:14px; padding:8px 0; border-bottom:1px dashed var(--line)}
+  ul.list li:last-child{border-bottom:0}
+  /* grams first (green), volume small gray */
+  ul.list .amt{font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--accent-d); text-align:right}
+  ul.list .amt .gram{display:block; font-weight:800; font-size:1rem; color:var(--second-d)}
+  ul.list li.banana{background:linear-gradient(90deg,rgba(217,158,43,.18),transparent); border-radius:8px; padding:9px 10px; border-bottom:0; border:1px solid #E6CE97}
+  .weightnote{background:#EEF3E6; border:1px solid #D2E0C2; border-radius:10px; padding:11px 13px; font-size:.9rem; color:var(--ink-soft); margin:0 0 14px}
+  .weightnote b{color:var(--second-d)}
+  .variant{background:var(--crumb-2); border:1px dashed var(--accent); border-radius:10px; padding:12px 14px; font-size:.9rem; margin-top:14px}
+  .variant b{color:var(--accent-d)}
+  ul.tools{list-style:none;margin:0;padding:0}
+  ul.tools li{padding:7px 0 7px 26px; position:relative; border-bottom:1px dashed var(--line)}
+  ul.tools li:last-child{border-bottom:0}
+  ul.tools li::before{content:"✓"; position:absolute; left:0; top:7px; color:var(--second-d); font-weight:800}
+
+  ol.steps{list-style:none; counter-reset:s; margin:0; padding:0; display:grid; gap:16px}
+  ol.steps > li{
+    counter-increment:s; position:relative; padding:18px 20px 18px 64px;
+    background:#fffaf0; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);
+  }
+  ol.steps > li::before{
+    content:counter(s); position:absolute; left:16px; top:16px;
+    width:34px;height:34px;border-radius:50%; display:grid; place-items:center;
+    font-family:"Fraunces",serif; font-weight:900; font-size:1rem; color:#fff;
+    background:var(--accent); box-shadow:0 5px 12px -5px rgba(156,107,18,.8);
+  }
+  ol.steps > li h4{margin:0 0 6px; font-family:"Hanken Grotesk",sans-serif; font-weight:800; font-size:1.04rem}
+  ol.steps > li p{margin:0 0 8px}
+  ol.steps > li p:last-child{margin-bottom:0}
+  .expect{font-size:.92rem; color:var(--ink-soft); background:#F3F7EC; border:1px solid #D9E7C9; border-radius:9px; padding:9px 12px; margin-top:8px}
+  .expect b{color:var(--second-d)}
+  .stop{font-size:.93rem; background:linear-gradient(90deg,rgba(192,73,43,.09),transparent 70%); border-left:4px solid var(--warn); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .stop b{color:var(--warn-d)}
+  .flag{font-size:.93rem; background:linear-gradient(90deg,rgba(217,158,43,.18),transparent 75%); border-left:4px solid var(--accent); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .flag b{color:var(--accent-d)}
+
+  code{background:var(--crumb-2); border:1px solid var(--line); border-radius:6px; padding:1px 7px; font-size:.92em; font-weight:600}
+  b.key{color:var(--ink)}
+
+  .settings{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:.86rem;font-weight:600}
+  .chip b{color:var(--second-d)}
+
+  .fix{display:grid;gap:12px}
+  @media(min-width:620px){.fix{grid-template-columns:1fr 1fr}}
+  .fix .it{background:var(--crumb-2);border:1px solid var(--line);border-radius:12px;padding:15px}
+  .fix .it h4{margin:0 0 5px;font-family:"Fraunces",serif;font-size:1.05rem}
+  .fix .it p{margin:0;font-size:.93rem;color:var(--ink-soft)}
+
+  footer{padding:34px 0 56px;color:var(--ink-soft);font-size:.85rem}
+  footer .rule{height:1px;background:var(--line);margin-bottom:20px}
+  footer b{color:var(--ink)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:6px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="scene" aria-hidden="true">
+      <svg viewBox="0 0 160 160" width="158" height="158">
+        <defs>
+          <linearGradient id="bf" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#E7B65A"/><stop offset="1" stop-color="#A9761F"/>
+          </linearGradient>
+        </defs>
+        <circle cx="80" cy="74" r="62" fill="#F4E5B8"/>
+        <path d="M30 100 C28 70 44 52 80 52 C116 52 132 70 130 100 C130 108 122 112 114 112 L46 112 C38 112 30 108 30 100 Z" fill="url(#bf)" stroke="#8F5F10" stroke-width="2.5"/>
+        <g stroke="#7E540D" stroke-width="2.4" stroke-linecap="round" opacity=".7">
+          <path d="M56 100 q11 -20 22 0"/><path d="M84 100 q11 -20 22 0"/>
+        </g>
+        <g fill="#4A3320">
+          <ellipse cx="64" cy="82" rx="3.4" ry="2.6" transform="rotate(20 64 82)"/>
+          <ellipse cx="88" cy="76" rx="3.4" ry="2.6" transform="rotate(-15 88 76)"/>
+          <ellipse cx="104" cy="92" rx="3.2" ry="2.4" transform="rotate(30 104 92)"/>
+          <ellipse cx="72" cy="98" rx="3" ry="2.2" transform="rotate(-25 72 98)"/>
+          <ellipse cx="94" cy="102" rx="2.8" ry="2.1" transform="rotate(12 94 102)"/>
+        </g>
+        <g stroke="#8F5F10" stroke-width="2.2" stroke-linecap="round" fill="#F0CE63">
+          <path d="M50 40 C56 22 78 14 98 20 C104 22 106 28 102 32 C86 26 68 32 60 44 C57 48 51 45 50 40 Z"/>
+        </g>
+        <path d="M97 18 l6 -4" stroke="#57683A" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="eyebrow">munchiesbymallory.com · full batch</span>
+    <h1>Brown Butter Chocolate Chip Banana Bread</h1>
+    <p class="lede">Nutty brown butter, molasses-sweet crumb, chocolate in every slice. This is the original full-batch recipe — 350 g of banana, which is three large or four medium bananas.</p>
+    <div class="pill-row">
+      <span class="pill">🍞 <span>One <b>9×5-inch</b> loaf</span></span>
+      <span class="pill">⏱ <span>About <b>1 hr 15 min</b></span></span>
+      <span class="pill">⚖️ <span><b>Weigh everything</b></span></span>
+      <span class="pill">🍌 <span><b>350 g banana</b></span></span>
+    </div>
+    <div class="phonecard">
+      <a href="banana-bread-v5.png"><img src="banana-bread-v5.png" alt="iPhone recipe card: Brown Butter Chocolate Chip Banana Bread, full batch"></a>
+      <p>📱 For your phone — tap to open the full-size card, then save it to Photos.</p>
+    </div>
+  </div>
+</header>
+
+<!-- BANANA COUNT GUIDE -->
+<section style="padding-top:8px">
+  <div class="wrap">
+    <div class="about">
+      <h2>How many bananas is 350 g?</h2>
+      <p style="margin:0">The recipe runs on weight, not count, because banana sizes vary wildly. Peeled, mashed weight is what matters. Use this table to hit 350 g with whatever's on the counter:</p>
+      <table>
+        <thead><tr><th>Banana size</th><th>Peeled weight each</th><th>For 350 g</th></tr></thead>
+        <tbody>
+          <tr><td>Small</td><td>~75 g</td><td>5 bananas</td></tr>
+          <tr><td>Medium</td><td>~90 g</td><td>4 bananas</td></tr>
+          <tr><td>Large</td><td>~115 g</td><td>3 bananas</td></tr>
+          <tr><td>Extra-large</td><td>~140 g</td><td>2½ bananas</td></tr>
+        </tbody>
+      </table>
+      <p style="margin:12px 0 0">Riper is better — the more brown spots on the peel, the sweeter and more banana-forward the loaf. If yours land a little short of 350 g (say 320 g), bake as-is; don't pad with extra flour.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 1. WHAT YOU NEED -->
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">1</span><h2>What you need</h2></div>
+    <div class="two">
+      <div class="card">
+        <h3>Ingredients</h3>
+        <p class="sub">For one 9×5 loaf. Grams lead; volume in the small line.</p>
+        <p class="weightnote"><b>Weigh if you can — flour and banana especially.</b> Set the bowl on the scale, press zero (tare) between ingredients, and go by grams. Banana is weighed after peeling.</p>
+        <ul class="list">
+          <li class="banana"><span>Overripe bananas, mashed</span><span class="amt"><span class="gram">350 g</span>3 large · or 4 medium · weighed after peeling</span></li>
+          <li><span>All-purpose flour</span><span class="amt"><span class="gram">250 g</span>2 cups, spoon &amp; level</span></li>
+          <li><span>Light brown sugar, packed</span><span class="amt"><span class="gram">200 g</span>1 cup</span></li>
+          <li><span>Unsalted butter <em>(browned, see step 2)</em></span><span class="amt"><span class="gram">113 g</span>½ cup / 1 stick</span></li>
+          <li><span>Semi-sweet chocolate chips</span><span class="amt"><span class="gram">170 g</span>1 cup, plus extra for the top</span></li>
+          <li><span>Large egg</span><span class="amt"><span class="gram">50 g</span>1, out of shell</span></li>
+          <li><span>Milk <em>(any %, add by feel)</em></span><span class="amt"><span class="gram">30–60 g</span>2–4 Tbsp, only if batter is too thick</span></li>
+          <li><span>Vanilla extract</span><span class="amt"><span class="gram">5 g</span>1 tsp</span></li>
+          <li><span>Baking powder</span><span class="amt"><span class="gram">1 tsp</span>~4 g — too small to weigh</span></li>
+          <li><span>Fine grain salt</span><span class="amt"><span class="gram">¼ tsp</span>too small to weigh</span></li>
+        </ul>
+        <div class="variant"><b>No brown sugar?</b> Swap in <b>190 g white sugar plus 10 g molasses or honey</b> — you lose a little of the molasses chew but the loaf bakes the same.</div>
+      </div>
+      <div class="card">
+        <h3>Equipment</h3>
+        <p class="sub">All standard kitchen kit.</p>
+        <ul class="tools">
+          <li>A <b class="key">kitchen scale</b> — this recipe runs on grams</li>
+          <li>A 9×5-inch loaf pan, greased or lined with parchment</li>
+          <li>A light-colored saucepan for browning the butter</li>
+          <li>A heatproof bowl to cool the brown butter in</li>
+          <li>Two mixing bowls (one large, one medium) and a whisk</li>
+          <li>A fork for mashing bananas, a spatula for folding</li>
+          <li>A toothpick or skewer, and an instant-read thermometer if you have one</li>
+          <li>A wire cooling rack</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. GET READY -->
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">2</span><h2>Get ready (the prep)</h2></div>
+    <ol class="steps">
+      <li>
+        <h4>Heat the oven and prep the pan</h4>
+        <p>Set the oven to <code>350°F (175°C)</code> with the rack in the center. Grease a 9×5-inch loaf pan or line it with parchment.</p>
+      </li>
+      <li>
+        <h4>Brown the butter</h4>
+        <p>Melt <code>113 g (1 stick)</code> butter in a saucepan over medium-low heat, swirling often. After <b class="key">5 to 8 minutes</b> it turns golden brown and smells nutty. Pour it into a heatproof bowl and let it cool <b class="key">10 minutes</b>.</p>
+        <p class="expect"><b>What to expect:</b> the milk solids drop to the bottom and toast there. Those brown specks are the flavor — scrape them all in.</p>
+        <p class="stop"><b>Don't skip the cool-down.</b> Hot brown butter will scramble the egg in step 3. Ten minutes is enough; the butter should be warm, not hot.</p>
+      </li>
+      <li>
+        <h4>Mash the bananas</h4>
+        <p>In a large bowl, mash the bananas with a fork until smooth, no big chunks. You want <b class="key">350 g after peeling</b> — three large or four medium.</p>
+        <p class="expect"><b>What to expect:</b> about 1½ cups of mash. Riper and spottier is better; under-ripe bananas leave the loaf flat-tasting.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- 3. MAKE THE BATTER -->
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">3</span><h2>Make the batter</h2></div>
+    <ol class="steps">
+      <li>
+        <h4>Mix the wet ingredients</h4>
+        <p>Add the cooled brown butter, <code>200 g (1 cup)</code> brown sugar, the egg, and <code>5 g (1 tsp)</code> vanilla to the bananas. Whisk until smooth and glossy.</p>
+      </li>
+      <li>
+        <h4>Mix the dry ingredients</h4>
+        <p>In a separate bowl, whisk <code>250 g (2 cups)</code> flour, <code>1 tsp</code> baking powder, and <code>¼ tsp</code> salt until even.</p>
+      </li>
+      <li>
+        <h4>Fold dry into wet</h4>
+        <p>Pour the dry mix over the wet and fold with a spatula until the last dry streaks just disappear.</p>
+        <p class="stop"><b>Stop folding the moment it comes together.</b> Overmixing builds gluten and turns a fluffy loaf dense and chewy. A few small lumps are fine.</p>
+      </li>
+      <li>
+        <h4>Judge the thickness, then add milk</h4>
+        <p>The batter should slump off the spatula in a thick ribbon. If it stands stiff, add <code>30–60 g (2–4 Tbsp)</code> milk a tablespoon at a time, folding between each.</p>
+        <p class="expect"><b>Target:</b> thick but scoopable, like heavy cake batter. Very ripe bananas add enough liquid that you may not need any milk at all.</p>
+      </li>
+      <li>
+        <h4>Fold in the chocolate</h4>
+        <p>Fold in <code>170 g (1 cup)</code> chocolate chips, reserving a small handful for the top.</p>
+      </li>
+      <li>
+        <h4>Fill the pan</h4>
+        <p>Pour the batter into the prepared pan, spread it level, and sprinkle the reserved chips over the surface.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- 4. BAKE -->
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">4</span><h2>Bake and cool</h2></div>
+    <ol class="steps">
+      <li>
+        <h4>Bake on the center rack</h4>
+        <p>Bake at <code>350°F (175°C)</code> for <b class="key">55 to 65 minutes</b>. Start checking at 55 — ovens and banana moisture vary, and this loaf can take up to 75 minutes.</p>
+        <p class="flag"><b>Watch the top.</b> If it's browning fast but the middle isn't done, lay a loose sheet of foil over the pan halfway through.</p>
+      </li>
+      <li>
+        <h4>Check for done</h4>
+        <p>Stick a toothpick in the very center. It should come out clean or with a few moist crumbs, no wet batter. With a thermometer, aim for <b class="key">200 to 205°F</b> internal.</p>
+      </li>
+      <li>
+        <h4>Cool before slicing</h4>
+        <p>Let the loaf sit in the pan <b class="key">10 minutes</b>, then lift it out and move it to a wire rack. Cool to warm before cutting — the crumb finishes setting as it cools.</p>
+        <p class="stop"><b>Don't cut it hot.</b> A hot loaf squashes and goes gummy under the knife. Thirty minutes of patience buys you clean slices.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- 5. STORE -->
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">5</span><h2>Keep it fresh</h2></div>
+    <div class="panel">
+      <p style="margin:0 0 10px"><span class="lab note">Counter</span>Airtight at room temperature up to <b class="key">4 days</b>. From day two, microwave a slice 15–30 s to bring back the fresh-baked softness.</p>
+      <p style="margin:0 0 10px"><span class="lab note">Fridge</span>Airtight up to <b class="key">7 days</b>. Microwave a slice 30–45 s before eating.</p>
+      <p style="margin:0"><span class="lab note">Freezer</span>Wrap the whole loaf or individual slices tightly in plastic, then bag. Freezes up to <b class="key">3 months</b>. Thaw on the counter or microwave a slice 1–2 min.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TROUBLESHOOT -->
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n" style="background:var(--warn);box-shadow:0 8px 16px -8px rgba(150,54,31,.7)">?</span><h2>If something went wrong</h2></div>
+    <div class="fix">
+      <div class="it"><h4>Dense or tight crumb</h4><p>Two suspects: overmixed batter or too little liquid. Next bake, fold only until the streaks vanish, and check the banana was truly ripe.</p></div>
+      <div class="it"><h4>Raw middle, done top</h4><p>Loaf baking hotter than expected. Tent with foil and give it up to 10 more minutes; trust the thermometer, not the clock.</p></div>
+      <div class="it"><h4>Dry or crumbly</h4><p>Flour was probably over-measured — scooping packs in 20% more than spooning and leveling. Next bake, weigh the flour: 250 g exactly.</p></div>
+      <div class="it"><h4>Chips all sank to the bottom</h4><p>Batter was too thin. Next bake, cut any added milk and toss the chips in a teaspoon of flour before folding them in.</p></div>
+      <div class="it"><h4>Top browned before the middle finished</h4><p>Oven runs hot or the pan is dark metal. Tent with foil at the 30-minute mark next time, or drop to 340°F.</p></div>
+      <div class="it"><h4>Flat-tasting</h4><p>Bananas weren't ripe enough. Next bake, ripen them in a 300°F oven for 15–20 min until black and soft, or add ¼ tsp cinnamon to the dry mix.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="rule"></div>
+    <p style="max-width:74ch"><b>Source:</b> <a href="https://munchiesbymallory.com/recipe/brown-butter-chocolate-chip-banana-bread/">munchiesbymallory.com — Brown Butter Chocolate Chip Banana Bread</a>. This page restores the original full-batch amounts (the earlier preview version was scaled ×0.7 for 245 g of banana). Banana guidance: the original's "3 overripe bananas" weighs about 350 g peeled — large bananas run ~115 g peeled, medium ~90 g. Weight conversions: AP flour ~125 g/cup spooned and leveled, brown sugar 200 g/cup packed, butter 14 g/Tbsp (113 g/stick), chips 170 g/cup, one large egg ~50 g out of the shell.</p>
+    <p>One number to remember: internal 200–205°F, checking from 55 minutes. 🍌</p>
+  </div>
+</footer>
+
+</body>
+</html>
