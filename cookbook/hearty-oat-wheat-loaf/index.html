@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearty Oat &amp; Wheat Loaf — Express (1.5 lb), step by step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crumb:   #FBF3E2;
+    --crumb-2: #F2E6C9;
+    --accent:  #D9A441;   /* toasted wheat gold */
+    --accent-d:#A9761F;
+    --second:  #6E8C4E;   /* grain-field green */
+    --second-d:#4E6A34;
+    --warn:    #C0405B;
+    --warn-d:  #9C2F46;
+    --ink:     #40321F;
+    --ink-soft:#6A5742;
+    --line:    #E2CFA4;
+    --maxw: 820px;
+    --shadow: 0 1px 2px rgba(64,50,31,.06), 0 14px 34px -18px rgba(64,50,31,.32);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 85% -10%, color-mix(in srgb, var(--accent) 18%, white) 0%, transparent 50%),
+      var(--crumb);
+    color:var(--ink);
+    font-family:"Hanken Grotesk", system-ui, -apple-system, sans-serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; font-weight:900; line-height:1.06; letter-spacing:-.01em}
+  a{color:var(--second-d)}
+
+  .eyebrow{font-weight:700; text-transform:uppercase; letter-spacing:.22em; font-size:.74rem; color:var(--accent-d)}
+
+  /* hero */
+  .hero{padding:52px 0 26px; text-align:center}
+  .hero .scene{width:158px; height:158px; margin:0 auto 14px}
+  .hero h1{font-size:clamp(2.1rem,5.6vw,3.3rem); margin:.1em 0 .14em}
+  .hero h1 .it{font-style:italic;font-weight:500;color:var(--second-d)}
+  .hero .exbadge{
+    display:inline-flex; align-items:center; gap:7px; vertical-align:middle;
+    background:var(--accent); color:#4a3205; font-family:"Hanken Grotesk",sans-serif;
+    font-weight:800; font-size:.46em; letter-spacing:.05em; text-transform:uppercase;
+    padding:5px 11px; border-radius:999px; margin-left:.35em; box-shadow:0 6px 14px -6px rgba(169,118,31,.8);
+  }
+  .hero p.lede{font-size:1.1rem; color:var(--ink-soft); max-width:50ch; margin:6px auto 0}
+  .pill-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px}
+  .pill{display:inline-flex; align-items:center; gap:8px; background:#fff8ea; border:1px solid var(--line); border-radius:999px; padding:8px 15px; font-size:.86rem; font-weight:600; color:var(--ink-soft); box-shadow:var(--shadow)}
+  .pill b{color:var(--ink)}
+
+  /* phone card embed */
+  .phonecard{background:#fff8ea; border:1px solid var(--line); border-radius:18px;
+    box-shadow:var(--shadow); padding:24px; text-align:center; margin-top:18px}
+  .phonecard img{width:min(320px,80vw); border-radius:28px; box-shadow:0 18px 40px -18px rgba(64,50,31,.45)}
+  .phonecard p{font-size:.9rem; color:var(--ink-soft); margin:10px 0 0}
+
+  section{padding:26px 0}
+  .num-eyebrow{display:flex; align-items:center; gap:12px; margin:0 0 16px}
+  .num-eyebrow .n{
+    width:40px;height:40px;border-radius:12px;flex:none;display:grid;place-items:center;
+    font-family:"Fraunces",serif;font-weight:900;font-size:1.15rem;color:#fff;
+    background:var(--second); box-shadow:0 8px 16px -8px color-mix(in srgb, var(--second-d) 70%, transparent);
+  }
+  .num-eyebrow h2{font-size:clamp(1.5rem,3.4vw,2.1rem); margin:0}
+  .panel{background:#fff8ea; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:24px}
+
+  /* what's different */
+  .about{
+    background:linear-gradient(180deg,var(--crumb-2),#FFFBF2);
+    border:1px solid var(--line); border-left:5px solid var(--accent);
+    border-radius:16px; box-shadow:var(--shadow); padding:22px 24px; margin-top:8px;
+  }
+  .about h2{font-size:1.35rem; margin:0 0 6px}
+  .about ul{margin:12px 0 0; padding:0; list-style:none; display:grid; gap:10px}
+  .about li{position:relative; padding-left:26px; font-size:.97rem}
+  .about li::before{content:"🌾"; position:absolute; left:0; top:0; font-size:.9rem}
+  .about b{color:var(--accent-d)}
+
+  .lab{display:inline-block; font-weight:800; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; padding:2px 9px; border-radius:6px; margin-right:8px; vertical-align:2px}
+  .lab.do{background:var(--second); color:#fff}
+  .lab.note{background:var(--crumb-2); color:var(--accent-d); border:1px solid var(--line)}
+  .lab.warn{background:var(--warn); color:#fff}
+  .lab.see{background:#EAF0E0; color:var(--ink); border:1px solid #CFDDBC}
+
+  .two{display:grid; gap:18px}
+  @media(min-width:620px){.two{grid-template-columns:1fr 1fr}}
+  .card{background:#fffaf0; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:20px 22px}
+  .card h3{font-size:1.18rem; margin:0 0 4px}
+  .card .sub{font-size:.84rem; color:var(--ink-soft); margin:0 0 14px}
+  ul.list{list-style:none; margin:0; padding:0}
+  ul.list li{display:flex; justify-content:space-between; gap:14px; padding:8px 0; border-bottom:1px dashed var(--line)}
+  ul.list li:last-child{border-bottom:0}
+  ul.list .amt{font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--accent-d); text-align:right}
+  ul.list .amt .gram{display:block; font-weight:800; font-size:1rem; color:var(--second-d)}
+  ul.list li.gluten{background:linear-gradient(90deg,rgba(110,140,78,.16),transparent); border-radius:8px; padding:9px 10px; border-bottom:0}
+  ul.list li.yeast{background:linear-gradient(90deg,rgba(217,164,65,.20),transparent); border-radius:8px; padding:9px 10px; border-bottom:0; margin-top:4px; border:1px solid #E6CE97}
+  .weightnote{background:#EEF3E6; border:1px solid #D2E0C2; border-radius:10px; padding:11px 13px; font-size:.9rem; color:var(--ink-soft); margin:0 0 14px}
+  .weightnote b{color:var(--second-d)}
+  .variant{background:var(--crumb-2); border:1px dashed var(--accent); border-radius:10px; padding:12px 14px; font-size:.9rem; margin-top:14px}
+  .variant b{color:var(--accent-d)}
+  ul.tools{list-style:none;margin:0;padding:0}
+  ul.tools li{padding:7px 0 7px 26px; position:relative; border-bottom:1px dashed var(--line)}
+  ul.tools li:last-child{border-bottom:0}
+  ul.tools li::before{content:"✓"; position:absolute; left:0; top:7px; color:var(--second-d); font-weight:800}
+
+  ol.steps{list-style:none; counter-reset:s; margin:0; padding:0; display:grid; gap:16px}
+  ol.steps > li{
+    counter-increment:s; position:relative; padding:18px 20px 18px 64px;
+    background:#fffaf0; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);
+  }
+  ol.steps > li::before{
+    content:counter(s); position:absolute; left:16px; top:16px;
+    width:34px;height:34px;border-radius:50%; display:grid; place-items:center;
+    font-family:"Fraunces",serif; font-weight:900; font-size:1rem; color:#fff;
+    background:var(--accent); box-shadow:0 5px 12px -5px color-mix(in srgb, var(--accent-d) 80%, transparent);
+  }
+  ol.steps > li h4{margin:0 0 6px; font-family:"Hanken Grotesk",sans-serif; font-weight:800; font-size:1.04rem}
+  ol.steps > li p{margin:0 0 8px}
+  ol.steps > li p:last-child{margin-bottom:0}
+  ol.steps > li.done{opacity:.62}
+  ol.steps > li.done h4{text-decoration:line-through; text-decoration-color:var(--accent-d); text-decoration-thickness:2px}
+  ol.steps > li.done::before{content:"✓"; background:var(--second)}
+  .expect{font-size:.92rem; color:var(--ink-soft); background:#F3F7EC; border:1px solid #D9E7C9; border-radius:9px; padding:9px 12px; margin-top:8px}
+  .expect b{color:var(--second-d)}
+  .stop{font-size:.93rem; background:linear-gradient(90deg,rgba(192,64,91,.09),transparent 70%); border-left:4px solid var(--warn); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .stop b{color:var(--warn-d)}
+  .flag{font-size:.93rem; background:linear-gradient(90deg,rgba(217,164,65,.18),transparent 75%); border-left:4px solid var(--accent); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .flag b{color:var(--accent-d)}
+
+  /* timers */
+  .timer{display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:8px 12px; margin-top:8px; box-shadow:var(--shadow)}
+  .timer .t{font-variant-numeric:tabular-nums; font-weight:800; font-size:1.15rem; color:var(--accent-d); min-width:86px; text-align:center}
+  .timer button{font-family:inherit; font-size:.8rem; font-weight:700; border:1px solid var(--line); background:var(--crumb-2); color:var(--ink); border-radius:8px; padding:5px 11px; cursor:pointer}
+  .timer button:hover{background:#EDE0BC}
+  .timer button.start{background:var(--second); border-color:var(--second); color:#fff}
+  .timer button.start:hover{background:var(--second-d)}
+  .timer button.reset{background:transparent}
+  .timer.running .t{color:var(--second-d)}
+
+  code{background:var(--crumb-2); border:1px solid var(--line); border-radius:6px; padding:1px 7px; font-size:.92em; font-weight:600}
+  b.key{color:var(--ink)}
+
+  .settings{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:.86rem;font-weight:600}
+  .chip b{color:var(--second-d)}
+
+  /* progress bar (sticky) */
+  #progress{position:sticky; top:0; z-index:50; background:rgba(251,243,226,.94); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); display:none}
+  #progress .bar{max-width:var(--maxw); margin:0 auto; padding:10px 22px; display:flex; align-items:center; gap:14px}
+  #progress .track{flex:1; height:10px; background:var(--crumb-2); border-radius:999px; overflow:hidden}
+  #progress .fill{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--second)); border-radius:999px; transition:width .3s ease}
+  #progress .pct{font-variant-numeric:tabular-nums; font-weight:800; font-size:.85rem; color:var(--accent-d); white-space:nowrap}
+  #progress .clear{font-size:.75rem; font-weight:600; color:var(--ink-soft); background:transparent; border:1px solid var(--line); border-radius:999px; padding:4px 10px; cursor:pointer}
+  #progress .clear:hover{background:var(--crumb-2)}
+
+  .fix{display:grid;gap:12px}
+  @media(min-width:620px){.fix{grid-template-columns:1fr 1fr}}
+  .fix .it{background:var(--crumb-2);border:1px solid var(--line);border-radius:12px;padding:15px}
+  .fix .it h4{margin:0 0 5px;font-family:"Fraunces",serif;font-size:1.05rem}
+  .fix .it p{margin:0;font-size:.93rem;color:var(--ink-soft)}
+
+  footer{padding:34px 0 56px;color:var(--ink-soft);font-size:.85rem}
+  footer .rule{height:1px;background:var(--line);margin-bottom:20px}
+  footer b{color:var(--ink)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:6px}
+  @media(prefers-reduced-motion:reduce){#progress .fill{transition:none}}
+</style>
+</head>
+<body>
+
+<div id="progress" aria-live="polite">
+  <div class="bar">
+    <span class="pct" id="ppct">0 / 0 done</span>
+    <div class="track"><div class="fill" id="pfill"></div></div>
+    <button class="clear" id="pclear" type="button">Reset</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="scene" aria-hidden="true">
+      <svg viewBox="0 0 160 160" width="158" height="158">
+        <defs>
+          <linearGradient id="lf" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#E7B860"/><stop offset="1" stop-color="#B57F24"/>
+          </linearGradient>
+        </defs>
+        <circle cx="80" cy="74" r="62" fill="#F3E3B4"/>
+        <path d="M30 100 C28 70 44 52 80 52 C116 52 132 70 130 100 C130 108 122 112 114 112 L46 112 C38 112 30 108 30 100 Z" fill="url(#lf)" stroke="#9A6B18" stroke-width="2.5"/>
+        <g stroke="#875C14" stroke-width="2.4" stroke-linecap="round" opacity=".7">
+          <path d="M56 100 q11 -20 22 0"/><path d="M84 100 q11 -20 22 0"/>
+        </g>
+        <g fill="#6E5A2E" opacity=".65">
+          <ellipse cx="66" cy="84" rx="2.4" ry="1.4" transform="rotate(25 66 84)"/>
+          <ellipse cx="92" cy="90" rx="2.4" ry="1.4" transform="rotate(-18 92 90)"/>
+          <ellipse cx="80" cy="97" rx="2.4" ry="1.4" transform="rotate(10 80 97)"/>
+          <ellipse cx="104" cy="96" rx="2.2" ry="1.3" transform="rotate(32 104 96)"/>
+        </g>
+        <g stroke="#6E8C4E" stroke-width="2.3" stroke-linecap="round" fill="#8CA863">
+          <line x1="80" y1="24" x2="80" y2="52"/>
+          <g stroke="#7E9A57" stroke-width="1.6">
+            <path d="M80 30 q-10 -4 -14 -12"/><path d="M80 30 q10 -4 14 -12"/>
+            <path d="M80 38 q-10 -4 -13 -11"/><path d="M80 38 q10 -4 13 -11"/>
+            <path d="M80 46 q-9 -4 -12 -10"/><path d="M80 46 q9 -4 12 -10"/>
+          </g>
+          <ellipse cx="66" cy="19" rx="2.4" ry="4.6" transform="rotate(-32 66 19)"/>
+          <ellipse cx="94" cy="19" rx="2.4" ry="4.6" transform="rotate(32 94 19)"/>
+          <ellipse cx="67" cy="27" rx="2.3" ry="4.4" transform="rotate(-30 67 27)"/>
+          <ellipse cx="93" cy="27" rx="2.3" ry="4.4" transform="rotate(30 93 27)"/>
+          <ellipse cx="68" cy="35" rx="2.2" ry="4.2" transform="rotate(-28 68 35)"/>
+          <ellipse cx="92" cy="35" rx="2.2" ry="4.2" transform="rotate(28 92 35)"/>
+          <ellipse cx="80" cy="16" rx="2.4" ry="5" fill="#9CB873"/>
+        </g>
+      </svg>
+    </div>
+    <span class="eyebrow">Hamilton Beach 29982 · Express cycle</span>
+    <h1>Hearty Oat &amp; Wheat <span class="it">Loaf</span> <span class="exbadge">⚡ Express</span></h1>
+    <p class="lede">The Honeycomb loaf made nuttier and sturdier: rolled oats and whole wheat for flavor and fiber, vital wheat gluten for a firm crumb that holds peanut butter without tearing. No egg.</p>
+    <div class="pill-row">
+      <span class="pill">🍞 <span>One <b>1.5&nbsp;lb</b> loaf</span></span>
+      <span class="pill">⏱ <span>About <b>1 hour</b></span></span>
+      <span class="pill">🥪 <span>Firm, <b>sandwich-ready</b> crumb</span></span>
+      <span class="pill">🚫 <span><b>No egg</b></span></span>
+    </div>
+    <div class="phonecard">
+      <a href="hearty-oat-wheat-loaf-card.png"><img src="hearty-oat-wheat-loaf-card.png" alt="Phone recipe card for Hearty Oat &amp; Wheat Loaf"></a>
+      <p>📱 For your phone — tap to open the full-size card, then save it to Photos.</p>
+    </div>
+  </div>
+</header>
+
+<section id="top-anchor" style="padding-top:8px">
+  <div class="wrap">
+    <div class="about">
+      <h2>What's different in this version</h2>
+      <p style="margin:0">This builds on the plain Honeycomb Express loaf with four deliberate changes, tuned so it's firmer and heartier without over-filling the 1.5&nbsp;lb pan.</p>
+      <ul>
+        <li><b>Vital wheat gluten (20 g / 2 Tbsp)</b> rebuilds the gluten that oats and whole wheat dilute. It's what makes the loaf firm enough to spread on, and the reason the egg isn't needed.</li>
+        <li><b>Rolled oats + whole wheat (60 g + 135 g)</b> add fiber and a nutty, wholesome flavor.</li>
+        <li><b>Flour trimmed to 206 g.</b> Oats and gluten add bulk, so the white flour is reduced to keep the loaf from climbing into the lid.</li>
+        <li><b>A touch more salt (~7.5 g)</b> firms the gluten, carries the whole-wheat flavor, and gently keeps the rise in check.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="mid-anchor">
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">1</span><h2>What you need</h2></div>
+    <div class="two">
+      <div class="card">
+        <h3>Ingredients</h3>
+        <p class="sub">For one 1.5 lb Express loaf. Grams lead; volume in the small line.</p>
+        <p class="weightnote"><b>Weigh if you can — flour and gluten especially.</b> Set the pan on a scale, press zero (tare) between ingredients, and go by grams. The dough check is still your safety net if you measure by cups.</p>
+        <ul class="list">
+          <li><span>Milk, warmed to ~110°F</span><span class="amt"><span class="gram">275 g</span>1 cup + 2 Tbsp</span></li>
+          <li><span>Butter, softened</span><span class="amt"><span class="gram">42 g</span>3 Tbsp</span></li>
+          <li><span>Honey <em>(or sugar)</em></span><span class="amt"><span class="gram">60 g</span>~3 Tbsp · or 35 g sugar</span></li>
+          <li><span>Salt</span><span class="amt"><span class="gram">~7.5 g</span>1¼ tsp</span></li>
+          <li><span>Rolled oats <em>(soaked, step 3)</em></span><span class="amt"><span class="gram">60 g</span>⅔ cup</span></li>
+          <li><span>Whole wheat flour</span><span class="amt"><span class="gram">135 g</span>1 cup</span></li>
+          <li><span>White (all-purpose) flour</span><span class="amt"><span class="gram">206 g</span>1½ cups</span></li>
+          <li class="gluten"><span>Vital wheat gluten <em>(whisk into the flours)</em></span><span class="amt"><span class="gram">20 g</span>2 Tbsp</span></li>
+          <li class="yeast"><span>RapidRise yeast <em>(dry well, last)</em></span><span class="amt"><span class="gram">10 g</span>generous 1 Tbsp</span></li>
+        </ul>
+        <div class="variant"><b>Have bread flour?</b> Swap the all-purpose for the same <b>206 g (1½ cups) bread flour</b> and drop the vital wheat gluten to <b>10 g (1 Tbsp)</b>. Bread flour already carries the protein, so it needs less help — same firmness, even safer on the rise.</div>
+      </div>
+      <div class="card">
+        <h3>Equipment</h3>
+        <p class="sub">All of this except the knife came with the machine or lives in most kitchens.</p>
+        <ul class="tools">
+          <li>The bread maker, its <b class="key">bread pan</b>, and the <b class="key">kneading paddle</b></li>
+          <li>A <b class="key">kitchen scale</b> — recommended for this one</li>
+          <li>A microwave-safe cup or small pot to warm and soak the milk + oats</li>
+          <li>Dry measuring cups and spoons if not weighing</li>
+          <li>A small whisk or fork to blend the gluten into the flours</li>
+          <li>A thermometer, to confirm the milk stays warm</li>
+          <li>Oven mitts, a wire cooling rack, and a serrated bread knife</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">2</span><h2>Get ready</h2></div>
+    <ol class="steps">
+      <li data-check>
+        <h4>Put the kneading paddle in the pan</h4>
+        <p>Push the small metal blade onto the post in the bottom of the bread pan. It only fits one way, and the machine can't mix without it.</p>
+      </li>
+      <li data-check>
+        <h4>Warm the milk, then soak the oats in it</h4>
+        <p>Warm <code>275 g (1 cup + 2 Tbsp)</code> milk to about <b class="key">110°F</b> — comfortably warm, not hot. Stir in the <code>60 g (⅔ cup)</code> rolled oats and let them soak <b class="key">10 minutes</b>.</p>
+        <div class="timer" data-timer="600" aria-label="Oat soak timer, 10 minutes">
+          <span class="t">10:00</span>
+          <button type="button" class="start">Start</button>
+          <button type="button" class="reset">Reset</button>
+        </div>
+        <p><span class="lab warn">Warm it back up before you build</span>The milk cools while the oats soak. Check it's still around <b class="key">100–110°F</b> and reheat for a few seconds if needed. <b>Cold liquid is the #1 cause of a dense Express loaf</b> — the single short rise needs warm liquid to get going.</p>
+      </li>
+      <li data-check>
+        <h4>Soften the butter</h4>
+        <p>You want <code>42 g (3 Tbsp)</code> butter soft enough to dent, not melted. 30–60 min on the counter, or 6–8 seconds in the microwave.</p>
+      </li>
+      <li data-check>
+        <h4>Whisk the gluten into the flours</h4>
+        <p>In a bowl, whisk the <code>135 g</code> whole wheat flour, <code>206 g</code> white flour, and <code>20 g</code> vital wheat gluten together until evenly combined. This spreads the gluten so it doesn't clump.</p>
+        <div class="expect"><b>Why it matters:</b> the gluten is the firmness. Blended evenly through the flour, it builds structure throughout the loaf instead of in pockets.</div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">3</span><h2>Fill the pan</h2></div>
+    <div class="panel" style="margin-bottom:18px">
+      <p style="margin:0"><span class="lab note">Why the order</span>Wet first, dry on top, yeast dead last in a dry dip. The yeast must stay dry and off the salt until mixing starts — on the short Express cycle there's no time to recover a slow start.</p>
+    </div>
+    <ol class="steps">
+      <li data-check>
+        <h4>Pour in the wet ingredients and the salt</h4>
+        <p>Into the pan (paddle in): the warm <b class="key">milk-and-oat mix</b>, then the <b class="key">butter</b>, then the <b class="key">honey</b>, then the <b class="key">salt</b>.</p>
+      </li>
+      <li data-check>
+        <h4>Add the flour blend on top — don't stir</h4>
+        <p>Spoon the whisked flour-and-gluten blend over the liquid so it covers it. Leave it sitting on top.</p>
+      </li>
+      <li data-check>
+        <h4>Make a well and add the yeast last</h4>
+        <p>Press a shallow dip in the center of the flour and pour in the <code>10 g (generous 1 Tbsp)</code> <b class="key">RapidRise yeast</b>. Keep it dry and away from the salt.</p>
+      </li>
+      <li data-check>
+        <h4>Lock the pan in and close the lid</h4>
+        <p>Seat the pan until it clicks, then close the lid. If it lifts straight out, it isn't locked yet.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">4</span><h2>Set the machine</h2></div>
+    <ol class="steps">
+      <li data-check>
+        <h4>Choose the Express cycle</h4>
+        <p>Press <b class="key">Cycle</b> until the display shows <b class="key">1.5 lb Express</b> (cycle 6). This cycle sets the loaf size itself — there's no separate Loaf Size button.</p>
+      </li>
+      <li data-check>
+        <h4>Set the crust to Dark</h4>
+        <p>Press <b class="key">Crust</b> to <b class="key">Dark</b>. Whole grain and higher hydration can read gummy in the center if under-baked, so Dark is the safe default for this loaf.</p>
+        <div class="settings">
+          <span class="chip">Cycle <b>1.5 lb Express (6)</b></span>
+          <span class="chip">Crust <b>Dark</b></span>
+          <span class="chip">Delay timer <b>none</b></span>
+        </div>
+      </li>
+      <li data-check>
+        <h4>Skip the delay timer, press Start</h4>
+        <p><span class="lab warn">Why</span>This loaf has milk and butter. Dairy sitting warm for hours can spoil — always bake right away. The whole cycle runs about <b class="key">58 minutes</b>. Keep the yeast at a full tablespoon; never cut it on this short cycle.</p>
+        <div class="timer" data-timer="3480" aria-label="Express cycle timer, about 58 minutes">
+          <span class="t">58:00</span>
+          <button type="button" class="start">Start</button>
+          <button type="button" class="reset">Reset</button>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">5</span><h2>While it bakes</h2></div>
+    <ol class="steps">
+      <li data-check>
+        <h4>Dough check at about 5 minutes</h4>
+        <p>Early in the kneading, lift the lid and look. You want a <b class="key">soft ball</b> that pulls off the sides and feels <b class="key">slightly tacky</b>. Whole wheat and oats look wetter at first — give it a minute before judging.</p>
+        <p><span class="lab see">Default correction: add flour</span>This dough starts a little wet on purpose. If it's slack, sticky, or climbing the sides, <b>add flour 1 Tbsp at a time</b>. Only add milk (1–2 tsp) if dry crumbs refuse to come together.</p>
+      </li>
+      <li data-check>
+        <h4>Close the lid and leave it</h4>
+        <p><span class="lab warn">Hands off</span>After the check, don't reopen the lid. The single Express rise is short and fragile — opening it lets out heat and can make the loaf sink.</p>
+      </li>
+      <li data-check>
+        <h4>Ignore the add-in beep</h4>
+        <p>The oats are already in the dough, so there's nothing to add when the machine beeps. Ignore it.</p>
+      </li>
+      <li data-check>
+        <h4>Expect a compact loaf</h4>
+        <p>Express loaves run smaller and denser than Basic, and whole wheat plus oats add to that. A tight, sturdy crumb is exactly what you want for sandwiches — it's not a mistake.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">6</span><h2>Take it out and cool it</h2></div>
+    <ol class="steps">
+      <li data-check>
+        <h4>Take the pan out with oven mitts</h4>
+        <p>When it beeps done, the machine keeps warm up to 1 hour. For the softest crust, take it out soon after. Turn the pan to unlock and lift it straight out.</p>
+      </li>
+      <li data-check>
+        <h4>Turn the loaf onto a rack</h4>
+        <p>Flip the pan over a wire rack and shake gently. Run a non-metal spatula around the edges if it sticks. <span class="lab warn">Plastic or wood only</span> — metal scratches the nonstick pan.</p>
+      </li>
+      <li data-check>
+        <h4>Pull out the paddle if it stayed in</h4>
+        <p>It often bakes into the bottom, leaving a small hole. Once cool enough to touch, ease it out with your fingers or a plastic tool.</p>
+      </li>
+      <li data-check>
+        <h4>Cool fully before slicing</h4>
+        <p>Let it cool <b class="key">at least 30 minutes — ideally an hour</b>. The crumb finishes setting as it cools; that's what makes it firm enough to spread on.</p>
+        <div class="timer" data-timer="1800" aria-label="Cooling timer, 30 minutes">
+          <span class="t">30:00</span>
+          <button type="button" class="start">Start</button>
+          <button type="button" class="reset">Reset</button>
+        </div>
+        <div class="stop"><b>Don't cut it hot.</b> A hot loaf squashes and goes gummy under the knife, and a denser loaf like this shows it more. The clean, sturdy slice comes from patience here.</div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="tail-anchor">
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">7</span><h2>Keep it fresh</h2></div>
+    <div class="panel">
+      <p style="margin:0 0 10px"><span class="lab note">Counter</span>Fully cooled, store in a sealed bag or bread box up to <b class="key">3 days</b>. Don't refrigerate — it dries bread out faster.</p>
+      <p style="margin:0"><span class="lab note">Freezer</span>Slice, seal in a freezer bag, and freeze. Toast slices straight from frozen. The firm crumb freezes and toasts especially well.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n" style="background:var(--warn)">?</span><h2>If something went wrong</h2></div>
+    <div class="fix">
+      <div class="it"><h4>Still a little crumbly</h4><p>Raise the vital wheat gluten from 2 Tbsp to <b>3 Tbsp</b> next bake — and change only that. It's the single lever for firmness. Don't fix crumble with more flour or less water.</p></div>
+      <div class="it"><h4>Rose into the lid</h4><p>Trim the white flour by 1–2 Tbsp, or the milk by 1 Tbsp, next time. Never cut the yeast below 1 Tbsp (it won't rise on this short cycle) and never raise it.</p></div>
+      <div class="it"><h4>Dense or dry</h4><p>Some density is normal for Express whole-grain bread. If it's too tight, add 1 Tbsp milk next bake, or drop the salt back to 1 tsp.</p></div>
+      <div class="it"><h4>Damp or gummy center</h4><p>Likely under-baked for this hydration. Use the <b>Dark</b> crust setting, or cut the milk by 1 Tbsp next time.</p></div>
+      <div class="it"><h4>Barely rose</h4><p>Milk was probably too hot (killed the yeast) or too cold (stalled it), or the yeast touched salt. Confirm ~110°F and keep the yeast in its dry well.</p></div>
+      <div class="it"><h4>Change one thing at a time</h4><p>Every fix here is a single-variable change. Adjust one, bake, and judge before changing anything else — that's how you dial it in.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="rule"></div>
+    <p style="max-width:74ch"><b>Based on Lee's Honeycomb Express loaf.</b> The Express-cycle behavior (single short rise, ~1-hour run, instant yeast, warm liquid, smaller and denser loaf) comes from the official Hamilton Beach 29982 Use &amp; Care guide. Amounts were adapted for oats, whole wheat, and vital wheat gluten, then reviewed and reconciled for firmness and pan safety: the white flour was trimmed to keep the dough near the proven ~740 g loaf. Over repeated bakes it was tuned further — butter (42 g), honey (60 g), and oats (60 g) nudged up to soften and enrich the crumb, and the yeast rounded to 10 g. At ~820 g of dough it sits near the upper comfort limit for the 1.5 lb pan: proven across repeated loaves, but about as full as it should get.</p>
+    <p style="max-width:74ch">Gram conversion notes: flour ~137 g/cup, whole wheat 135 g/cup, rolled oats 45 g per ½ cup, honey 21 g/Tbsp, butter 14 g/Tbsp, salt 6 g/tsp, vital wheat gluten ~10 g/Tbsp, one yeast packet 7 g (1 Tbsp ≈ 9 g). Liquid and oat-absorption figures are approximate, so the dough check is the real control.</p>
+    <p>Hearty, firm, sandwich-ready. 🌾 Warm the milk, give it the gluten, and let it cool all the way before you slice.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---- step check-off + sticky progress bar ---- */
+  var steps = document.querySelectorAll('ol.steps > li[data-check]');
+  var bar = document.getElementById('progress');
+  var fill = document.getElementById('pfill');
+  var pct = document.getElementById('ppct');
+
+  function updateBar(){
+    var total = steps.length, done = 0;
+    steps.forEach(function(s){ if(s.classList.contains('done')) done++; });
+    pct.textContent = done + ' / ' + total + ' done';
+    fill.style.width = (total ? Math.round(done/total*100) : 0) + '%';
+    if(done > 0){ bar.style.display = 'block'; } else { bar.style.display = 'none'; }
+  }
+
+  steps.forEach(function(s){
+    var h = s.querySelector('h4');
+    h.style.cursor = 'pointer';
+    h.setAttribute('title', 'Tap to mark done');
+    h.addEventListener('click', function(){
+      s.classList.toggle('done');
+      updateBar();
+    });
+  });
+
+  document.getElementById('pclear').addEventListener('click', function(){
+    steps.forEach(function(s){ s.classList.remove('done'); });
+    updateBar();
+  });
+
+  /* ---- inline timers ---- */
+  document.querySelectorAll('.timer').forEach(function(t){
+    var total = parseInt(t.getAttribute('data-timer'), 10);
+    var display = t.querySelector('.t');
+    var startBtn = t.querySelector('.start');
+    var resetBtn = t.querySelector('.reset');
+    var remaining = total, last = null, raf = null;
+
+    function render(){
+      var m = Math.floor(remaining/60), sec = remaining%60;
+      display.textContent = m + ':' + (sec<10?'0':'') + sec;
+    }
+    function tick(now){
+      if(last === null) last = now;
+      var elapsed = Math.floor((now-last)/1000);
+      if(elapsed >= 1){
+        remaining -= elapsed;
+        last = now;
+        if(remaining <= 0){
+          remaining = 0;
+          render();
+          display.textContent = 'Done!';
+          t.classList.remove('running');
+          startBtn.textContent = 'Start';
+          raf = null;
+          return;
+        }
+        render();
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    startBtn.addEventListener('click', function(){
+      if(raf === null){
+        if(remaining <= 0) remaining = total;
+        t.classList.add('running');
+        startBtn.textContent = 'Pause';
+        last = null;
+        raf = requestAnimationFrame(tick);
+      } else {
+        cancelAnimationFrame(raf);
+        raf = null;
+        t.classList.remove('running');
+        startBtn.textContent = 'Start';
+      }
+    });
+    resetBtn.addEventListener('click', function(){
+      if(raf !== null){ cancelAnimationFrame(raf); raf = null; }
+      remaining = total;
+      t.classList.remove('running');
+      startBtn.textContent = 'Start';
+      render();
+    });
+    render();
+  });
+
+  updateBar();
+})();
+</script>
+
+</body>
+</html>
