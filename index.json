@@ -1,0 +1,47 @@
+{
+  "generated": "2026-10-23T18:06:24Z",
+  "commit": "b0e210b",
+  "config": {
+    "exclude": [
+      ".git",
+      "lumion",
+      ".gitignore",
+      "index.json",
+      "index.html",
+      "personal/uproar-tutorial/private-drafts"
+    ]
+  },
+  "count": 5,
+  "files": [
+    {
+      "path": "personal/uproar-tutorial/index.html",
+      "bytes": 40733,
+      "ext": "html",
+      "date": null
+    },
+    {
+      "path": "personal/uproar-tutorial/uproar-ch1-prototype.html",
+      "bytes": 123778,
+      "ext": "html",
+      "date": null
+    },
+    {
+      "path": "personal/uproar-tutorial/uproar-ch2-bringing-down-the-house.html",
+      "bytes": 41179,
+      "ext": "html",
+      "date": null
+    },
+    {
+      "path": "personal/uproar-tutorial/uproar-ch3-going-to-pieces.html",
+      "bytes": 56248,
+      "ext": "html",
+      "date": null
+    },
+    {
+      "path": "personal/uproar-tutorial/uproar-guide-meshy-gorilla.html",
+      "bytes": 71571,
+      "ext": "html",
+      "date": null
+    }
+  ]
+}
