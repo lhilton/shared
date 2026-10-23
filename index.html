@@ -54,6 +54,18 @@ main{padding-top:0}
 select{background:var(--panel2);border:none;border-radius:8px;color:var(--text);padding:6px 10px;font-size:13.5px;font-family:inherit;outline:none;cursor:pointer}
 .count{font-size:13px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap;margin-left:auto;padding-right:8px}
 
+/* ---------- permanent destinations: curated sections of the shelf ---------- */
+.dests{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.dest{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--border);
+  border-radius:14px;padding:14px 18px;text-decoration:none;transition:border-color .15s,transform .15s}
+.dest:hover{border-color:var(--accent);transform:translateY(-2px);text-decoration:none}
+.dest .de{font-size:24px}
+.dest .d1{font-weight:700;font-size:15px;color:#fff}
+.dest .d2{font-size:12.5px;color:var(--muted)}
+.dest .dtext{flex:1}
+.dest .go{color:var(--link);font-weight:600;font-size:13px;white-space:nowrap}
+.dest:hover .go{text-decoration:underline}
+
 /* ---------- grouped file cards ---------- */
 .group-head{display:flex;align-items:center;gap:12px;margin:28px 0 10px}
 .group-head:first-of-type{margin-top:22px}
@@ -142,6 +154,7 @@ footer .joke::before{content:"✦ ";color:var(--accent);opacity:.7}
     <span class="count" id="shown"></span>
   </div>
 
+  <div id="dests" class="dests"></div>
   <div id="groups"></div>
   <div class="status" id="status"></div>
 
@@ -175,6 +188,23 @@ const SUBS=[
 ];
 document.getElementById('sub').textContent=SUBS[Math.floor(Math.random()*SUBS.length)];
 
+// permanent destinations: sections of the repo that have their own index.json —
+// they show up here automatically, so adding a new space never means editing this page
+const DEST_META = {
+  'cookbook': {emoji:'📖', blurb:'every recipe, weighed in grams, with a phone card for your pocket'}
+};
+function renderDests(){
+  const dirs=[...new Set(FILES.map(f=>f.path.split('/')[0]))]
+    .filter(d=>d!=='·'&&FILES.some(f=>f.path===d+'/index.json'));
+  const box=document.getElementById('dests');
+  if(!dirs.length){box.remove();return}
+  dirs.forEach(d=>{
+    const meta=DEST_META[d]||{emoji:'📦',blurb:d};
+    const a=document.createElement('a');a.className='dest';a.href=d+'/';
+    a.innerHTML=`<span class="de">${meta.emoji}</span><span class="dtext"><span class="d1">the ${d}</span><br><span class="d2">${meta.blurb}</span></span><span class="go">browse →</span>`;
+    box.append(a);
+  });
+}
 function card(f){
   const a=document.createElement('a');a.className='card';a.href=f.path;
   const parts=f.path.split('/');
@@ -217,7 +247,7 @@ fetch('index.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}
    FILES=d.files;
    document.getElementById('n-commit').textContent='@'+d.commit;
    document.getElementById('n-gen').textContent=(d.generated||'').slice(0,10);
-   exts();render();
+   exts();render();renderDests();
    q.addEventListener('input',render);sel.addEventListener('change',render);
    window.matchMedia('(min-width:680px)').addEventListener('change',render);
  })
