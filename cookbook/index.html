@@ -125,7 +125,7 @@ footer .joke::before{content:"🥄 ";color:var(--gold)}
     <h1>the cookbook<span class="dot">.</span></h1>
     <p class="sub" id="sub">Every recipe I've cared enough to write down properly — weighed in grams, with a phone card and a full page. Search it, cook it, tell me how it went.</p>
     <div class="facts">
-      <span><b id="n-count">—</b> recipes so far</span>
+      <span><b id="n-count">—</b> <span id="n-count-word">recipes</span> so far</span>
       <span>everything in <b>grams</b>, volume on the side</span>
       <span>phone cards for <b>your pocket</b></span>
     </div>
@@ -214,6 +214,7 @@ fetch('index.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}
  .then(d=>{
    RECIPES=d.recipes||[];
    document.getElementById('n-count').textContent=d.count;
+   document.getElementById('n-count-word').textContent=d.count===1?'recipe':'recipes';
    document.getElementById('n-commit').textContent='@'+d.commit;
    document.getElementById('n-gen').textContent=(d.generated||'').slice(0,10);
    render();
