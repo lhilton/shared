@@ -86,8 +86,8 @@ const fmtSize=b=>b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).t
 function card(f){
   const a=document.createElement('a');a.className='card';a.href=f.path;
   const parts=f.path.split('/');
-  a.innerHTML=`<div class="top"><span class="name">${parts.at(-1)}</span><span class="ext">${f.ext}</span></div>
-    <div class="path">${parts.slice(0,-1).join('/')||'·'}</div>
+  a.innerHTML=`<div class="path">${parts.slice(0,-1).join('/')||'·'}</div>
+    <div class="top"><span class="name">${parts.at(-1)}</span><span class="ext">${f.ext}</span></div>
     <div class="row2"><span>${fmtSize(f.bytes)}</span><span class="date">${f.date??''}</span></div>`;
   return a;
 }
