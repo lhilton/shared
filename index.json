@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-23T18:38:23Z",
-  "commit": "b9abcc2",
+  "generated": "2026-10-23T20:22:00Z",
+  "commit": "e5f6250",
   "config": {
     "exclude": [
       ".git",
@@ -11,7 +11,7 @@
       "personal/uproar-tutorial/private-drafts"
     ]
   },
-  "count": 7,
+  "count": 13,
   "files": [
     {
       "path": "cookbook/brown-butter-banana-bread/banana-bread-v5.png",
@@ -23,6 +23,42 @@
       "path": "cookbook/brown-butter-banana-bread/index.html",
       "bytes": 23075,
       "ext": "html",
+      "date": null
+    },
+    {
+      "path": "cookbook/creme-brulee/creme-brulee-card.png",
+      "bytes": 394908,
+      "ext": "png",
+      "date": null
+    },
+    {
+      "path": "cookbook/creme-brulee/index.html",
+      "bytes": 26049,
+      "ext": "html",
+      "date": null
+    },
+    {
+      "path": "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png",
+      "bytes": 356814,
+      "ext": "png",
+      "date": null
+    },
+    {
+      "path": "cookbook/hearty-oat-wheat-loaf/index.html",
+      "bytes": 32763,
+      "ext": "html",
+      "date": null
+    },
+    {
+      "path": "cookbook/index.html",
+      "bytes": 15143,
+      "ext": "html",
+      "date": null
+    },
+    {
+      "path": "cookbook/index.json",
+      "bytes": 1465,
+      "ext": "json",
       "date": null
     },
     {
