@@ -176,9 +176,11 @@ const SUBS=[
 document.getElementById('sub').textContent=SUBS[Math.floor(Math.random()*SUBS.length)];
 
 function card(r){
-  const a=document.createElement('a');a.className='rcard';a.href=r.page;
-  const thumb=r.card
-    ?`<img loading="lazy" src="${r.card}" alt="Phone recipe card: ${r.name}">`
+  const a=document.createElement('a');a.className='rcard';a.href='../'+r.page;
+  // manifest paths are repo-relative; the page lives in cookbook/, so strip the prefix
+  const cardPath=r.card?r.card.replace(/^cookbook\//,''):null;
+  const thumb=cardPath
+    ?`<img loading="lazy" src="${cardPath}" alt="Phone recipe card: ${r.name}">`
     :`<div class="noimg">🍽️</div>`;
   a.innerHTML=`<div class="thumb">${thumb}</div>
     <div class="rname">${r.name}</div>
@@ -201,7 +203,9 @@ function render(){
   // odd one out? fill the hole with a promise
   const cols=window.matchMedia('(min-width:980px)').matches?3:window.matchMedia('(min-width:660px)').matches?2:1;
   if(list.length&&list.length%cols!==0&&cols>1)grid.append(ghostCard());
-  shown.textContent=list.length===RECIPES.length?`${RECIPES.length} recipes`:`${list.length} of ${RECIPES.length}`;
+  shown.textContent=list.length===RECIPES.length
+    ?`${RECIPES.length} ${RECIPES.length===1?'recipe':'recipes'}`
+    :`${list.length} of ${RECIPES.length}`;
   if(!list.length&&!RECIPES.length){
     const e=document.createElement('div');e.className='empty';e.textContent='The cookbook is empty… for now.';grid.replaceChildren(e);
   }
