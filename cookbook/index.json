@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-23T19:57:30Z",
-  "commit": "66c231c",
+  "generated": "2026-10-23T19:57:45Z",
+  "commit": "a5a51eb",
   "count": 3,
   "recipes": [
     {
@@ -23,19 +23,19 @@
       "card": "cookbook/creme-brulee/creme-brulee-card.png",
       "bytes": {
         "cookbook/creme-brulee/creme-brulee-card.png": 394908,
-        "cookbook/creme-brulee/index.html": 26021
+        "cookbook/creme-brulee/index.html": 26049
       },
       "added": "2026-10-23"
     },
     {
       "slug": "hearty-oat-wheat-loaf",
-      "name": "Hearty Oat &amp; Wheat Loaf \u26a1 Express",
+      "name": "Hearty Oat & Wheat Loaf",
       "dir": "cookbook/hearty-oat-wheat-loaf",
       "page": "cookbook/hearty-oat-wheat-loaf/index.html",
       "card": "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png",
       "bytes": {
         "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png": 356814,
-        "cookbook/hearty-oat-wheat-loaf/index.html": 32723
+        "cookbook/hearty-oat-wheat-loaf/index.html": 32763
       },
       "added": "2026-10-23"
     }
