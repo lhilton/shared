@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-23T18:21:43Z",
-  "commit": "5d3750f",
+  "generated": "2026-10-23T18:32:54Z",
+  "commit": "201ae60",
   "config": {
     "exclude": [
       ".git",
@@ -11,8 +11,20 @@
       "personal/uproar-tutorial/private-drafts"
     ]
   },
-  "count": 5,
+  "count": 7,
   "files": [
+    {
+      "path": "cookbook/brown-butter-banana-bread/banana-bread-v5.png",
+      "bytes": 398578,
+      "ext": "png",
+      "date": null
+    },
+    {
+      "path": "cookbook/brown-butter-banana-bread/index.html",
+      "bytes": 23075,
+      "ext": "html",
+      "date": null
+    },
     {
       "path": "personal/uproar-tutorial/index.html",
       "bytes": 40733,
