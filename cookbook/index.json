@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-23T19:30:20Z",
-  "commit": "10b8952",
-  "count": 1,
+  "generated": "2026-10-23T19:57:30Z",
+  "commit": "66c231c",
+  "count": 3,
   "recipes": [
     {
       "slug": "brown-butter-banana-bread",
@@ -12,6 +12,30 @@
       "bytes": {
         "cookbook/brown-butter-banana-bread/banana-bread-v5.png": 398578,
         "cookbook/brown-butter-banana-bread/index.html": 23075
+      },
+      "added": "2026-10-23"
+    },
+    {
+      "slug": "creme-brulee",
+      "name": "Cr\u00e8me Br\u00fbl\u00e9e",
+      "dir": "cookbook/creme-brulee",
+      "page": "cookbook/creme-brulee/index.html",
+      "card": "cookbook/creme-brulee/creme-brulee-card.png",
+      "bytes": {
+        "cookbook/creme-brulee/creme-brulee-card.png": 394908,
+        "cookbook/creme-brulee/index.html": 26021
+      },
+      "added": "2026-10-23"
+    },
+    {
+      "slug": "hearty-oat-wheat-loaf",
+      "name": "Hearty Oat &amp; Wheat Loaf \u26a1 Express",
+      "dir": "cookbook/hearty-oat-wheat-loaf",
+      "page": "cookbook/hearty-oat-wheat-loaf/index.html",
+      "card": "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png",
+      "bytes": {
+        "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png": 356814,
+        "cookbook/hearty-oat-wheat-loaf/index.html": 32723
       },
       "added": "2026-10-23"
     }
