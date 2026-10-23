@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the cookbook — lee hilton's recipe shelf</title>
+<meta name="description" content="Every recipe I've published, in grams, with a phone card and a full web page. Search, browse, cook.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FDF6E4; --paper-2:#F6EAC9; --card:#FFFBEF;
+  --ink:#3D2E1C; --ink-soft:#6E5B45; --faint:#9A8668; --line:#E5D3A8;
+  --gold:#D99E2B; --gold-d:#9C6B12;
+  --tomato:#E4572E; --tomato-d:#B23A1C;
+  --basil:#6E8C4E; --basil-d:#4E6A34;
+  --plum:#7C3AED; --plum-d:#5B2BA6;
+  --teal:#2FA79B; --teal-d:#1F7A72;
+  --berry:#C0405B; --berry-d:#9C2F46;
+  --shadow:0 1px 2px rgba(61,46,28,.07), 0 16px 38px -18px rgba(61,46,28,.38);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:
+    radial-gradient(120% 80% at 85% -10%, #F3E4B6 0%, rgba(243,228,182,0) 50%),
+    radial-gradient(90% 70% at 0% 0%, #FBEFCB 0%, rgba(251,239,203,0) 55%),
+    var(--paper);
+  color:var(--ink);
+  font:16px/1.62 "Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh; display:flex; flex-direction:column;
+}
+main{flex:1}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px;width:100%}
+h1,h2{font-family:Fraunces,Georgia,serif}
+a{color:var(--basil-d);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ---------- hero: warm band, floating sprinkles ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero .wrap{position:relative;padding:58px 22px 42px;text-align:center}
+.sprinkle{position:absolute;font-size:26px;opacity:.5;animation:bob 6s ease-in-out infinite;pointer-events:none}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(8deg)}}
+.kicker{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-d);font-weight:700}
+h1{font-size:clamp(38px,7vw,64px);line-height:1.05;letter-spacing:-.015em;font-weight:900;margin:12px 0 10px;color:var(--ink)}
+h1 .dot{color:var(--tomato)}
+h1 .dot:hover{animation:wiggle .5s ease-in-out}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(16deg) translateY(-5px)}60%{transform:rotate(-12deg)}80%{transform:rotate(6deg)}}
+.sub{font-style:italic;color:var(--ink-soft);font-size:17.5px;max-width:56ch;margin:0 auto}
+.facts{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:center;margin-top:20px;font-size:13.5px;color:var(--ink-soft)}
+.facts span b{font-variant-numeric:tabular-nums;font-weight:800;color:var(--plum-d)}
+.facts span::before{content:"◆";font-size:9px;vertical-align:2px;margin-right:8px;color:var(--gold)}
+
+/* ---------- toolbar ---------- */
+main{padding-top:0}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--card);
+  border:2px solid var(--line);border-radius:16px;padding:10px 12px;margin-top:28px;box-shadow:var(--shadow)}
+.search{flex:1;min-width:200px;display:flex;align-items:center;gap:8px}
+.search::before{content:"🔎";font-size:15px}
+.search input{flex:1;background:transparent;border:none;color:var(--ink);font-size:15.5px;font-family:inherit;outline:none;padding:4px 2px}
+.search input::placeholder{color:var(--faint)}
+select{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;color:var(--ink);
+  padding:8px 12px;font-size:14px;font-family:inherit;outline:none;cursor:pointer;font-weight:600}
+.count{font-size:13px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap;margin-left:auto;padding-right:6px}
+
+/* ---------- recipe cards ---------- */
+.grid{display:grid;gap:20px;margin-top:24px}
+@media(min-width:660px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:980px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.rcard{display:flex;flex-direction:column;gap:10px;background:var(--card);border:2px solid var(--line);
+  border-radius:22px;padding:14px 14px 16px;color:var(--ink);box-shadow:var(--shadow);
+  transition:transform .18s,border-color .18s;position:relative}
+.rcard:hover{transform:translateY(-4px) rotate(-.5deg);text-decoration:none}
+.rcard:nth-child(3n+1):hover{border-color:var(--gold)}
+.rcard:nth-child(3n+2):hover{border-color:var(--tomato)}
+.rcard:nth-child(3n):hover{border-color:var(--basil)}
+.rcard .thumb{border-radius:16px;overflow:hidden;background:var(--paper-2);
+  display:grid;place-items:center;aspect-ratio:1290/2796*0.72/1;aspect-ratio:0.72;max-height:340px}
+.rcard .thumb img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .25s}
+.rcard:hover .thumb img{transform:scale(1.03)}
+.rcard .thumb .noimg{font-size:52px}
+.rcard .rname{font-family:Fraunces,Georgia,serif;font-weight:900;font-size:19px;line-height:1.2;letter-spacing:-.01em}
+.rcard .rmeta{display:flex;gap:12px;align-items:center;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.rcard .rmeta .when{font-style:italic}
+.rcard .rmeta .open{margin-left:auto;color:var(--basil-d);font-weight:800;font-size:12.5px}
+.rcard:hover .rmeta .open{text-decoration:underline}
+.stamp{position:absolute;top:-10px;right:14px;background:var(--tomato);color:#fff;
+  font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 10px;border-radius:99px;box-shadow:0 4px 10px -4px rgba(178,58,28,.7);transform:rotate(3deg)}
+
+/* the whimsy slot */
+.ghost{display:flex;flex-direction:column;justify-content:center;gap:6px;border:2px dashed var(--line);
+  border-radius:22px;padding:18px;color:var(--faint);min-height:120px;text-align:center}
+.ghost .g1{font-style:italic;font-size:15px}
+.ghost .g1::before{content:"✦ ";color:var(--gold)}
+.ghost .g2{font-size:12.5px}
+
+.status{margin-top:14px;font-size:13.5px;color:var(--ink-soft);min-height:20px;text-align:center}
+.status.err{color:var(--berry-d)}
+.empty{text-align:center;color:var(--faint);padding:52px 0;font-style:italic}
+
+/* ---------- footer ---------- */
+footer{margin-top:46px;padding:30px 0 50px;border-top:1px solid var(--line)}
+footer .signoff{font-style:italic;color:var(--ink-soft);max-width:62ch;text-wrap:pretty}
+footer .signoff a{white-space:nowrap}
+footer .links{margin-top:16px;font-size:13.5px;display:flex;gap:6px 16px;flex-wrap:wrap;align-items:center}
+footer .links a{color:var(--tomato-d);font-weight:600}
+footer .links .sep{color:var(--gold);font-size:9px;opacity:.8}
+footer .joke{margin-top:16px;font-size:13px;color:var(--faint);max-width:62ch;text-wrap:pretty;padding-left:20px;text-indent:-20px}
+footer .joke::before{content:"🥄 ";color:var(--gold)}
+@media(prefers-reduced-motion:reduce){.sprinkle{animation:none}.rcard{transition:none}.rcard:hover{transform:none}.rcard:hover .thumb img{transform:none}h1 .dot:hover{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="sprinkle" style="left:6%;top:22%;animation-delay:0s">🍌</span>
+  <span class="sprinkle" style="left:12%;top:58%;animation-delay:1.4s">🍞</span>
+  <span class="sprinkle" style="right:8%;top:18%;animation-delay:.7s">🧈</span>
+  <span class="sprinkle" style="right:14%;top:55%;animation-delay:2.1s">🥄</span>
+  <span class="sprinkle" style="left:47%;top:6%;animation-delay:1.1s;font-size:20px">✦</span>
+  <div class="wrap">
+    <div class="kicker">public · <b style="color:var(--tomato-d)">lhilton.github.io/shared/cookbook</b></div>
+    <h1>the cookbook<span class="dot">.</span></h1>
+    <p class="sub" id="sub">Every recipe I've cared enough to write down properly — weighed in grams, with a phone card and a full page. Search it, cook it, tell me how it went.</p>
+    <div class="facts">
+      <span><b id="n-count">—</b> recipes so far</span>
+      <span>everything in <b>grams</b>, volume on the side</span>
+      <span>phone cards for <b>your pocket</b></span>
+    </div>
+    <div class="facts">
+      <span>tree <b id="n-commit">—</b></span>
+      <span>manifest built <b id="n-gen">—</b></span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toolbar">
+    <div class="search"><input id="q" type="search" placeholder="Search the cookbook…" autocomplete="off"></div>
+    <select id="sort">
+      <option value="new">newest first</option>
+      <option value="az">a to z</option>
+      <option value="za">z to a</option>
+    </select>
+    <span class="count" id="shown"></span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="status" id="status"></div>
+
+  <footer>
+    <p class="signoff">Maintained by my agent and published the moment I say so. The recipe pages are the full instructions; the phone cards are the pocket versions. Want the rest of what I make? It lives at <a href="https://leezilla.net">leezilla.net</a>.</p>
+    <div class="links">
+      <a href="https://leezilla.net">home</a><span class="sep">✦</span>
+      <a href="../">the shared shelf</a><span class="sep">✦</span>
+      <a href="https://github.com/lhilton/shared">source repo</a><span class="sep">✦</span>
+      <a href="index.json">index.json</a>
+    </div>
+    <p class="joke">A watched pot never boils, but an unattended loaf of banana bread absolutely will find a way to burn. Check at 45.</p>
+  </footer>
+</main>
+
+<script>
+const grid=document.getElementById('grid'),q=document.getElementById('q'),
+      sel=document.getElementById('sort'),shown=document.getElementById('shown'),
+      status=document.getElementById('status');
+let RECIPES=[];
+
+const SUBS=[
+  'Every recipe I\'ve cared enough to write down properly — weighed in grams, with a phone card and a full page. Search it, cook it, tell me how it went.',
+  'Part spice rack, part storybook: the things I cook, written down the way an engineer would. Grams first, always.',
+  'Measured twice, baked once. Every recipe here has been weighed, timed, and survived the kitchen.'
+];
+document.getElementById('sub').textContent=SUBS[Math.floor(Math.random()*SUBS.length)];
+
+function card(r){
+  const a=document.createElement('a');a.className='rcard';a.href=r.page;
+  const thumb=r.card
+    ?`<img loading="lazy" src="${r.card}" alt="Phone recipe card: ${r.name}">`
+    :`<div class="noimg">🍽️</div>`;
+  a.innerHTML=`<div class="thumb">${thumb}</div>
+    <div class="rname">${r.name}</div>
+    <div class="rmeta"><span class="when">added ${r.added??'—'}</span><span class="open">open recipe →</span></div>`;
+  return a;
+}
+function ghostCard(){
+  const g=document.createElement('div');g.className='ghost';
+  g.innerHTML=`<div class="g1">more recipes soon…</div><div class="g2">the oven is always on</div>`;
+  return g;
+}
+function render(){
+  const s=q.value.trim().toLowerCase(),m=sel.value;
+  let list=RECIPES.filter(r=>!s||r.name.toLowerCase().includes(s)||r.slug.toLowerCase().includes(s));
+  const byNew=(a,b)=>(b.added||'0000').localeCompare(a.added||'0000');
+  if(m==='az')list=[...list].sort((a,b)=>a.name.localeCompare(b.name));
+  else if(m==='za')list=[...list].sort((a,b)=>b.name.localeCompare(a.name));
+  else list=[...list].sort(byNew);
+  grid.replaceChildren(...list.map(card));
+  // odd one out? fill the hole with a promise
+  const cols=window.matchMedia('(min-width:980px)').matches?3:window.matchMedia('(min-width:660px)').matches?2:1;
+  if(list.length&&list.length%cols!==0&&cols>1)grid.append(ghostCard());
+  shown.textContent=list.length===RECIPES.length?`${RECIPES.length} recipes`:`${list.length} of ${RECIPES.length}`;
+  if(!list.length&&!RECIPES.length){
+    const e=document.createElement('div');e.className='empty';e.textContent='The cookbook is empty… for now.';grid.replaceChildren(e);
+  }
+}
+fetch('index.json').then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
+ .then(d=>{
+   RECIPES=d.recipes||[];
+   document.getElementById('n-count').textContent=d.count;
+   document.getElementById('n-commit').textContent='@'+d.commit;
+   document.getElementById('n-gen').textContent=(d.generated||'').slice(0,10);
+   render();
+   q.addEventListener('input',render);sel.addEventListener('change',render);
+   window.matchMedia('(min-width:660px)').addEventListener('change',render);
+   window.matchMedia('(min-width:980px)').addEventListener('change',render);
+ })
+ .catch(err=>{status.className='status err';status.textContent='Could not load index.json ('+err.message+'). The manifest may not be published yet — try again in a minute.';});
+</script>
+</body>
+</html>

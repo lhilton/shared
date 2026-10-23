@@ -1,0 +1,19 @@
+{
+  "generated": "2026-10-23T19:13:39Z",
+  "commit": "558cedd",
+  "count": 1,
+  "recipes": [
+    {
+      "slug": "brown-butter-banana-bread",
+      "name": "Brown Butter Chocolate Chip Banana Bread",
+      "dir": "cookbook/brown-butter-banana-bread",
+      "page": "cookbook/brown-butter-banana-bread/index.html",
+      "card": "cookbook/brown-butter-banana-bread/banana-bread-v5.png",
+      "bytes": {
+        "cookbook/brown-butter-banana-bread/banana-bread-v5.png": 398578,
+        "cookbook/brown-butter-banana-bread/index.html": 23075
+      },
+      "added": "2026-10-23"
+    }
+  ]
+}
