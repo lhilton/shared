@@ -100,22 +100,23 @@ footer a:hover{color:var(--purple)}
 /* Mobile: same design language, rescaled for a ~390px viewport.
    Desktop keeps the exact PDF mirror above. */
 @media (max-width:480px){
-  .sheet{max-width:none;padding:0 24px;}
-  .toprule{margin-top:56px;}
-  .mark{font-size:120px;height:68px;margin-top:64px;}
-  .quote{font-size:16.5px;line-height:29px;}
-  .quote p+p{margin-top:8px;}   /* real paragraph gap on phone */
+  .sheet{max-width:none;padding:0 30px;}
+  .toprule{margin-top:72px;}
+  .mark{font-size:120px;height:68px;margin-top:88px;}
+  .quote{font-size:16.5px;line-height:31px;}
+  .quote p+p{margin-top:18px;}   /* generous paragraph gap on phone */
   .q{
     font-size:22px;
-    line-height:1;              /* restore normal line box */
-    white-space:normal;         /* allow wrap, phrase is 5 words */
+    line-height:1.2;             /* restore normal line box */
+    white-space:normal;          /* allow wrap, phrase is 5 words */
+    padding:0 .12em;
   }
-  .closer{font-size:52px;margin-top:26px;}
-  .attrib-name{font-size:26px;margin-top:44px;}
-  .attrib-meta{line-height:18px;padding:0 8px;}
+  .closer{font-size:52px;margin-top:38px;}
+  .attrib-name{font-size:26px;margin-top:60px;}
+  .attrib-meta{line-height:20px;padding:0 8px;margin-top:18px;}
   .attrib-meta br{display:none;} /* let it wrap at the &middot; naturally */
-  .divider{margin-top:30px;}
-  footer{padding:40px 16px 48px;}
+  .divider{margin-top:44px;}
+  footer{padding:56px 16px 64px;}
 }
 @media print{
   footer .printlink{display:none}
