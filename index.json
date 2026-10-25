@@ -1,17 +1,17 @@
 {
-  "generated": "2026-10-25T14:48:46Z",
-  "commit": "3252249",
+  "generated": "2026-10-25T15:05:00Z",
+  "commit": "fb6f0eb",
   "config": {
     "exclude": [
-      ".git",
-      "lumion",
-      ".gitignore",
       "index.json",
+      "personal/uproar-tutorial/private-drafts",
       "index.html",
-      "personal/uproar-tutorial/private-drafts"
+      ".gitignore",
+      "lumion",
+      ".git"
     ]
   },
-  "count": 14,
+  "count": 15,
   "files": [
     {
       "path": "cookbook/brown-butter-banana-bread/banana-bread-v5.png",
@@ -62,10 +62,16 @@
       "date": null
     },
     {
+      "path": "personal/2026/october/25/vonnegut-envelope/index.html",
+      "bytes": 4355,
+      "ext": "html",
+      "date": null
+    },
+    {
       "path": "personal/2026/october/25/vonnegut-envelope/quote.pdf",
       "bytes": 34057,
       "ext": "pdf",
-      "date": "2026-10-25"
+      "date": null
     },
     {
       "path": "personal/uproar-tutorial/index.html",
