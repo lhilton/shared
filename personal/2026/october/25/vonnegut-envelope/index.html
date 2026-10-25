@@ -97,6 +97,26 @@ footer{
 }
 footer a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
 footer a:hover{color:var(--purple)}
+/* Mobile: same design language, rescaled for a ~390px viewport.
+   Desktop keeps the exact PDF mirror above. */
+@media (max-width:480px){
+  .sheet{max-width:none;padding:0 24px;}
+  .toprule{margin-top:56px;}
+  .mark{font-size:120px;height:68px;margin-top:64px;}
+  .quote{font-size:16.5px;line-height:29px;}
+  .quote p+p{margin-top:8px;}   /* real paragraph gap on phone */
+  .q{
+    font-size:22px;
+    line-height:1;              /* restore normal line box */
+    white-space:normal;         /* allow wrap, phrase is 5 words */
+  }
+  .closer{font-size:52px;margin-top:26px;}
+  .attrib-name{font-size:26px;margin-top:44px;}
+  .attrib-meta{line-height:18px;padding:0 8px;}
+  .attrib-meta br{display:none;} /* let it wrap at the &middot; naturally */
+  .divider{margin-top:30px;}
+  footer{padding:40px 16px 48px;}
+}
 @media print{
   footer .printlink{display:none}
   body{padding:0}
@@ -115,7 +135,7 @@ footer a:hover{color:var(--purple)}
   </div>
   <div class="closer">dancing animals.</div>
   <div class="attrib-name">&mdash; Kurt Vonnegut</div>
-  <div class="attrib-meta">Interview with David Brancaccio &middot; PBS NOW &middot; October 7, 2005<br>transcript &middot; &ldquo;A Man Without a Country&rdquo; (2005)</div>
+  <div class="attrib-meta">Interview with David Brancaccio &middot; PBS NOW &middot; October&nbsp;7,&nbsp;2005 transcript &middot; &ldquo;A Man Without a Country&rdquo; (2005)</div>
   <div class="divider">&middot; &middot; &middot;</div>
 </div>
 <footer>leezilla.net &middot; we&rsquo;re here on Earth to fart around &middot; <a class="printlink" href="quote.pdf">print-ready PDF</a></footer>
