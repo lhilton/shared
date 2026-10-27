@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peanut Butter Cookies — step by step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crumb:   #FBF4E4;
+    --crumb-2: #F2E5C4;
+    --accent:  #C88A2E;
+    --accent-d:#96601A;
+    --second:  #6E8C4E;
+    --second-d:#4E6A34;
+    --warn:    #C0405B;
+    --warn-d:  #9C2F46;
+    --ink:     #42331D;
+    --ink-soft:#6C5A40;
+    --line:    #E3CFA0;
+    --maxw: 820px;
+    --shadow: 0 1px 2px rgba(66,51,29,.06), 0 14px 34px -18px rgba(66,51,29,.32);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 85% -10%, color-mix(in srgb, var(--accent) 18%, white) 0%, transparent 50%),
+      var(--crumb);
+    color:var(--ink);
+    font-family:"Hanken Grotesk", system-ui, -apple-system, sans-serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; font-weight:900; line-height:1.06; letter-spacing:-.01em}
+  a{color:var(--second-d)}
+  .eyebrow{font-weight:700; text-transform:uppercase; letter-spacing:.22em; font-size:.74rem; color:var(--accent-d)}
+  .hero{padding:52px 0 26px; text-align:center}
+  .hero h1{font-size:clamp(2.1rem,5.6vw,3.3rem); margin:.1em 0 .14em}
+  .hero h1 .it{font-style:italic;font-weight:500;color:var(--second-d)}
+  .hero p.lede{font-size:1.1rem; color:var(--ink-soft); max-width:50ch; margin:6px auto 0}
+  .pill-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px}
+  .pill{display:inline-flex; align-items:center; gap:8px; background:#fff8ea; border:1px solid var(--line); border-radius:999px; padding:8px 15px; font-size:.86rem; font-weight:600; color:var(--ink-soft); box-shadow:var(--shadow)}
+  .pill b{color:var(--ink)}
+  .phonecard{background:#fff8ea; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:24px; text-align:center; margin-top:18px}
+  .phonecard img{width:min(320px,80vw); border-radius:28px; box-shadow:0 18px 40px -18px rgba(66,51,29,.45)}
+  .phonecard p{font-size:.9rem; color:var(--ink-soft); margin:10px 0 0}
+  .video{max-width:640px; margin:22px auto 0}
+  .video .frame{position:relative; padding-bottom:56.25%; height:0; border-radius:14px; overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow); background:#1c1917}
+  .video iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+  .video p{font-size:.9rem; color:var(--ink-soft); margin:10px 4px 0; text-align:center}
+  section{padding:26px 0}
+  .num-eyebrow{display:flex; align-items:center; gap:12px; margin:0 0 16px}
+  .num-eyebrow .n{
+    width:40px;height:40px;border-radius:12px;flex:none;display:grid;place-items:center;
+    font-family:"Fraunces",serif;font-weight:900;font-size:1.15rem;color:#fff;
+    background:var(--second); box-shadow:0 8px 16px -8px color-mix(in srgb, var(--second-d) 70%, transparent);
+  }
+  .num-eyebrow h2{font-size:clamp(1.5rem,3.4vw,2.1rem); margin:0}
+  .two{display:grid; gap:18px}
+  @media(min-width:620px){.two{grid-template-columns:1fr 1fr}}
+  .card{background:#fffaf0; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:20px 22px}
+  .card h3{font-size:1.18rem; margin:0 0 4px}
+  .card .sub{font-size:.84rem; color:var(--ink-soft); margin:0 0 14px}
+  ul.list{list-style:none; margin:0; padding:0}
+  ul.list li{display:flex; justify-content:space-between; gap:14px; padding:8px 0; border-bottom:1px dashed var(--line)}
+  ul.list li:last-child{border-bottom:0}
+  ul.list .amt{font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--accent-d); text-align:right}
+  ul.list .amt .gram{display:block; font-weight:800; font-size:1rem; color:var(--second-d)}
+  .weightnote{background:#EEF3E6; border:1px solid #D2E0C2; border-radius:10px; padding:11px 13px; font-size:.9rem; color:var(--ink-soft); margin:0 0 14px}
+  .weightnote b{color:var(--second-d)}
+  .variant{background:var(--crumb-2); border:1px dashed var(--accent); border-radius:10px; padding:12px 14px; font-size:.9rem; margin-top:14px}
+  .variant b{color:var(--accent-d)}
+  ul.tools{list-style:none;margin:0;padding:0}
+  ul.tools li{padding:7px 0 7px 26px; position:relative; border-bottom:1px dashed var(--line)}
+  ul.tools li:last-child{border-bottom:0}
+  ul.tools li::before{content:"✓"; position:absolute; left:0; top:7px; color:var(--second-d); font-weight:800}
+  ol.steps{list-style:none; counter-reset:s; margin:0; padding:0; display:grid; gap:16px}
+  ol.steps > li{
+    counter-increment:s; position:relative; padding:18px 20px 18px 64px;
+    background:#fffaf0; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);
+  }
+  ol.steps > li::before{
+    content:counter(s); position:absolute; left:16px; top:16px;
+    width:34px;height:34px;border-radius:50%; display:grid; place-items:center;
+    font-family:"Fraunces",serif; font-weight:900; font-size:1rem; color:#fff;
+    background:var(--accent); box-shadow:0 5px 12px -5px color-mix(in srgb, var(--accent-d) 80%, transparent);
+  }
+  ol.steps > li h4{margin:0 0 6px; font-family:"Hanken Grotesk",sans-serif; font-weight:800; font-size:1.04rem}
+  ol.steps > li p{margin:0 0 8px}
+  ol.steps > li p:last-child{margin-bottom:0}
+  .expect{font-size:.92rem; color:var(--ink-soft); background:#F3F7EC; border:1px solid #D9E7C9; border-radius:9px; padding:9px 12px; margin-top:8px}
+  .expect b{color:var(--second-d)}
+  .stop{font-size:.93rem; background:linear-gradient(90deg,rgba(192,64,91,.09),transparent 70%); border-left:4px solid var(--warn); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .stop b{color:var(--warn-d)}
+  .flag{font-size:.93rem; background:linear-gradient(90deg,rgba(200,138,46,.18),transparent 75%); border-left:4px solid var(--accent); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .flag b{color:var(--accent-d)}
+  code{background:var(--crumb-2); border:1px solid var(--line); border-radius:6px; padding:1px 7px; font-size:.92em; font-weight:600}
+  b.key{color:var(--ink)}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:.86rem;font-weight:600}
+  .chip b{color:var(--second-d)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .fix{display:grid;gap:12px}
+  @media(min-width:620px){.fix{grid-template-columns:1fr 1fr}}
+  .fix .it{background:var(--crumb-2);border:1px solid var(--line);border-radius:12px;padding:15px}
+  .fix .it h4{margin:0 0 5px;font-family:"Fraunces",serif;font-size:1.05rem}
+  .fix .it p{margin:0;font-size:.93rem;color:var(--ink-soft)}
+  footer{padding:34px 0 56px;color:var(--ink-soft);font-size:.85rem}
+  footer .rule{height:1px;background:var(--line);margin-bottom:20px}
+  footer b{color:var(--ink)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:6px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Preppy Kitchen · as written, weighed</span>
+    <h1>Peanut Butter Cookies <span class="it">the classic</span></h1>
+    <p class="lede">Soft, melt-in-your-mouth cookies with real fork criss-crosses. 18 cookies from one bowl of dough, about 30 minutes start to finish.</p>
+    <div class="pill-row">
+      <span class="pill">🍪 <span>Yields <b>18 cookies</b></span></span>
+      <span class="pill">⏱ <span>About <b>30 minutes</b></span></span>
+      <span class="pill">🔥 <span>Baked at <b>350°F</b></span></span>
+    </div>
+
+    <div class="video">
+      <div class="frame">
+        <iframe src="https://www.youtube-nocookie.com/embed/5wemXknCUFA" title="Preppy Kitchen — The BEST Peanut Butter Cookies" loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <p>▶ John from Preppy Kitchen making this exact recipe — watch how pale the cookies come out of the oven and how the criss-cross is pressed.</p>
+    </div>
+
+    <div class="phonecard">
+      <a href="card.png"><img src="card.png" alt="Phone recipe card"></a>
+      <p>📱 For your phone — tap to open the full-size card, then save it to Photos.</p>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">1</span><h2>What you need</h2></div>
+    <div class="two">
+      <div class="card">
+        <h3>Ingredients</h3>
+        <p class="sub">For 18 cookies. Grams lead; volume in the small line.</p>
+        <p class="weightnote"><b>Weigh if you can.</b> Set the bowl on the scale, tare between ingredients, go by grams. Too much flour is the #1 way these turn out dry.</p>
+        <ul class="list">
+          <li><span>All-purpose flour</span><span class="amt"><span class="gram">180 g</span>1½ cups</span></li>
+          <li><span>Butter, unsalted, room temp</span><span class="amt"><span class="gram">113 g</span>½ cup · 1 stick</span></li>
+          <li><span>Creamy peanut butter</span><span class="amt"><span class="gram">250 g</span>1 cup</span></li>
+          <li><span>Brown sugar, lightly packed</span><span class="amt"><span class="gram">100 g</span>½ cup</span></li>
+          <li><span>Granulated sugar</span><span class="amt"><span class="gram">100 g</span>½ cup</span></li>
+          <li><span>Egg, large, room temp</span><span class="amt"><span class="gram">1 (~50 g)</span>out of shell</span></li>
+          <li><span>Vanilla extract</span><span class="amt"><span class="gram">1 tsp</span>5 mL</span></li>
+          <li><span>Baking powder</span><span class="amt"><span class="gram">¾ tsp</span>too small to weigh</span></li>
+        </ul>
+        <div class="variant"><b>Salt:</b> only add ¼–½ tsp fine sea salt if your peanut butter is unsalted. Salted PB brands need nothing extra.</div>
+        <div class="variant"><b>Natural peanut butter:</b> stir the jar completely before measuring — the oily top layer makes runny, spreading cookies.</div>
+      </div>
+      <div class="card">
+        <h3>Equipment</h3>
+        <ul class="tools">
+          <li>Kitchen scale</li>
+          <li>Stand or hand mixer (a sturdy spoon works, it's just more arm time)</li>
+          <li>Baking sheet + parchment paper</li>
+          <li>Regular dinner fork — long tines give the cleanest criss-cross</li>
+          <li>Wire rack (for later, not during cooling — they set on the sheet)</li>
+        </ul>
+        <h3 style="margin-top:18px">No chilling needed</h3>
+        <p class="sub" style="margin-top:6px">Roll the dough straight away. Chilled dough bakes the same, so making it ahead is fine too.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">2</span><h2>Make the dough</h2></div>
+    <ol class="steps">
+      <li>
+        <h4>Preheat and sift</h4>
+        <p>Heat the oven to <b class="key">350°F (175°C)</b>. Sift <code>180 g flour</code> and <code>¾ tsp baking powder</code> into a bowl and whisk them together.</p>
+        <p class="expect"><b>What to expect:</b> a uniform pale powder, no white specks of unblended baking powder.</p>
+      </li>
+      <li>
+        <h4>Cream butter and sugars</h4>
+        <p>Beat <code>113 g butter</code>, <code>100 g brown sugar</code>, and <code>100 g granulated sugar</code> with the paddle until light and fluffy, <b class="key">2–3 minutes</b>. Add ¼–½ tsp salt here only if your peanut butter is unsalted.</p>
+        <p class="expect"><b>What to expect:</b> the mix lightens in color and looks whipped, not sandy.</p>
+      </li>
+      <li>
+        <h4>Add the peanut butter</h4>
+        <p>Mix in <code>250 g creamy peanut butter</code> until it's fully incorporated. Scrape the bowl — PB loves to hide under the paddle.</p>
+        <p class="expect"><b>What to expect:</b> one thick, uniform paste, no streaks.</p>
+      </li>
+      <li>
+        <h4>Egg and vanilla</h4>
+        <p>Mix in <code>1 large egg</code> and <code>1 tsp vanilla</code>. Scrape the bowl down and mix once more so everything comes together evenly.</p>
+        <p class="flag"><b>Watch for:</b> the dough looking slightly curdled right after the egg — that's normal, it smooths out with the flour.</p>
+      </li>
+      <li>
+        <h4>Flour, gently</h4>
+        <p>Add the flour mixture and beat on low <b class="key">just until incorporated</b>.</p>
+        <p class="stop"><b>Don't overmix.</b> Extra beating once the flour is in develops gluten and makes the cookies tough instead of melt-in-your-mouth.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">3</span><h2>Shape and bake</h2></div>
+    <ol class="steps" start="6">
+      <li>
+        <h4>Roll the balls</h4>
+        <p>Roll dough into <b class="key">1-inch balls</b> and place them on a parchment-lined baking sheet. They barely spread, so 2 inches apart is plenty.</p>
+        <p class="expect"><b>What to expect:</b> about 18 balls; the dough is soft but holds its shape.</p>
+      </li>
+      <li>
+        <h4>The criss-cross</h4>
+        <p>Press each ball flat with a fork, one direction then again at 90° for the classic crosshatch. Dip the fork in flour if it sticks. <b class="key">Pull the fork away sideways instead of lifting up</b> — the marks stay crisp.</p>
+        <p class="flag"><b>Why flatten at all:</b> these cookies are dense and don't spread on their own. The fork press is what makes them bake evenly.</p>
+      </li>
+      <li>
+        <h4>Bake, then let them set</h4>
+        <p>Bake at <b class="key">350°F for about 10 minutes</b>, until the edges are just starting to color. Then leave them on the hot sheet until completely cooled — they finish cooking and firm up from residual heat.</p>
+        <p class="stop"><b>They will look underdone.</b> That's correct. Pulling them when fully set in the oven makes them dry and hard once cooled. Moving them too early breaks them.</p>
+      </li>
+    </ol>
+    <div class="chips">
+      <span class="chip">🔥 <b>350°F</b> / 175°C</span>
+      <span class="chip">⏱ <b>~10 min</b> per sheet</span>
+      <span class="chip">🍪 <b>18</b> cookies</span>
+      <span class="chip">📦 <b>1 week</b> airtight</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n" style="background:var(--warn)">?</span><h2>If something went wrong</h2></div>
+    <div class="fix">
+      <div class="it"><h4>Dry, crumbly cookies</h4><p>Too much flour — weigh it next time (180 g, not scooped cups). Also check you pulled them at the pale stage, not when fully browned.</p></div>
+      <div class="it"><h4>They spread into each other</h4><p>Natural peanut butter that wasn't stirred in — the oil layer ran. Stir the jar fully, or use a stabilized brand.</p></div>
+      <div class="it"><h4>Criss-cross disappeared</h4><p>The fork marks bake away if the dough is too warm or the press was too light. Press firmly and bake straight after shaping.</p></div>
+      <div class="it"><h4>Broked when moved off the sheet</h4><p>They were still setting. Wait until fully cooled on the sheet — hot PB cookies are extremely fragile.</p></div>
+      <div class="it"><h4>Too salty</h4><p>You salted the batter and used salted peanut butter. Pick one or the other next batch.</p></div>
+      <div class="it"><h4>Dough sticks to the fork</h4><p>Dip the fork in flour between presses, and pull sideways off the cookie rather than lifting.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="rule"></div>
+    <p style="max-width:74ch"><b>Source:</b> <a href="https://preppykitchen.com/peanut-butter-cookies-recipe/">Preppy Kitchen — Peanut Butter Cookies Recipe</a> (John Kanell), 4.95★ from 5,515 ratings. Video: <a href="https://www.youtube.com/watch?v=5wemXknCUFA">The BEST Peanut Butter Cookies</a>, Preppy Kitchen on YouTube. Measurements converted to grams-first as written on the recipe card.</p>
+  </div>
+</footer>
+
+</body>
+</html>
