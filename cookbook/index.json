@@ -1,8 +1,20 @@
 {
-  "generated": "2026-10-27T14:43:53Z",
-  "commit": "4884078",
-  "count": 3,
+  "generated": "2026-10-27T16:56:50Z",
+  "commit": "0636fdc",
+  "count": 4,
   "recipes": [
+    {
+      "slug": "peanut-butter-cookies",
+      "name": "Peanut Butter Cookies the classic",
+      "dir": "cookbook/peanut-butter-cookies",
+      "page": "cookbook/peanut-butter-cookies/index.html",
+      "card": "cookbook/peanut-butter-cookies/card.png",
+      "bytes": {
+        "cookbook/peanut-butter-cookies/card.png": 287595,
+        "cookbook/peanut-butter-cookies/index.html": 16512
+      },
+      "added": "2026-10-27"
+    },
     {
       "slug": "brown-butter-banana-bread",
       "name": "Brown Butter Chocolate Chip Banana Bread",
@@ -34,7 +46,7 @@
       "page": "cookbook/hearty-oat-wheat-loaf/index.html",
       "card": "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png",
       "bytes": {
-        "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png": 379394,
+        "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png": 792426,
         "cookbook/hearty-oat-wheat-loaf/index.html": 33975
       },
       "added": "2026-10-23"
