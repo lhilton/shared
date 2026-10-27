@@ -1,18 +1,24 @@
 {
-  "generated": "2026-10-25T15:05:00Z",
-  "commit": "fb6f0eb",
+  "generated": "2026-10-27T16:58:54Z",
+  "commit": "772661e",
   "config": {
     "exclude": [
+      ".git",
+      "lumion",
+      ".gitignore",
       "index.json",
       "personal/uproar-tutorial/private-drafts",
-      "index.html",
-      ".gitignore",
-      "lumion",
-      ".git"
+      "index.html"
     ]
   },
-  "count": 15,
+  "count": 18,
   "files": [
+    {
+      "path": "CNAME",
+      "bytes": 19,
+      "ext": "misc",
+      "date": null
+    },
     {
       "path": "cookbook/brown-butter-banana-bread/banana-bread-v5.png",
       "bytes": 398578,
@@ -39,39 +45,51 @@
     },
     {
       "path": "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png",
-      "bytes": 356814,
+      "bytes": 792426,
       "ext": "png",
       "date": null
     },
     {
       "path": "cookbook/hearty-oat-wheat-loaf/index.html",
-      "bytes": 32763,
+      "bytes": 33975,
       "ext": "html",
       "date": null
     },
     {
       "path": "cookbook/index.html",
-      "bytes": 15143,
+      "bytes": 15138,
       "ext": "html",
       "date": null
     },
     {
       "path": "cookbook/index.json",
-      "bytes": 1465,
+      "bytes": 1903,
       "ext": "json",
       "date": null
     },
     {
-      "path": "personal/2026/october/25/vonnegut-envelope/index.html",
-      "bytes": 4355,
+      "path": "cookbook/peanut-butter-cookies/card.png",
+      "bytes": 287595,
+      "ext": "png",
+      "date": null
+    },
+    {
+      "path": "cookbook/peanut-butter-cookies/index.html",
+      "bytes": 16512,
       "ext": "html",
       "date": null
+    },
+    {
+      "path": "personal/2026/october/25/vonnegut-envelope/index.html",
+      "bytes": 5218,
+      "ext": "html",
+      "date": "2026-10-25"
     },
     {
       "path": "personal/2026/october/25/vonnegut-envelope/quote.pdf",
       "bytes": 34057,
       "ext": "pdf",
-      "date": null
+      "date": "2026-10-25"
     },
     {
       "path": "personal/uproar-tutorial/index.html",
