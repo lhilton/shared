@@ -101,6 +101,7 @@
   ul.list .amt{font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--accent-d); text-align:right}
   ul.list .amt .gram{display:block; font-weight:800; font-size:1rem; color:var(--second-d)}
   ul.list li.gluten{background:linear-gradient(90deg,rgba(110,140,78,.16),transparent); border-radius:8px; padding:9px 10px; border-bottom:0}
+  ul.list li.prop{background:linear-gradient(90deg,rgba(217,164,65,.14),transparent); border-radius:8px; padding:9px 10px; border-bottom:0; margin-top:4px; border:1px dashed var(--line)}
   ul.list li.yeast{background:linear-gradient(90deg,rgba(217,164,65,.20),transparent); border-radius:8px; padding:9px 10px; border-bottom:0; margin-top:4px; border:1px solid #E6CE97}
   .weightnote{background:#EEF3E6; border:1px solid #D2E0C2; border-radius:10px; padding:11px 13px; font-size:.9rem; color:var(--ink-soft); margin:0 0 14px}
   .weightnote b{color:var(--second-d)}
@@ -241,12 +242,13 @@
   <div class="wrap">
     <div class="about">
       <h2>What's different in this version</h2>
-      <p style="margin:0">This builds on the plain Honeycomb Express loaf with four deliberate changes, tuned so it's firmer and heartier without over-filling the 1.5&nbsp;lb pan.</p>
+      <p style="margin:0">This builds on the plain Honeycomb Express loaf with five deliberate changes, tuned so it's firmer and heartier without over-filling the 1.5&nbsp;lb pan.</p>
       <ul>
         <li><b>Vital wheat gluten (20 g / 2 Tbsp)</b> rebuilds the gluten that oats and whole wheat dilute. It's what makes the loaf firm enough to spread on, and the reason the egg isn't needed.</li>
         <li><b>Rolled oats + whole wheat (60 g + 135 g)</b> add fiber and a nutty, wholesome flavor.</li>
         <li><b>Flour trimmed to 206 g.</b> Oats and gluten add bulk, so the white flour is reduced to keep the loaf from climbing into the lid.</li>
         <li><b>A touch more salt (~7.5 g)</b> firms the gluten, carries the whole-wheat flavor, and gently keeps the rise in check.</li>
+        <li><b>Calcium propionate (1 g)</b> is the mold inhibitor commercial bread uses. With it, the loaf keeps about 6–8 days on the counter in a sealed bag instead of 3–4. It's flavorless at this dose — whisk it in with the flours.</li>
       </ul>
     </div>
   </div>
@@ -269,6 +271,7 @@
           <li><span>Whole wheat flour</span><span class="amt"><span class="gram">135 g</span>1 cup</span></li>
           <li><span>White (all-purpose) flour</span><span class="amt"><span class="gram">206 g</span>1½ cups</span></li>
           <li class="gluten"><span>Vital wheat gluten <em>(whisk into the flours)</em></span><span class="amt"><span class="gram">20 g</span>2 Tbsp</span></li>
+          <li class="prop"><span>Calcium propionate <em>(mold inhibitor — whisk into the flours)</em></span><span class="amt"><span class="gram">1 g</span>~½ tsp</span></li>
           <li class="yeast"><span>RapidRise yeast <em>(dry well, last)</em></span><span class="amt"><span class="gram">10 g</span>generous 1 Tbsp</span></li>
         </ul>
         <div class="variant"><b>Have bread flour?</b> Swap the all-purpose for the same <b>206 g (1½ cups) bread flour</b> and drop the vital wheat gluten to <b>10 g (1 Tbsp)</b>. Bread flour already carries the protein, so it needs less help — same firmness, even safer on the rise.</div>
@@ -281,7 +284,7 @@
           <li>A <b class="key">kitchen scale</b> — recommended for this one</li>
           <li>A microwave-safe cup or small pot to warm and soak the milk + oats</li>
           <li>Dry measuring cups and spoons if not weighing</li>
-          <li>A small whisk or fork to blend the gluten into the flours</li>
+          <li>A small whisk or fork to blend the gluten and calcium propionate into the flours</li>
           <li>A thermometer, to confirm the milk stays warm</li>
           <li>Oven mitts, a wire cooling rack, and a serrated bread knife</li>
         </ul>
@@ -313,9 +316,9 @@
         <p>You want <code>42 g (3 Tbsp)</code> butter soft enough to dent, not melted. 30–60 min on the counter, or 6–8 seconds in the microwave.</p>
       </li>
       <li data-check>
-        <h4>Whisk the gluten into the flours</h4>
-        <p>In a bowl, whisk the <code>135 g</code> whole wheat flour, <code>206 g</code> white flour, and <code>20 g</code> vital wheat gluten together until evenly combined. This spreads the gluten so it doesn't clump.</p>
-        <div class="expect"><b>Why it matters:</b> the gluten is the firmness. Blended evenly through the flour, it builds structure throughout the loaf instead of in pockets.</div>
+        <h4>Whisk the gluten and the calcium propionate into the flours</h4>
+        <p>In a bowl, whisk the <code>135 g</code> whole wheat flour, <code>206 g</code> white flour, <code>20 g</code> vital wheat gluten, and <code>1 g (~½ tsp)</code> <b class="key">calcium propionate</b> together until evenly combined. This spreads the gluten and the preservative so neither clumps.</p>
+        <div class="expect"><b>Why it matters:</b> the gluten is the firmness; the propionate is the shelf life. Blended evenly through the flour, both work throughout the loaf instead of in pockets. At this dose you won't taste it.</div>
       </li>
     </ol>
   </div>
@@ -437,8 +440,8 @@
   <div class="wrap">
     <div class="num-eyebrow"><span class="n">7</span><h2>Keep it fresh</h2></div>
     <div class="panel">
-      <p style="margin:0 0 10px"><span class="lab note">Counter</span>Fully cooled, store in a sealed bag or bread box up to <b class="key">3 days</b>. Don't refrigerate — it dries bread out faster.</p>
-      <p style="margin:0"><span class="lab note">Freezer</span>Slice, seal in a freezer bag, and freeze. Toast slices straight from frozen. The firm crumb freezes and toasts especially well.</p>
+      <p style="margin:0 0 10px"><span class="lab note">Counter</span>Fully cooled, store in a sealed bag up to <b class="key">6–8 days</b> with the calcium propionate in the dough (about 3–4 days without). Don't refrigerate — it dries bread out faster. Bag it only after a full hour of cooling; a warm loaf traps steam and molds faster. If you see condensation in the bag, swap bags and check the crust.</p>
+      <p style="margin:0"><span class="lab note">Freezer</span>Anything you won't finish by day 5: slice, seal in a freezer bag, and freeze. Toast slices straight from frozen. The firm crumb freezes and toasts especially well.</p>
     </div>
   </div>
 </section>
@@ -460,7 +463,7 @@
 <footer>
   <div class="wrap">
     <div class="rule"></div>
-    <p style="max-width:74ch"><b>Based on Lee's Honeycomb Express loaf.</b> The Express-cycle behavior (single short rise, ~1-hour run, instant yeast, warm liquid, smaller and denser loaf) comes from the official Hamilton Beach 29982 Use &amp; Care guide. Amounts were adapted for oats, whole wheat, and vital wheat gluten, then reviewed and reconciled for firmness and pan safety: the white flour was trimmed to keep the dough near the proven ~740 g loaf. Over repeated bakes it was tuned further — butter (42 g), honey (60 g), and oats (60 g) nudged up to soften and enrich the crumb, and the yeast rounded to 10 g. At ~820 g of dough it sits near the upper comfort limit for the 1.5 lb pan: proven across repeated loaves, but about as full as it should get.</p>
+    <p style="max-width:74ch"><b>Based on Lee's Honeycomb Express loaf.</b> The Express-cycle behavior (single short rise, ~1-hour run, instant yeast, warm liquid, smaller and denser loaf) comes from the official Hamilton Beach 29982 Use &amp; Care guide. Amounts were adapted for oats, whole wheat, and vital wheat gluten, then reviewed and reconciled for firmness and pan safety: the white flour was trimmed to keep the dough near the proven ~740 g loaf. Over repeated bakes it was tuned further — butter (42 g), honey (60 g), and oats (60 g) nudged up to soften and enrich the crumb, and the yeast rounded to 10 g. The latest change adds 1 g calcium propionate per loaf — the same mold inhibitor commercial bread uses — which stretches counter life from 3–4 days to 6–8. At ~820 g of dough it sits near the upper comfort limit for the 1.5 lb pan: proven across repeated loaves, but about as full as it should get.</p>
     <p style="max-width:74ch">Gram conversion notes: flour ~137 g/cup, whole wheat 135 g/cup, rolled oats 45 g per ½ cup, honey 21 g/Tbsp, butter 14 g/Tbsp, salt 6 g/tsp, vital wheat gluten ~10 g/Tbsp, one yeast packet 7 g (1 Tbsp ≈ 9 g). Liquid and oat-absorption figures are approximate, so the dough check is the real control.</p>
     <p>Hearty, firm, sandwich-ready. 🌾 Warm the milk, give it the gluten, and let it cool all the way before you slice.</p>
   </div>
