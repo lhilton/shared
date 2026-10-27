@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-23T20:17:41Z",
-  "commit": "6e3c47b",
+  "generated": "2026-10-27T14:43:53Z",
+  "commit": "4884078",
   "count": 3,
   "recipes": [
     {
@@ -34,8 +34,8 @@
       "page": "cookbook/hearty-oat-wheat-loaf/index.html",
       "card": "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png",
       "bytes": {
-        "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png": 356814,
-        "cookbook/hearty-oat-wheat-loaf/index.html": 32763
+        "cookbook/hearty-oat-wheat-loaf/hearty-oat-wheat-loaf-card.png": 379394,
+        "cookbook/hearty-oat-wheat-loaf/index.html": 33975
       },
       "added": "2026-10-23"
     }
