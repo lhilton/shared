@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lunch Lady Bars — step by step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crumb:   #FBF3E2;
+    --crumb-2: #F2E6C9;
+    --accent:  #B5722F;
+    --accent-d:#8A531E;
+    --second:  #6B4226;
+    --second-d:#4E2F1A;
+    --warn:    #C0405B;
+    --warn-d:  #9C2F46;
+    --ink:     #40321F;
+    --ink-soft:#6A5742;
+    --line:    #E2CFA4;
+    --maxw: 820px;
+    --shadow: 0 1px 2px rgba(64,50,31,.06), 0 14px 34px -18px rgba(64,50,31,.32);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 85% -10%, color-mix(in srgb, var(--accent) 18%, white) 0%, transparent 50%),
+      var(--crumb);
+    color:var(--ink);
+    font-family:"Hanken Grotesk", system-ui, -apple-system, sans-serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; font-weight:900; line-height:1.06; letter-spacing:-.01em}
+  a{color:var(--second-d)}
+  .eyebrow{font-weight:700; text-transform:uppercase; letter-spacing:.22em; font-size:.74rem; color:var(--accent-d)}
+  .hero{padding:52px 0 26px; text-align:center}
+  .hero h1{font-size:clamp(2.1rem,5.6vw,3.3rem); margin:.1em 0 .14em}
+  .hero h1 .it{font-style:italic;font-weight:500;color:var(--second-d)}
+  .hero p.lede{font-size:1.1rem; color:var(--ink-soft); max-width:50ch; margin:6px auto 0}
+  .pill-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px}
+  .pill{display:inline-flex; align-items:center; gap:8px; background:#fff8ea; border:1px solid var(--line); border-radius:999px; padding:8px 15px; font-size:.86rem; font-weight:600; color:var(--ink-soft); box-shadow:var(--shadow)}
+  .pill b{color:var(--ink)}
+  .phonecard{background:#fff8ea; border:1px solid var(--line); border-radius:18px;
+    box-shadow:var(--shadow); padding:24px; text-align:center; margin-top:18px}
+  .phonecard img{width:min(320px,80vw); border-radius:28px; box-shadow:0 18px 40px -18px rgba(64,50,31,.45)}
+  .phonecard p{font-size:.9rem; color:var(--ink-soft); margin:10px 0 0}
+  section{padding:26px 0}
+  .num-eyebrow{display:flex; align-items:center; gap:12px; margin:0 0 16px}
+  .num-eyebrow .n{
+    width:40px;height:40px;border-radius:12px;flex:none;display:grid;place-items:center;
+    font-family:"Fraunces",serif;font-weight:900;font-size:1.15rem;color:#fff;
+    background:var(--second); box-shadow:0 8px 16px -8px color-mix(in srgb, var(--second-d) 70%, transparent);
+  }
+  .num-eyebrow h2{font-size:clamp(1.5rem,3.4vw,2.1rem); margin:0}
+  .panel{background:#fff8ea; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:24px}
+  .about{
+    background:linear-gradient(180deg,var(--crumb-2),#FFFBF2);
+    border:1px solid var(--line); border-left:5px solid var(--accent);
+    border-radius:16px; box-shadow:var(--shadow); padding:22px 24px; margin-top:8px;
+  }
+  .about h2{font-size:1.35rem; margin:0 0 6px}
+  .about ul{margin:12px 0 0; padding:0; list-style:none; display:grid; gap:10px}
+  .about li{position:relative; padding-left:26px; font-size:.97rem}
+  .about li::before{content:"🍫"; position:absolute; left:0; top:0; font-size:.9rem}
+  .about b{color:var(--accent-d)}
+  .lab{display:inline-block; font-weight:800; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; padding:2px 9px; border-radius:6px; margin-right:8px; vertical-align:2px}
+  .lab.do{background:var(--second); color:#fff}
+  .lab.note{background:var(--crumb-2); color:var(--accent-d); border:1px solid var(--line)}
+  .lab.warn{background:var(--warn); color:#fff}
+  .lab.see{background:#EAF0E0; color:var(--ink); border:1px solid #CFDDBC}
+  .two{display:grid; gap:18px}
+  @media(min-width:620px){.two{grid-template-columns:1fr 1fr}}
+  .card{background:#fffaf0; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:20px 22px}
+  .card h3{font-size:1.18rem; margin:0 0 4px}
+  .card .sub{font-size:.84rem; color:var(--ink-soft); margin:0 0 14px}
+  ul.list{list-style:none; margin:0; padding:0}
+  ul.list li{display:flex; justify-content:space-between; gap:14px; padding:8px 0; border-bottom:1px dashed var(--line)}
+  ul.list li:last-child{border-bottom:0}
+  ul.list .amt{font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--accent-d); text-align:right}
+  ul.list .amt .gram{display:block; font-weight:800; font-size:1rem; color:var(--second-d)}
+  .weightnote{background:#EEF3E6; border:1px solid #D2E0C2; border-radius:10px; padding:11px 13px; font-size:.9rem; color:var(--ink-soft); margin:0 0 14px}
+  .weightnote b{color:var(--second-d)}
+  .variant{background:var(--crumb-2); border:1px dashed var(--accent); border-radius:10px; padding:12px 14px; font-size:.9rem; margin-top:14px}
+  .variant b{color:var(--accent-d)}
+  ul.tools{list-style:none;margin:0;padding:0}
+  ul.tools li{padding:7px 0 7px 26px; position:relative; border-bottom:1px dashed var(--line)}
+  ul.tools li:last-child{border-bottom:0}
+  ul.tools li::before{content:"✓"; position:absolute; left:0; top:7px; color:var(--second-d); font-weight:800}
+  ol.steps{list-style:none; counter-reset:s; margin:0; padding:0; display:grid; gap:16px}
+  ol.steps > li{
+    counter-increment:s; position:relative; padding:18px 20px 18px 64px;
+    background:#fffaf0; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);
+  }
+  ol.steps > li::before{
+    content:counter(s); position:absolute; left:16px; top:16px;
+    width:34px;height:34px;border-radius:50%; display:grid; place-items:center;
+    font-family:"Fraunces",serif; font-weight:900; font-size:1rem; color:#fff;
+    background:var(--accent); box-shadow:0 5px 12px -5px color-mix(in srgb, var(--accent-d) 80%, transparent);
+  }
+  ol.steps > li h4{margin:0 0 6px; font-family:"Hanken Grotesk",sans-serif; font-weight:800; font-size:1.04rem}
+  ol.steps > li p{margin:0 0 8px}
+  ol.steps > li p:last-child{margin-bottom:0}
+  .expect{font-size:.92rem; color:var(--ink-soft); background:#F3F7EC; border:1px solid #D9E7C9; border-radius:9px; padding:9px 12px; margin-top:8px}
+  .expect b{color:var(--second-d)}
+  .stop{font-size:.93rem; background:linear-gradient(90deg,rgba(192,64,91,.09),transparent 70%); border-left:4px solid var(--warn); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .stop b{color:var(--warn-d)}
+  .flag{font-size:.93rem; background:linear-gradient(90deg,rgba(181,114,47,.18),transparent 75%); border-left:4px solid var(--accent); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .flag b{color:var(--accent-d)}
+  code{background:var(--crumb-2); border:1px solid var(--line); border-radius:6px; padding:1px 7px; font-size:.92em; font-weight:600}
+  b.key{color:var(--ink)}
+  .settings{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:.86rem;font-weight:600}
+  .chip b{color:var(--second-d)}
+  .fix{display:grid;gap:12px}
+  @media(min-width:620px){.fix{grid-template-columns:1fr 1fr}}
+  .fix .it{background:var(--crumb-2);border:1px solid var(--line);border-radius:12px;padding:15px}
+  .fix .it h4{margin:0 0 5px;font-family:"Fraunces",serif;font-size:1.05rem}
+  .fix .it p{margin:0;font-size:.93rem;color:var(--ink-soft)}
+  footer{padding:34px 0 56px;color:var(--ink-soft);font-size:.85rem}
+  footer .rule{height:1px;background:var(--line);margin-bottom:20px}
+  footer b{color:var(--ink)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:6px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">After Allrecipes · no-bake · Lee's version</span>
+    <h1>Lunch Lady Bars<br><span class="it">no oven required</span></h1>
+    <p class="lede">Crunchy graham-and-peanut-butter base under a thick milk-chocolate layer, the way the cafeteria lady made them. One 9&times;13 pan, 12 bars, zero baking.</p>
+    <div class="pill-row">
+      <span class="pill">🍫 <span>Makes <b>12 bars</b></span></span>
+      <span class="pill">⏱️ <span>About <b>1 hr 15 min</b> (15 min hands-on)</span></span>
+      <span class="pill">🧊 <span><b>No-bake</b> — the fridge does the work</span></span>
+    </div>
+    <div class="phonecard">
+      <a href="card.png"><img src="card.png" alt="Phone recipe card"></a>
+      <p>📱 For your phone — tap to open the full-size card, then save it to Photos.</p>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="about">
+      <h2>What's different in this version</h2>
+      <ul>
+        <li><b>Blender crumbs.</b> The original asks for store-bought crumbs or a rolling pin. Blitz ~14-15 full graham sheets in your blender instead — 20 seconds, and you get an even crumb that packs better.</li>
+        <li><b>Double boiler, not microwave.</b> Melting in short microwave bursts works, but it's how people scorch chocolate. A pot of simmering water with a bowl on top gives you a gentle, controllable melt.</li>
+        <li><b>Ghirardelli milk chocolate melting wafers.</b> Swapped for the original semisweet chips. Wafers melt smoother (no chips' stabilizers to fight) and one 10-oz bag (283 g) runs slightly bigger than the original's 255 g of chips — the peanut butter in the topping is bumped to match, so the layer still spreads edge to edge.</li>
+        <li><b>Everything by weight.</b> Grams lead throughout; volume is only the small line. Weigh the bowl, tare between ingredients.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">1</span><h2>What you need</h2></div>
+    <div class="two">
+      <div class="card">
+        <h3>Ingredients</h3>
+        <p class="sub">For 12 bars in a 9&times;13 pan. Grams lead; volume in the small line.</p>
+        <p class="weightnote"><b>Weigh if you can.</b> Set the bowl on the scale, tare between ingredients, go by grams.</p>
+        <ul class="list">
+          <li><span>Graham crackers (full sheets, for blender crumbs)</span><span class="amt"><span class="gram">170 g crumbs</span>14-15 sheets</span></li>
+          <li><span>Powdered sugar</span><span class="amt"><span class="gram">250 g</span>2 cups</span></li>
+          <li><span>Butter, melted</span><span class="amt"><span class="gram">227 g</span>2 sticks</span></li>
+          <li><span>Creamy peanut butter — base</span><span class="amt"><span class="gram">258 g</span>1 cup</span></li>
+          <li><span>Ghirardelli milk chocolate melting wafers</span><span class="amt"><span class="gram">283 g</span>one 10-oz bag</span></li>
+          <li><span>Creamy peanut butter — topping</span><span class="amt"><span class="gram">70 g</span>5 Tbsp</span></li>
+        </ul>
+        <div class="variant"><b>Crumbs by weight:</b> sheet sizes vary by brand. Blitz 14 sheets first, weigh, then blitz more if you're short of 170 g — don't guess going in.</div>
+      </div>
+      <div class="card">
+        <h3>Equipment</h3>
+        <ul class="tools">
+          <li>Blender (for the graham sheets)</li>
+          <li>Double boiler — pot of water + heatproof bowl that nests on top</li>
+          <li>9&times;13-inch pan, ungreased</li>
+          <li>Kitchen scale</li>
+          <li>Sturdy spatula and a spoon for pressing</li>
+        </ul>
+        <div class="variant" style="margin-top:18px"><b>No double boiler?</b> Any metal or glass bowl set over (not touching) a pot of barely simmering water works. The bowl should sit comfortably without falling in.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">2</span><h2>Build the base</h2></div>
+    <ol class="steps">
+      <li>
+        <h4>Blitz the crackers</h4>
+        <p>Break ~14-15 full graham sheets in half, drop them into the blender, and pulse to a fine crumb — about 20 seconds of pulses, not one long blend. Weigh out <code>170 g</code>.</p>
+        <p class="expect"><b>What to expect:</b> sand-fine crumbs with no visible sheet chunks. A few big pieces just means another 2-3 pulses.</p>
+        <p class="flag"><b>Watch for:</b> a blender motor working hard with a very dry load — stop and shake the jar gently between pulses so the crumbs settle into the blades.</p>
+      </li>
+      <li>
+        <h4>Mix the base</h4>
+        <p>In a medium bowl, stir together <code>170 g</code> crumbs, <code>250 g</code> powdered sugar, <code>227 g</code> melted butter, and <code>258 g</code> peanut butter until every bit of dry powder is gone.</p>
+        <p class="expect"><b>What to expect:</b> thick, uniform, and moldable — like stiff cookie dough. It should hold together when squeezed.</p>
+        <p class="stop"><b>Stop:</b> if it's still powdery after 2 minutes of stirring, your butter wasn't fully melted or the PB was cold from the fridge. Warm the PB 10 seconds and re-mix before adding anything.</p>
+      </li>
+      <li>
+        <h4>Press and chill</h4>
+        <p>Tip the mix into an ungreased 9&times;13 pan. Press it firmly and evenly with the back of a spoon — corners first, then the middle. Refrigerate while you make the topping.</p>
+        <p class="expect"><b>What to expect:</b> a level, packed surface that doesn't shift when you tilt the pan. Loose corners crack later.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">3</span><h2>Melt, pour, chill</h2></div>
+    <ol class="steps" style="counter-reset:s 3">
+      <li>
+        <h4>Set up the double boiler</h4>
+        <p>Add an inch or two of water to a pot and bring it to a bare simmer. Set a heatproof bowl on top so the bottom hovers above the water — the bowl never touches the water itself.</p>
+        <p class="stop"><b>Stop:</b> one drop of water in the chocolate makes it stiff and grainy. Keep the water at a simmer, not a boil, and don't let steam pool under the bowl — wipe the rim dry if needed.</p>
+      </li>
+      <li>
+        <h4>Melt the topping</h4>
+        <p>Add <code>283 g</code> wafers and <code>70 g</code> peanut butter to the bowl. Stir often as they soften; pull the bowl off the heat when a few lumps remain and let the residual warmth finish the job.</p>
+        <p class="expect"><b>What to expect:</b> glossy, pourable, completely smooth — no streaks. Wafers melt faster and smoother than chips, so this takes 5-8 minutes, not 15.</p>
+      </li>
+      <li>
+        <h4>Pour over the base</h4>
+        <p>Pour the warm topping straight onto the chilled base and spread it edge to edge with the spatula. Work at a steady pace — it starts setting as it cools.</p>
+        <p class="expect"><b>What to expect:</b> it self-levels within a few seconds of each spread. If it's dragging instead of flowing, warm it over the pot for another 15 seconds.</p>
+      </li>
+      <li>
+        <h4>Chill and cut</h4>
+        <p>Refrigerate <b class="key">at least 1 hour</b> until the top is set firm. Cut into 12 bars — 4 across, 3 down.</p>
+        <p class="expect"><b>What to expect:</b> clean edges. If the chocolate shaves instead of cracking, chill another 15 minutes.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">4</span><h2>Keep it</h2></div>
+    <div class="panel">
+      <div class="settings">
+        <span class="chip">🧊 Fridge, airtight: <b>up to 1 week</b></span>
+        <span class="chip">❄️ Freezer, wrapped: <b>up to 2 months</b></span>
+        <span class="chip">🍽️ Serving: <b>cold keeps the snap</b> — 10 min on the counter if you want it softer</span>
+        <span class="chip">📚 <b>The one number:</b> base must feel like wet sand and hold a pinch-shape before the topping goes on</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n" style="background:var(--warn)">?</span><h2>If something went wrong</h2></div>
+    <div class="fix">
+      <div class="it"><h4>Topping turned stiff and grainy</h4><p>Water got into the chocolate. Next time: lower simmer, wipe the bowl rim, and keep every drop of water out of the bowl.</p></div>
+      <div class="it"><h4>Topping set before it spread</h4><p>The bowl sat too long off the heat. Pour immediately after melting, and re-warm over the pot 15 seconds if it starts dragging.</p></div>
+      <div class="it"><h4>Base crumbles when you cut</h4><p>Under-pressed or under-measured butter. Press harder next time (spoon, not fingers) and confirm the butter at 227 g, not eyeballed.</p></div>
+      <div class="it"><h4>Chocolate shaves off when cutting</h4><p>Not fully set. Chill another 15-20 minutes, and warm the knife under hot water between cuts.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="rule"></div>
+    <p style="max-width:74ch"><b>Source:</b> Allrecipes, "Lunch Lady Bars" (Nicole's version, Oct 2026 TikTok). Adapted: blender-crushed graham crackers, double-boiler melt, Ghirardelli milk chocolate melting wafers in place of semisweet chips (topping PB scaled from 64 g to 70 g to match the larger 283 g chocolate amount), and gram-first weights throughout.</p>
+  </div>
+</footer>
+
+</body>
+</html>
