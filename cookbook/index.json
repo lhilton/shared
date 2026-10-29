@@ -1,8 +1,20 @@
 {
-  "generated": "2026-10-27T16:56:50Z",
-  "commit": "0636fdc",
-  "count": 4,
+  "generated": "2026-10-29T20:20:38Z",
+  "commit": "90be7be",
+  "count": 5,
   "recipes": [
+    {
+      "slug": "lunch-lady-bars",
+      "name": "Lunch Lady Bars no oven required",
+      "dir": "cookbook/lunch-lady-bars",
+      "page": "cookbook/lunch-lady-bars/index.html",
+      "card": "cookbook/lunch-lady-bars/card.png",
+      "bytes": {
+        "cookbook/lunch-lady-bars/card.png": 284873,
+        "cookbook/lunch-lady-bars/index.html": 17855
+      },
+      "added": "2026-10-29"
+    },
     {
       "slug": "peanut-butter-cookies",
       "name": "Peanut Butter Cookies the classic",
@@ -11,7 +23,7 @@
       "card": "cookbook/peanut-butter-cookies/card.png",
       "bytes": {
         "cookbook/peanut-butter-cookies/card.png": 287595,
-        "cookbook/peanut-butter-cookies/index.html": 16512
+        "cookbook/peanut-butter-cookies/index.html": 17790
       },
       "added": "2026-10-27"
     },
