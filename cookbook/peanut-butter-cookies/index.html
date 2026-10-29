@@ -48,10 +48,6 @@
   .phonecard{background:#fff8ea; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:24px; text-align:center; margin-top:18px}
   .phonecard img{width:min(320px,80vw); border-radius:28px; box-shadow:0 18px 40px -18px rgba(66,51,29,.45)}
   .phonecard p{font-size:.9rem; color:var(--ink-soft); margin:10px 0 0}
-  .video{max-width:640px; margin:22px auto 0}
-  .video .frame{position:relative; padding-bottom:56.25%; height:0; border-radius:14px; overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow); background:#1c1917}
-  .video iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
-  .video p{font-size:.9rem; color:var(--ink-soft); margin:10px 4px 0; text-align:center}
   section{padding:26px 0}
   .num-eyebrow{display:flex; align-items:center; gap:12px; margin:0 0 16px}
   .num-eyebrow .n{
@@ -125,13 +121,6 @@
       <span class="pill">🍪 <span>Yields <b>18 cookies</b></span></span>
       <span class="pill">⏱ <span>About <b>30 minutes</b></span></span>
       <span class="pill">🔥 <span>Baked at <b>350°F</b></span></span>
-    </div>
-
-    <div class="video">
-      <div class="frame">
-        <iframe src="https://www.youtube-nocookie.com/embed/5wemXknCUFA" title="Preppy Kitchen — The BEST Peanut Butter Cookies" loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <p>▶ John from Preppy Kitchen making this exact recipe — watch how pale the cookies come out of the oven and how the criss-cross is pressed.</p>
     </div>
 
     <div class="phonecard">
@@ -242,12 +231,41 @@
 
 <section>
   <div class="wrap">
+    <div class="num-eyebrow"><span class="n" style="background:#5D3A1A">+</span><h2>Optional: chocolate-bottom cookies</h2></div>
+    <p class="sub" style="margin:0 0 18px; font-size:1rem; color:var(--ink-soft)">Kitchen-tested upgrade: a crisp chocolate disc under each cookie, like a homemade tagalong base. Adds about an hour, almost all of it hands-off.</p>
+    <ol class="steps">
+      <li>
+        <h4>Melt the chocolate, pour pools</h4>
+        <p>Melt chocolate (about <b class="key">150–200 g</b>, roughly half a bag of chips — enough for 18 pools) gently in the microwave in 20-second bursts, stirring between each. Drop <b class="key">1-inch pools</b> onto wax paper and work quickly before it starts setting.</p>
+        <p class="expect"><b>What to expect:</b> 18 round puddles, glossy while molten and matte once set. Leave a little space between pools — you'll be peeling them up later.</p>
+      </li>
+      <li>
+        <h4>Press cooled cookies in</h4>
+        <p>Once the cookies have fully cooled on the sheet, press each one flat-side down into a chocolate pool <b class="key">while the chocolate is still liquid</b> — it grabs the cookie as it sets.</p>
+        <p class="flag"><b>Order matters:</b> cookies cool in about 30 minutes, the pools set in seconds to minutes. If any pool skins over before a cookie lands on it, rewarm the chocolate briefly and pour a fresh pool.</p>
+      </li>
+      <li>
+        <h4>Cool fully, then peel</h4>
+        <p>Let the whole tray sit until the chocolate is fully set, <b class="key">30–45 minutes</b> at room temperature (or 10–15 in the fridge). Then peel each cookie off the wax paper — the chocolate releases clean.</p>
+        <p class="expect"><b>What to expect:</b> a flat, snappy chocolate base with a matte top edge, cookie centered on it. Store as usual — they keep a week airtight.</p>
+      </li>
+    </ol>
+    <div class="chips" style="margin-top:6px">
+      <span class="chip">🍫 <b>~150–200 g</b> chocolate</span>
+      <span class="chip">⏱ <b>30–45 min</b> set time</span>
+      <span class="chip">📋 <b>wax paper</b> for the pools</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
     <div class="num-eyebrow"><span class="n" style="background:var(--warn)">?</span><h2>If something went wrong</h2></div>
     <div class="fix">
       <div class="it"><h4>Dry, crumbly cookies</h4><p>Too much flour — weigh it next time (180 g, not scooped cups). Also check you pulled them at the pale stage, not when fully browned.</p></div>
       <div class="it"><h4>They spread into each other</h4><p>Natural peanut butter that wasn't stirred in — the oil layer ran. Stir the jar fully, or use a stabilized brand.</p></div>
       <div class="it"><h4>Criss-cross disappeared</h4><p>The fork marks bake away if the dough is too warm or the press was too light. Press firmly and bake straight after shaping.</p></div>
-      <div class="it"><h4>Broked when moved off the sheet</h4><p>They were still setting. Wait until fully cooled on the sheet — hot PB cookies are extremely fragile.</p></div>
+      <div class="it"><h4>Broken when moved off the sheet</h4><p>They were still setting. Wait until fully cooled on the sheet — hot PB cookies are extremely fragile.</p></div>
       <div class="it"><h4>Too salty</h4><p>You salted the batter and used salted peanut butter. Pick one or the other next batch.</p></div>
       <div class="it"><h4>Dough sticks to the fork</h4><p>Dip the fork in flour between presses, and pull sideways off the cookie rather than lifting.</p></div>
     </div>
@@ -257,7 +275,7 @@
 <footer>
   <div class="wrap">
     <div class="rule"></div>
-    <p style="max-width:74ch"><b>Source:</b> <a href="https://preppykitchen.com/peanut-butter-cookies-recipe/">Preppy Kitchen — Peanut Butter Cookies Recipe</a> (John Kanell), 4.95★ from 5,515 ratings. Video: <a href="https://www.youtube.com/watch?v=5wemXknCUFA">The BEST Peanut Butter Cookies</a>, Preppy Kitchen on YouTube. Measurements converted to grams-first as written on the recipe card.</p>
+    <p style="max-width:74ch"><b>Source:</b> <a href="https://preppykitchen.com/peanut-butter-cookies-recipe/">Preppy Kitchen — Peanut Butter Cookies Recipe</a> (John Kanell), 4.95★ from 5,515 ratings. Measurements converted to grams-first as written on the recipe card. Chocolate-bottom variation: kitchen-tested.</p>
   </div>
 </footer>
 
