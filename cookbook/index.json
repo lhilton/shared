@@ -1,8 +1,20 @@
 {
-  "generated": "2026-10-29T20:20:38Z",
-  "commit": "90be7be",
-  "count": 5,
+  "generated": "2026-10-30T18:50:00Z",
+  "commit": "533c697",
+  "count": 6,
   "recipes": [
+    {
+      "slug": "chicken-au-gratin-crockpot",
+      "name": "Crockpot Chicken and Au Gratin Roast",
+      "dir": "cookbook/chicken-au-gratin-crockpot",
+      "page": "cookbook/chicken-au-gratin-crockpot/index.html",
+      "card": "cookbook/chicken-au-gratin-crockpot/chicken-au-gratin-crockpot-card.png",
+      "bytes": {
+        "cookbook/chicken-au-gratin-crockpot/chicken-au-gratin-crockpot-card.png": 360486,
+        "cookbook/chicken-au-gratin-crockpot/index.html": 18203
+      },
+      "added": "2026-10-30"
+    },
     {
       "slug": "lunch-lady-bars",
       "name": "Lunch Lady Bars no oven required",
