@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chicken &amp; Au Gratin Roast (Crockpot) — step by step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crumb:   #FBF3E2;
+    --crumb-2: #F2E6C9;
+    --accent:  #D9A441;
+    --accent-d:#A9761F;
+    --second:  #6E8C4E;
+    --second-d:#4E6A34;
+    --warn:    #C0405B;
+    --warn-d:  #9C2F46;
+    --ink:     #40321F;
+    --ink-soft:#6A5742;
+    --line:    #E2CFA4;
+    --maxw: 820px;
+    --shadow: 0 1px 2px rgba(64,50,31,.06), 0 14px 34px -18px rgba(64,50,31,.32);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 80% at 85% -10%, color-mix(in srgb, var(--accent) 18%, white) 0%, transparent 50%),
+      var(--crumb);
+    color:var(--ink);
+    font-family:"Hanken Grotesk", system-ui, -apple-system, sans-serif;
+    font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; font-weight:900; line-height:1.06; letter-spacing:-.01em}
+  a{color:var(--second-d)}
+
+  .eyebrow{font-weight:700; text-transform:uppercase; letter-spacing:.22em; font-size:.74rem; color:var(--accent-d)}
+
+  .hero{padding:52px 0 26px; text-align:center}
+  .hero h1{font-size:clamp(2.1rem,5.6vw,3.3rem); margin:.1em 0 .14em}
+  .hero h1 .it{font-style:italic;font-weight:500;color:var(--second-d)}
+  .hero p.lede{font-size:1.1rem; color:var(--ink-soft); max-width:50ch; margin:6px auto 0}
+  .pill-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px}
+  .pill{display:inline-flex; align-items:center; gap:8px; background:#fff8ea; border:1px solid var(--line); border-radius:999px; padding:8px 15px; font-size:.86rem; font-weight:600; color:var(--ink-soft); box-shadow:var(--shadow)}
+  .pill b{color:var(--ink)}
+
+  .phonecard{background:#fff8ea; border:1px solid var(--line); border-radius:18px;
+    box-shadow:var(--shadow); padding:24px; text-align:center; margin-top:18px}
+  .phonecard img{width:min(320px,80vw); border-radius:28px; box-shadow:0 18px 40px -18px rgba(64,50,31,.45)}
+  .phonecard p{font-size:.9rem; color:var(--ink-soft); margin:10px 0 0}
+
+  section{padding:26px 0}
+  .num-eyebrow{display:flex; align-items:center; gap:12px; margin:0 0 16px}
+  .num-eyebrow .n{
+    width:40px;height:40px;border-radius:12px;flex:none;display:grid;place-items:center;
+    font-family:"Fraunces",serif;font-weight:900;font-size:1.15rem;color:#fff;
+    background:var(--second); box-shadow:0 8px 16px -8px color-mix(in srgb, var(--second-d) 70%, transparent);
+  }
+  .num-eyebrow h2{font-size:clamp(1.5rem,3.4vw,2.1rem); margin:0}
+  .panel{background:#fff8ea; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:24px}
+
+  .about{
+    background:linear-gradient(180deg,var(--crumb-2),#FFFBF2);
+    border:1px solid var(--line); border-left:5px solid var(--accent);
+    border-radius:16px; box-shadow:var(--shadow); padding:22px 24px; margin-top:8px;
+  }
+  .about h2{font-size:1.35rem; margin:0 0 6px}
+  .about ul{margin:12px 0 0; padding:0; list-style:none; display:grid; gap:10px}
+  .about li{position:relative; padding-left:26px; font-size:.97rem}
+  .about li::before{content:"🥔"; position:absolute; left:0; top:0; font-size:.9rem}
+  .about b{color:var(--accent-d)}
+
+  .lab{display:inline-block; font-weight:800; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; padding:2px 9px; border-radius:6px; margin-right:8px; vertical-align:2px}
+  .lab.do{background:var(--second); color:#fff}
+  .lab.note{background:var(--crumb-2); color:var(--accent-d); border:1px solid var(--line)}
+  .lab.warn{background:var(--warn); color:#fff}
+  .lab.see{background:#EAF0E0; color:var(--ink); border:1px solid #CFDDBC}
+
+  .two{display:grid; gap:18px}
+  @media(min-width:620px){.two{grid-template-columns:1fr 1fr}}
+  .card{background:#fffaf0; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); padding:20px 22px}
+  .card h3{font-size:1.18rem; margin:0 0 4px}
+  .card .sub{font-size:.84rem; color:var(--ink-soft); margin:0 0 14px}
+  ul.list{list-style:none; margin:0; padding:0}
+  ul.list li{display:flex; justify-content:space-between; gap:14px; padding:8px 0; border-bottom:1px dashed var(--line)}
+  ul.list li:last-child{border-bottom:0}
+  ul.list .amt{font-weight:700; white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--accent-d); text-align:right}
+  ul.list .amt .gram{display:block; font-weight:800; font-size:1rem; color:var(--second-d)}
+  .weightnote{background:#EEF3E6; border:1px solid #D2E0C2; border-radius:10px; padding:11px 13px; font-size:.9rem; color:var(--ink-soft); margin:0 0 14px}
+  .weightnote b{color:var(--second-d)}
+  .variant{background:var(--crumb-2); border:1px dashed var(--accent); border-radius:10px; padding:12px 14px; font-size:.9rem; margin-top:14px}
+  .variant b{color:var(--accent-d)}
+  ul.tools{list-style:none;margin:0;padding:0}
+  ul.tools li{padding:7px 0 7px 26px; position:relative; border-bottom:1px dashed var(--line)}
+  ul.tools li:last-child{border-bottom:0}
+  ul.tools li::before{content:"✓"; position:absolute; left:0; top:7px; color:var(--second-d); font-weight:800}
+
+  ol.steps{list-style:none; counter-reset:s; margin:0; padding:0; display:grid; gap:16px}
+  ol.steps > li{
+    counter-increment:s; position:relative; padding:18px 20px 18px 64px;
+    background:#fffaf0; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);
+  }
+  ol.steps > li::before{
+    content:counter(s); position:absolute; left:16px; top:16px;
+    width:34px;height:34px;border-radius:50%; display:grid; place-items:center;
+    font-family:"Fraunces",serif; font-weight:900; font-size:1rem; color:#fff;
+    background:var(--accent); box-shadow:0 5px 12px -5px color-mix(in srgb, var(--accent-d) 80%, transparent);
+  }
+  ol.steps > li h4{margin:0 0 6px; font-family:"Hanken Grotesk",sans-serif; font-weight:800; font-size:1.04rem}
+  ol.steps > li p{margin:0 0 8px}
+  ol.steps > li p:last-child{margin-bottom:0}
+  .expect{font-size:.92rem; color:var(--ink-soft); background:#F3F7EC; border:1px solid #D9E7C9; border-radius:9px; padding:9px 12px; margin-top:8px}
+  .expect b{color:var(--second-d)}
+  .stop{font-size:.93rem; background:linear-gradient(90deg,rgba(192,64,91,.09),transparent 70%); border-left:4px solid var(--warn); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .stop b{color:var(--warn-d)}
+  .flag{font-size:.93rem; background:linear-gradient(90deg,rgba(217,164,65,.18),transparent 75%); border-left:4px solid var(--accent); border-radius:8px; padding:9px 12px; margin-top:8px}
+  .flag b{color:var(--accent-d)}
+
+  code{background:var(--crumb-2); border:1px solid var(--line); border-radius:6px; padding:1px 7px; font-size:.92em; font-weight:600}
+  b.key{color:var(--ink)}
+
+  .settings{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:.86rem;font-weight:600}
+  .chip b{color:var(--second-d)}
+
+  .fix{display:grid;gap:12px}
+  @media(min-width:620px){.fix{grid-template-columns:1fr 1fr}}
+  .fix .it{background:var(--crumb-2);border:1px solid var(--line);border-radius:12px;padding:15px}
+  .fix .it h4{margin:0 0 5px;font-family:"Fraunces",serif;font-size:1.05rem}
+  .fix .it p{margin:0;font-size:.93rem;color:var(--ink-soft)}
+
+  footer{padding:34px 0 56px;color:var(--ink-soft);font-size:.85rem}
+  footer .rule{height:1px;background:var(--line);margin-bottom:20px}
+  footer b{color:var(--ink)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:6px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Crockpot · adapted from the Food.com 2-box method</span>
+    <h1>Chicken &amp; Au Gratin <span class="it">Roast</span></h1>
+    <p class="lede">Roast-night comfort without the roast: chicken over a carrot-celery-onion bed, two boxes of au gratin potatoes cooking into a cheese gravy on top. Serves 4–5 from one crockpot.</p>
+    <div class="pill-row">
+      <span class="pill">🍲 <span>Serves <b>4–5</b></span></span>
+      <span class="pill">⏱ <span>Prep <b>15 min</b> · cook <b>4–5 hrs</b></span></span>
+      <span class="pill">🔥 <span> Cooks on <b>HIGH</b></span></span>
+    </div>
+    <div class="phonecard">
+      <a href="chicken-au-gratin-crockpot-card.png"><img src="chicken-au-gratin-crockpot-card.png" alt="Phone recipe card"></a>
+      <p>📱 For your phone — tap to open the full-size card, then save it to Photos.</p>
+    </div>
+  </div>
+</header>
+
+<section><div class="wrap"><div class="about">
+  <h2>What's different in this version</h2>
+  <ul>
+    <li><b>Extra veg bed under the chicken</b> — the classic 2-box crockpot version is just chicken and potatoes. This adds 850 g of carrot, celery, onion, and green beans under everything, roast-style. The celery cooks down soft and seasons the whole pot.</li>
+    <li><b>Cook on HIGH, not LOW</b> — boxed potato slices are thin and turn grainy on an 8-hour low cook. High for 4–5 hrs keeps them creamy.</li>
+    <li><b>Extra liquid</b> — 2 cups water + 1½ cups milk vs. the box's stovetop instructions, because a crockpot barely evaporates but the potatoes drink a lot over 4+ hours.</li>
+    <li><b>Both cheese packets go in.</b> They're the sauce. Don't skip them.</li>
+  </ul>
+</div></div></section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">1</span><h2>What you need</h2></div>
+    <div class="two">
+      <div class="card">
+        <h3>Ingredients</h3>
+        <p class="sub">For 4–5 servings. Grams lead; volume in the small line.</p>
+        <p class="weightnote"><b>Weigh if you can.</b> Set the bowl on the scale, tare between ingredients, go by grams.</p>
+        <ul class="list">
+          <li><span>Chicken breast</span><span class="amt"><span class="gram">450 g</span>1 lb · 2 medium</span></li>
+          <li><span>Carrots, peeled, sliced into coins</span><span class="amt"><span class="gram">300 g</span>3–4 whole</span></li>
+          <li><span>Celery, sliced</span><span class="amt"><span class="gram">150 g</span>3–4 stalks</span></li>
+          <li><span>Onion, diced</span><span class="amt"><span class="gram">150 g</span>1 medium</span></li>
+          <li><span>Green beans, trimmed, cut into 2-in pieces</span><span class="amt"><span class="gram">250 g</span>2–3 big handfuls</span></li>
+          <li><span>Au gratin potatoes, dry mix + cheese packets</span><span class="amt"><span class="gram">2 boxes</span>~170 g each</span></li>
+          <li><span>Water</span><span class="amt"><span class="gram">480 g</span>2 cups</span></li>
+          <li><span>Milk</span><span class="amt"><span class="gram">360 g</span>1½ cups</span></li>
+          <li><span>Butter, melted</span><span class="amt"><span class="gram">28 g</span>2 Tbsp</span></li>
+          <li><span>Salt</span><span class="amt">½ tsp</span></li>
+          <li><span>Black pepper</span><span class="amt">¼ tsp</span></li>
+          <li><span>Garlic powder</span><span class="amt">½ tsp</span></li>
+          <li><span>Cornstarch (optional, for thicker gravy)</span><span class="amt"><span class="gram">8 g</span>1 Tbsp</span></li>
+        </ul>
+        <div class="variant"><b>Want it lighter?</b> Use one box of au gratin plus 300 g of fresh potatoes sliced thin — same liquid, and you bank a box for next time.</div>
+      </div>
+      <div class="card">
+        <h3>Equipment</h3>
+        <ul class="tools">
+          <li>6-qt or larger crockpot / slow cooker</li>
+          <li>Cutting board + knife</li>
+          <li>Scale (or measuring cups)</li>
+          <li>Instant-read thermometer</li>
+          <li>Small bowl for the cornstarch slurry</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">2</span><h2>Build the pot</h2></div>
+    <ol class="steps">
+      <li>
+        <h4>Lay the vegetable bed</h4>
+        <p>Spread the <code>300 g</code> carrot coins, <code>150 g</code> celery, <code>150 g</code> onion, and <code>250 g</code> green beans evenly over the bottom of the crockpot.</p>
+        <p class="expect"><b>What to expect:</b> a solid veg layer covering the ceramic — about <code>850 g</code> total. This is the roast flavor base and it keeps the chicken off the hot bottom.</p>
+        <p class="flag"><b>Want snappier beans?</b> On a 4–5 hr cook green beans go fully soft (think creamed style). If you prefer some bite, hold them back and stir them in for the <b class="key">last 45–60 min</b> — they'll still take on the sauce.</p>
+      </li>
+      <li>
+        <h4>Season the chicken</h4>
+        <p>Shake <code>½ tsp</code> salt, <code>¼ tsp</code> pepper, and <code>½ tsp</code> garlic powder over both sides of the <code>450 g</code> chicken breast, then lay it on the veg bed.</p>
+        <p class="expect"><b>What to expect:</b> the chicken sits on top of the vegetables, not in liquid. Liquid comes later.</p>
+      </li>
+      <li>
+        <h4>Add the potatoes and cheese packets</h4>
+        <p>Spread both boxes of dry potato slices over and around the chicken. Sprinkle <b class="key">both cheese packets</b> evenly over the top.</p>
+        <p class="stop"><b>Don't skip the packets.</b> They're the entire sauce. A box without its cheese packet makes a bland pot of potatoes.</p>
+      </li>
+      <li>
+        <h4>Pour in the liquid</h4>
+        <p>Pour <code>480 g (2 cups)</code> water and <code>360 g (1½ cups)</code> milk evenly over everything, then drizzle the melted <code>28 g</code> butter on top.</p>
+        <p class="expect"><b>What to expect:</b> liquid visible around the edges but the top potatoes sitting mostly dry. That's right — they'll steam down into the sauce.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n">3</span><h2>Cook and finish</h2></div>
+    <ol class="steps">
+      <li>
+        <h4>Cook on HIGH, lid on</h4>
+        <p>Cover and cook on <b class="key">HIGH for 4–5 hrs</b>. No peeking — every lid lift adds ~20 min of cook time.</p>
+        <p class="stop"><b>Don't use LOW.</b> Thin boxed potato slices go grainy and fall apart on an 8-hr low cook. If you must run LOW, check at 7 hrs.</p>
+        <p class="expect"><b>What to expect at 4 hrs:</b> bubbling at the edges, the whole top sauce-y. Start checking at 4 hrs.</p>
+      </li>
+      <li>
+        <h4>Check doneness</h4>
+        <p>Chicken must read <b class="key">165°F</b> in the thickest part and the potatoes should slide off a fork. Both hit together — the pot is done.</p>
+        <p class="flag"><b>Not there yet?</b> Lid back on, check again in 30 min. Crockpot HIGH runs hot or mild depending on the model.</p>
+      </li>
+      <li>
+        <h4>Thicken if you want gravy</h4>
+        <p>Sauce too thin? Shake <code>8 g (1 Tbsp)</code> cornstarch into a splash of cold milk, stir it in, lid back on for <b class="key">10 min</b>. Done as-is, the cheese-packet sauce is already spoon-over-able.</p>
+      </li>
+      <li>
+        <h4>Serve</h4>
+        <p>Shred or slice the chicken, give the pot one gentle stir, and scoop. Leftovers go in the fridge airtight for <b class="key">3–4 days</b>; reheat a portion <b class="key">90–120 s</b> in the microwave with a splash of milk if the sauce tightened overnight.</p>
+      </li>
+    </ol>
+    <div class="panel" style="margin-top:18px">
+      <h3 style="margin:0 0 10px">Settings recap</h3>
+      <div class="settings">
+        <span class="chip">Crockpot: <b>HIGH, 4–5 hrs</b></span>
+        <span class="chip">Backup: <b>LOW, check at 7 hrs</b></span>
+        <span class="chip">Doneness: <b>chicken 165°F</b></span>
+        <span class="chip">Thicken: <b>1 Tbsp cornstarch + milk, 10 min</b></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="num-eyebrow"><span class="n" style="background:var(--warn)">?</span><h2>If something went wrong</h2></div>
+    <div class="fix">
+      <div class="it"><h4>Potatoes still crunchy at 5 hrs</h4><p>Slices clumped above the liquid instead of sinking in. Stir the pot, lid back on, give it another 30–45 min on HIGH.</p></div>
+      <div class="it"><h4>Sauce grainy or broken</h4><p>The pot ran too hot. Next time add the milk in the last hour, water from the start. A hard stir at the end usually pulls it back together.</p></div>
+      <div class="it"><h4>Chicken overdone and stringy</h4><p>It cooked past 165°F by an hour or more. Next time start checking at 4 hrs; or lay the chicken on the veg instead of under the potatoes so it steams, not boils.</p></div>
+      <div class="it"><h4>Bland overall</h4><p>Seasoning was too shy for 600 g of veg plus potatoes. Bump the salt to 1 tsp, and remember the cheese packets carry most of the flavor — both in, every time.</p></div>
+      <div class="it"><h4>Green beans army-green and mushy</h4><p>That's a full 4–5 hr cook — expected, creamed-casserole style. For bite, add beans in the last 45–60 min next time.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="rule"></div>
+    <p style="max-width:74ch"><b>Source:</b> adapted from the two-box crockpot au gratin chicken method (Food.com family versions), reworked for Lee's crockpot with an added roast-style carrot/celery/onion/green-bean bed, extra liquid for the long cook, and a HIGH-only cook to keep boxed potato slices creamy. Quantities computed in grams; 1 lb chicken, two ~170 g boxes.</p>
+  </div>
+</footer>
+
+</body>
+</html>
